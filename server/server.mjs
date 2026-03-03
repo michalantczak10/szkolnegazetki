@@ -139,7 +139,7 @@ app.post('/api/orders', async (req, res) => {
 
     const mailOptions = {
       to: process.env.ORDER_EMAIL || 'kontakt@galaretkarnia.pl',
-      from: 'kontakt@galaretkarnia.pl',
+      from: process.env.SENDGRID_FROM_EMAIL || 'kontakt@galaretkarnia.pl',
       subject: `📦 Nowe zamówienie - ${orderId.slice(-6).toUpperCase()}`,
       html: `
         <h2>📦 Nowe zamówienie</h2>
@@ -168,7 +168,10 @@ app.post('/api/orders', async (req, res) => {
     // Fire-and-forget email via SendGrid (won't block response)
     sgMail.send(mailOptions)
       .then(() => console.log(`✅ Order email sent for ID: ${orderId}`))
-      .catch(err => console.error('⚠️  Email sending failed (but order saved to DB):', err.message));
+      .catch(err => {
+        const sendGridMessage = err?.response?.body?.errors?.[0]?.message;
+        console.error('⚠️  Email sending failed (but order saved to DB):', sendGridMessage || err.message);
+      });
 
   } catch (error) {
     console.error('Order processing error:', error);
