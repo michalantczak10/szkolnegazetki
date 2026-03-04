@@ -72,7 +72,7 @@ git push
 1. Wejdź na: https://render.com
 2. Zaloguj się przez **GitHub**
 3. Kliknij **New +** → **Web Service**
-4. Wybierz repo: **`galaretkarnia.pl`**
+4. Wybierz repo: **`galaretkarnia`**
 5. Kliknij **Connect**
 
 ### 2.3 Konfiguracja Web Service
@@ -172,7 +172,7 @@ git push
 1. Wejdź na: https://vercel.com
 2. Zaloguj się przez **GitHub**
 3. Kliknij **Add New...** → **Project**
-4. Wybierz repo: **`galaretkarnia.pl`**
+4. Wybierz repo: **`galaretkarnia`**
 5. Kliknij **Import**
 
 ### 3.3 Konfiguracja projektu

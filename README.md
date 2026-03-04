@@ -42,8 +42,8 @@ Czas setup: **~15 minut**
 
 1. Sklonuj repozytorium:
 ```bash
-git clone https://github.com/michalantczak10/galaretkarnia.pl.git
-cd galaretkarnia.pl
+git clone https://github.com/michalantczak10/galaretkarnia.git
+cd galaretkarnia
 ```
 
 2. Zainstaluj zależności:

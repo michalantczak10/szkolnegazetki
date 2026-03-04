@@ -31,7 +31,7 @@
 
 1. Z dashboardu Render kliknij **"New +"**
 2. Wybierz **"Web Service"**
-3. Renderuj wyświetli listę repo — wybierz **`galaretkarnia.pl`**
+3. Renderuj wyświetli listę repo — wybierz **`galaretkarnia`**
 4. Kliknij **"Connect"**
 
 ### 2.3 Ustaw konfigurację

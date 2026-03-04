@@ -17,8 +17,8 @@ Ten wariant upraszcza całość: frontend i API działają na tej samej domenie,
 
 ### 3) Start na serwerze
 ```bash
-git clone https://github.com/michalantczak10/galaretkarnia.pl.git
-cd galaretkarnia.pl
+git clone https://github.com/michalantczak10/galaretkarnia.git
+cd galaretkarnia
 cp .env.prod.example .env
 # uzupełnij SENDGRID_API_KEY i domenę
 docker compose --env-file .env up -d --build
@@ -73,7 +73,7 @@ git push origin main
 - Kliknij "New +" → "Web Service"
 
 ### Krok 3: Połącz repo
-- Wybierz: `michalantczak10/galaretkarnia.pl`
+- Wybierz: `michalantczak10/galaretkarnia`
 - Ustaw:
   - **Name**: `galaretkarnia-api`
   - **Root Directory**: `server`
