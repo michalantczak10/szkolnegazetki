@@ -1,5 +1,44 @@
 # 🚀 Deployment Guide - Galaretkarnia.pl
 
+## ✅ Rekomendowany wariant: jeden serwer (Node.js + MongoDB)
+
+Ten wariant upraszcza całość: frontend i API działają na tej samej domenie, więc nie ma problemów z CORS ani z osobnym deployem frontu/backu.
+
+### 1) Wymagania serwera
+- VPS z Docker + Docker Compose
+- Otwarty port `80` i `443`
+- Domena ustawiona na IP serwera (rekord `A`)
+
+### 2) Pliki deploymentu (już w repo)
+- `Dockerfile`
+- `docker-compose.yml`
+- `deploy/Caddyfile`
+- `.env.prod.example`
+
+### 3) Start na serwerze
+```bash
+git clone https://github.com/michalantczak10/galaretkarnia.pl.git
+cd galaretkarnia.pl
+cp .env.prod.example .env
+# uzupełnij SENDGRID_API_KEY i domenę
+docker compose --env-file .env up -d --build
+```
+
+### 4) Konfiguracja domeny
+- DNS: rekord `A` dla `galaretkarnia.pl` na IP VPS
+- Caddy sam wystawi HTTPS (Let's Encrypt)
+
+### 5) Mail
+- używamy SendGrid API (`SENDGRID_API_KEY`)
+- nadawca: `SENDGRID_FROM_EMAIL`
+- odbiorca zamówień: `ORDER_EMAIL`
+
+### 6) Aktualizacja aplikacji
+```bash
+git pull
+docker compose --env-file .env up -d --build
+```
+
 ## Struktura projektu
 
 ```

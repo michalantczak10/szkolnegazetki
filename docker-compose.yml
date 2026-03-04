@@ -1,0 +1,43 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: galaretkarnia-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGODB_URI: mongodb://mongo:27017/galaretkarnia
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+      SENDGRID_FROM_EMAIL: ${SENDGRID_FROM_EMAIL}
+      ORDER_EMAIL: ${ORDER_EMAIL}
+      FRONTEND_URL: https://${DOMAIN}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7
+    container_name: galaretkarnia-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+
+  caddy:
+    image: caddy:2
+    container_name: galaretkarnia-caddy
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  mongo_data:
+  caddy_data:
+  caddy_config:
