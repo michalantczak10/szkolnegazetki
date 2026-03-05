@@ -194,7 +194,7 @@ git push
 2. Vercel zbuduje i wdroży (1-2 minuty)
 3. Po zakończeniu zobaczysz URL:
    ```
-   https://galaretkarnia-pl.vercel.app
+   https://galaretkarnia.vercel.app
    ```
 
 ### 3.6 Dodaj własną domenę (opcjonalne)
@@ -215,7 +215,7 @@ git push
 3. **Environment** → Znajdź `FRONTEND_URL`
 4. Zmień na prawdziwy URL Vercel:
    ```
-   https://galaretkarnia-pl.vercel.app
+   https://galaretkarnia.vercel.app
    ```
    (lub Twoja własna domena)
 5. **Save Changes**
@@ -223,7 +223,7 @@ git push
 
 ### 4.2 Testuj produkcyjną wersję!
 
-1. Otwórz: `https://galaretkarnia-pl.vercel.app`
+1. Otwórz: `https://galaretkarnia.vercel.app`
 2. Dodaj produkty do koszyka
 3. Wypełnij formularz
 4. Wyślij zamówienie
@@ -296,3 +296,4 @@ git push
 ---
 
 🎉 **Gratulacje! Twoja aplikacja jest live!**
+

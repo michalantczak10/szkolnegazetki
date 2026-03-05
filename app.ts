@@ -64,7 +64,7 @@ const TOAST_DURATION = 2000;
 const isDevelopment = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 const API_URL = isDevelopment 
   ? "http://localhost:3001/api/orders" 
-  : "https://galaretkarnia-pl.onrender.com/api/orders";
+  : "https://galaretkarnia.onrender.com/api/orders";
 
 // Funkcja animacji - usuwa klasę, wymusza reflow i dodaje ponownie
 const animate = (el: HTMLElement, cls: string) => {
@@ -426,3 +426,4 @@ addButtons.forEach(btn => {
 checkoutForm.addEventListener("submit", handleCheckoutSubmit);
 loadCart();
 renderCart();
+
