@@ -76,7 +76,7 @@ const showToast = (message) => {
     }, TOAST_DURATION);
 };
 const setCheckoutMessage = (message, isError) => {
-    checkoutMessage.textContent = message;
+    checkoutMessage.innerHTML = message;
     checkoutMessage.classList.remove("is-error", "is-success");
     checkoutMessage.classList.add(isError ? "is-error" : "is-success");
 };
