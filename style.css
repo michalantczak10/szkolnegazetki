@@ -246,7 +246,7 @@ body {
 .trust {
   background: var(--color-accent);
   border-radius: var(--radius-lg);
-  margin: 20px auto;
+  margin: 24px auto;
 }
 
 .about h2,
@@ -574,8 +574,8 @@ button:active {
   padding: 50px 30px;
   text-align: center;
   border-radius: var(--radius-lg);
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .about,
@@ -583,7 +583,7 @@ button:active {
 .product,
 .checkout,
 .trust {
-  width: min(1200px, calc(100% - 40px));
+  width: min(1200px, calc(100% - 48px));
   margin-left: auto;
   margin-right: auto;
 }
