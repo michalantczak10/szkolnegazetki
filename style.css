@@ -829,9 +829,11 @@ button:active {
 
 .about-story,
 .about-photos {
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(1px);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   padding: 24px;
   transition: transform var(--transition), box-shadow var(--transition);
 }
@@ -849,7 +851,9 @@ button:active {
 
 .about-story p {
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.75;
+  font-weight: 600;
+  color: #3a2e2e;
 }
 
 .about-photos {
@@ -875,7 +879,9 @@ button:active {
 
 .about-photo-card figcaption {
   margin-top: 8px;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
   color: var(--color-primary);
 }
 
