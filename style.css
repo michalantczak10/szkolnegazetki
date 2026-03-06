@@ -365,7 +365,7 @@ button:active {
 /* ===== MINI KOSZYK ===== */
 .cart-dock {
   width: min(1200px, calc(100% - 80px));
-  margin: 0 auto 16px;
+  margin: 24px auto 16px;
 }
 
 .mini-cart {
