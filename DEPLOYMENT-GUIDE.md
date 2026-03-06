@@ -81,7 +81,7 @@ Wypełnij formularz:
 
 | Pole | Wartość |
 |------|---------|
-| **Name** | `galaretkarnia-api` |
+| **Name** | `galaretkarnia` |
 | **Region** | `Frankfurt (EU Central)` |
 | **Root Directory** | `server` |
 | **Runtime** | `Node` |
@@ -96,11 +96,9 @@ W sekcji **Environment**, kliknij **Add Environment Variable** i dodaj:
 ```env
 MONGODB_URI=mongodb+srv://galaretkarnia_admin:TWOJE_HASLO@cluster.mongodb.net/galaretkarnia?retryWrites=true&w=majority
 
-EMAIL_USER=twoj-email@gmail.com
+RESEND_API_KEY=re_twoj_klucz_api
 
-EMAIL_PASSWORD=twoje-16-znakowe-app-password
-
-ORDER_EMAIL=zamowienia@galaretkarnia.pl
+ORDER_EMAIL=kontakt@galaretkarnia.pl
 
 FRONTEND_URL=https://galaretkarnia.pl
 
@@ -112,8 +110,7 @@ PORT=10000
 ⚠️ **WAŻNE**: 
 - Wstaw prawdziwe dane!
 - `MONGODB_URI` = connection string z kroku 1.3
-- `EMAIL_USER` + `EMAIL_PASSWORD` = dane z Gmail App Password
-- `FRONTEND_URL` = zostaw na razie tak, zaktualizujemy w kroku 3
+- `RESEND_API_KEY` = klucz z panelu Resend
 
 ### 2.5 Deploy!
 
@@ -208,22 +205,18 @@ git push
 
 ## 🔧 Krok 4: Finalizacja
 
-### 4.1 Zaktualizuj FRONTEND_URL na Render
+### 4.1 Zweryfikuj zmienne backendu na Render
 
 1. Wejdź na Render Dashboard
-2. Otwórz serwis: **galaretkarnia-api**
-3. **Environment** → Znajdź `FRONTEND_URL`
-4. Zmień na prawdziwy URL Vercel:
-   ```
-   https://galaretkarnia.vercel.app
-   ```
-   (lub Twoja własna domena)
+2. Otwórz serwis: **galaretkarnia**
+3. **Environment** → sprawdź `MONGODB_URI`, `RESEND_API_KEY`, `ORDER_EMAIL`
+4. Upewnij się, że `ORDER_EMAIL=kontakt@galaretkarnia.pl`
 5. **Save Changes**
 6. Serwis automatycznie się zrestartuje
 
 ### 4.2 Testuj produkcyjną wersję!
 
-1. Otwórz: `https://galaretkarnia.vercel.app`
+1. Otwórz: `https://galaretkarnia.pl`
 2. Dodaj produkty do koszyka
 3. Wypełnij formularz
 4. Wyślij zamówienie
@@ -239,7 +232,7 @@ git push
 - [ ] MongoDB Atlas - klaster utworzony
 - [ ] MongoDB - connection string skopiowany
 - [ ] MongoDB - IP 0.0.0.0/0 dodane do whitelist
-- [ ] Gmail - App Password wygenerowany
+- [ ] Resend - API Key wygenerowany
 - [ ] Render - backend wdrożony
 - [ ] Render - wszystkie zmienne ENV ustawione
 - [ ] Render - status "Live"
@@ -276,18 +269,18 @@ git push
 ## 🆘 Troubleshooting
 
 ### Backend nie działa na Render
-- Sprawdź logi: Dashboard → galaretkarnia-api → Logs
+- Sprawdź logi: Dashboard → galaretkarnia → Logs
 - Sprawdź czy MongoDB connection string jest poprawny
 - Sprawdź czy wszystkie ENV są ustawione
 
 ### Frontend nie łączy się z backend
 - Sprawdź czy API_URL w app.ts jest poprawny
-- Sprawdź CORS - czy FRONTEND_URL na Render jest poprawny
+- Sprawdź czy backend URL na Render jest aktywny (`/api/health`)
 - Otwórz konsolę przeglądarki (F12) i sprawdź błędy
 
 ### Email nie działa
 - Sprawdź logi Render
-- Sprawdź czy App Password jest poprawny (bez spacji)
+- Sprawdź czy `RESEND_API_KEY` jest poprawny
 - Sprawdź folder SPAM
 
 ### MongoDB "IP not whitelisted"

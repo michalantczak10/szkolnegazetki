@@ -1,4 +1,4 @@
-# 📧 Konfiguracja Email - Outlook/Hotmail
+# 📧 Konfiguracja Email - Resend
 
 ## Dlaczego potrzebujesz emaili?
 
@@ -9,29 +9,24 @@ Gdy klient złoży zamówienie, system:
 
 ---
 
-## ⚙️ Konfiguracja Outlook
+## ⚙️ Konfiguracja Resend
 
-### Opcja 1: Zwykłe hasło (prostsza)
+1. Wejdź na: https://resend.com
+2. Załóż konto / zaloguj się
+3. Przejdź do **API Keys**
+4. Kliknij **Create API Key**
+5. Skopiuj klucz (zaczyna się od `re_...`)
 
-Wystarczy użyć swojego normalnego hasła do konta Outlook/Hotmail.
+## 🔐 Ustawienia w `.env`
 
-1. Otwórz `server/.env`
-2. Wpisz:
+W `server/.env` ustaw:
 ```env
-EMAIL_USER=twoj-email@outlook.com
-EMAIL_PASSWORD=twoje-normalne-haslo
-ORDER_EMAIL=twoj-email@outlook.com
+RESEND_API_KEY=re_twoj_klucz_api
+ORDER_EMAIL=kontakt@galaretkarnia.pl
+RESEND_FROM_EMAIL=noreply@galaretkarnia.onresend.com
 ```
 
-### Opcja 2: App Password (bezpieczniejsza)
-
-Jeśli masz włączoną weryfikację dwuetapową:
-
-1. Wejdź na: https://account.microsoft.com/security
-2. Znajdź **"App passwords"**
-3. Kliknij **"Create a new app password"**
-4. Skopiuj wygenerowane hasło
-5. W `server/.env` użyj tego hasła jako `EMAIL_PASSWORD`
+`ORDER_EMAIL` to adres, na który przychodzą powiadomienia o nowych zamówieniach.
 
 ---
 
@@ -46,7 +41,7 @@ Jeśli masz włączoną weryfikację dwuetapową:
 
 2. **Powinien pojawić się komunikat**:
    ```
-   ✅ Email service ready
+   ✅ Resend API Key configured
    ```
 
 3. **Wyślij testowe zamówienie** ze strony
@@ -57,18 +52,14 @@ Jeśli masz włączoną weryfikację dwuetapową:
 
 ## ❌ Troubleshooting
 
-### Błąd: "Invalid login" lub "Authentication failed"
-- Sprawdź czy EMAIL_USER jest poprawny
-- Sprawdź czy hasło jest poprawne
-- Spróbuj wygenerować App Password (opcja 2)
+### Błąd: "Missing API key"
+- Sprawdź czy `RESEND_API_KEY` jest ustawione
+- Upewnij się, że klucz zaczyna się od `re_`
 
 ### Email nie przychodzi
 - Sprawdź folder SPAM/Junk
 - Sprawdź czy backend wyświetlił: `✅ Order email sent for ID: ...`
 - Sprawdź logi backendu czy są błędy
-
-### "self signed certificate" error
-- To normalne z Outlookiem - dodane `tls.ciphers` w konfiguracji to naprawia
 
 ---
 

@@ -1,18 +1,15 @@
 # 📋 Krok-po-kroku: Deployment do Produkcji
 
-## ✅ Krok 1: Konfiguruj Gmail (5 minut)
+## ✅ Krok 1: Konfiguruj Resend (5 minut)
 
-### 1.1 Wygeneruj Google App Password
+### 1.1 Wygeneruj klucz API Resend
 
-1. Wejdź: https://myaccount.google.com/apppasswords
-2. Jeśli nie logुjesz, zaloguj się swoim Gmaestem
-3. W górnym menu wybierz:
-   - **Select the app**: `Mail`
-   - **Select the device**: `Windows Computer`
-4. Kliknij **"Generate"**
-5. Google wyświetli ci 16 znaków (bez spacji): np. `abcd efgh ijkl mnop`
-6. **Skopiuj bez spacji**: `abcdefghijklmnop`
-7. Zapisz gdzieś na notatkę — będzie Ci potrzebne!
+1. Wejdź: https://resend.com
+2. Zaloguj się / załóż konto
+3. Otwórz zakładkę **API Keys**
+4. Kliknij **Create API Key**
+5. Skopiuj klucz zaczynający się od `re_...`
+6. Zapisz go — będzie potrzebny w kroku 2.4
 
 ---
 
@@ -40,7 +37,7 @@ Wypełnij formularz:
 
 | Pole | Wartość |
 |------|---------|
-| **Name** | `galaretkarnia-api` |
+| **Name** | `galaretkarnia` |
 | **Environment** | `Node` |
 | **Region** | `Frankfurt (Europe)` |
 | **Branch** | `main` |
@@ -56,12 +53,11 @@ Kliknij **"Advanced"** (rozwiń)
 Dodaj każdą zmienną klikając **"Add Environment Variable"**:
 
 ```
-EMAIL_USER=twój-email@gmail.com
-EMAIL_PASSWORD=abcdefghijklmnop (skopiowany z kroku 1.6)
-ORDER_EMAIL=zamowienia@galaretkarnia.pl
+RESEND_API_KEY=re_twój_klucz_z_kroku_1
+ORDER_EMAIL=kontakt@galaretkarnia.pl
 FRONTEND_URL=https://galaretkarnia.pl
 NODE_ENV=production
-PORT=3001
+PORT=10000
 ```
 
 ### 2.5 Deploy!
@@ -275,7 +271,7 @@ Koszyk powinien się wyczyścić, formularz tez.
 
 ### 5.4 Sprawdź email
 
-Login do Gmaila: https://mail.google.com
+Zaloguj się do skrzynki, na którą wskazuje `ORDER_EMAIL` (np. `kontakt@galaretkarnia.pl`)
 
 Powinna być wiadomość z tematu:
 ```
@@ -295,12 +291,11 @@ W treści:
 ## 🆘 Troubleshooting
 
 ### ❌ "Email failed" w konsoli
-**Przyczyna**: Złe EMAIL_PASSWORD na Render
+**Przyczyna**: Niepoprawny `RESEND_API_KEY` na Render
 
 **Rozwiązanie:**
-1. Wejdź https://myaccount.google.com/apppasswords
-2. Wygeneruj NOWY App Password
-3. W Render (Settings → Environment) zaktualizuj `EMAIL_PASSWORD`
+1. Wejdź do https://resend.com i wygeneruj nowy API Key
+2. W Render (Settings → Environment) zaktualizuj `RESEND_API_KEY`
 4. Render automatycznie się zredeployuje
 
 ### ❌ "CORS error" w przeglądarce
@@ -308,7 +303,7 @@ W treści:
 
 **Rozwiązanie:**
 1. Sprawdź czy `API_URL` w `app.ts` jest dokładnie taki jak URL Render
-2. Sprawdź czy `FRONTEND_URL` na Render to dokładnie `https://galaretkarnia.pl`
+2. Sprawdź czy backend URL działa pod `/api/health`
 3. Rebuild + push:
 ```bash
 npm run build && git add . && git commit -m "Fix CORS" && git push
@@ -335,7 +330,7 @@ Masz gotowy e-commerce:
 - ✅ Strona na Vercel (darmowy hosting)
 - ✅ API na Render (darmowy hosting)
 - ✅ Domena z home.pl (15-20 zł/mies)
-- ✅ Email na Gmaila (darmowy)
+- ✅ Email przez Resend
 - ✅ **TOTAL: 15-20 zł/mies!**
 
 Możesz teraz:

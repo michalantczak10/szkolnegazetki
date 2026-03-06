@@ -34,7 +34,7 @@ Czas setup: **~15 minut**
 - **Frontend**: TypeScript, CSS3, HTML5
 - **Backend**: Node.js + Express
 - **Baza danych**: MongoDB (archiwizacja zamówień)
-- **Email**: Nodemailer + Gmail
+- **Email**: Resend API
 
 ## 📦 Instalacja
 
@@ -97,18 +97,17 @@ MONGODB_URI=mongodb://localhost:27017/galaretkarnia
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/galaretkarnia?retryWrites=true&w=majority
 ```
 
-### Email (Outlook/Hotmail)
+### Email (Resend)
 
 Backend wysyła email z powiadomieniem o każdym nowym zamówieniu.
 
 **📧 [Szczegółowa instrukcja konfiguracji email →](EMAIL-SETUP.md)**
 
 Szybka konfiguracja:
-1. W `server/.env` wpisz swoje dane Outlook
+1. W `server/.env` ustaw klucz Resend i adres odbioru zamówień
 ```env
-EMAIL_USER=twoj-email@outlook.com
-EMAIL_PASSWORD=twoje-haslo
-ORDER_EMAIL=twoj-email@outlook.com
+RESEND_API_KEY=re_twoj_klucz_api
+ORDER_EMAIL=kontakt@galaretkarnia.pl
 ```
 
 **Uwaga**: Zamówienia są zapisywane w MongoDB niezależnie od konfiguracji email!
@@ -117,9 +116,9 @@ ORDER_EMAIL=twoj-email@outlook.com
 
 ### Dla developmentu - Terminal 1 (Frontend)
 ```bash
-npm run watch
+npx vite
 ```
-Otwórz `http://localhost:5173` lub `index.html` w przeglądarce.
+Otwórz `http://localhost:5173` w przeglądarce.
 
 ### Dla developmentu - Terminal 2 (Backend)
 ```bash
