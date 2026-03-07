@@ -632,6 +632,7 @@ const clearCart = () => {
     cart = [];
     renderCart();
     showToast("✨ Koszyk został wyczyszczony", "success");
+    setCheckoutMessage("🧺 Koszyk został wyczyszczony. Możesz dodać produkty ponownie.", false);
   }
 };
 
