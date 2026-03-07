@@ -1,11 +1,23 @@
 import express from 'express';
 import { Resend } from 'resend';
+import Stripe from 'stripe';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { MongoClient, ObjectId } from 'mongodb';
 
 dotenv.config();
+
+// Initialize Stripe
+const stripe = process.env.STRIPE_SECRET_KEY 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2023-10-16' })
+  : null;
+
+if (stripe) {
+  console.log('✅ Stripe configured');
+} else {
+  console.warn('⚠️  Stripe not configured - online payments disabled');
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -166,7 +178,7 @@ const calculateDeliveryCost = (itemsCount) => {
   };
 };
 
-const PAYMENT_METHODS = ['bank_transfer', 'blik'];
+const PAYMENT_METHODS = ['bank_transfer', 'blik', 'stripe_online'];
 
 const getPaymentTarget = (method) => {
   if (method === 'blik') {
@@ -405,6 +417,81 @@ app.put('/api/orders/id/:orderId', async (req, res) => {
   } catch (error) {
     console.error('Update order error:', error);
     res.status(500).json({ error: 'Błąd przy aktualizacji zamówienia' });
+  }
+});
+
+// POST /api/create-checkout-session - Create Stripe Checkout session
+app.post('/api/create-checkout-session', async (req, res) => {
+  try {
+    if (!stripe) {
+      return res.status(503).json({ error: 'Płatności online są tymczasowo niedostępne' });
+    }
+
+    const { items, productsTotal, deliveryCost, total, orderData } = req.body;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Koszyk jest pusty' });
+    }
+
+    if (typeof total !== 'number' || total <= 0) {
+      return res.status(400).json({ error: 'Nieprawidłowa kwota' });
+    }
+
+    // Create line items for Stripe
+    const lineItems = items.map(item => ({
+      price_data: {
+        currency: 'pln',
+        product_data: {
+          name: item.name,
+          description: `Słoik galaretki - ${item.qty} szt.`
+        },
+        unit_amount: Math.round(item.price * 100) // Convert to grosz
+      },
+      quantity: item.qty
+    }));
+
+    // Add delivery as separate line item if > 0
+    if (deliveryCost > 0) {
+      lineItems.push({
+        price_data: {
+          currency: 'pln',
+          product_data: {
+            name: 'Dostawa InPost Paczkomat',
+            description: orderData?.parcelLabel || 'Przesyłka'
+          },
+          unit_amount: Math.round(deliveryCost * 100)
+        },
+        quantity: 1
+      });
+    }
+
+    const baseUrl = process.env.BASE_URL || 'http://localhost:5173';
+
+    // Create Stripe Checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card', 'blik', 'p24'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${baseUrl}/?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/?payment=cancelled`,
+      metadata: {
+        phone: orderData?.phone || '',
+        parcelLockerCode: orderData?.parcelLockerCode || '',
+        notes: orderData?.notes || '',
+        productsTotal: String(productsTotal || 0),
+        deliveryCost: String(deliveryCost || 0)
+      },
+      customer_email: orderData?.optionalAccountEmail || undefined
+    });
+
+    res.json({
+      success: true,
+      sessionId: session.id,
+      url: session.url
+    });
+  } catch (error) {
+    console.error('Stripe session creation error:', error);
+    res.status(500).json({ error: 'Błąd przy tworzeniu sesji płatności' });
   }
 });
 

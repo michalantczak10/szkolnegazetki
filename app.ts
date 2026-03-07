@@ -102,7 +102,7 @@ const ORDER_REF_STORAGE_KEY = "galaretkarnia_last_order_ref";
 const TOAST_DURATION = 2000;
 let freeDeliveryThreshold = 50;
 
-type PaymentMethod = "bank_transfer" | "blik";
+type PaymentMethod = "bank_transfer" | "blik" | "stripe_online";
 
 interface ParcelSize {
   name: string;
@@ -131,12 +131,11 @@ let paymentConfig: PaymentConfig = {
 
 // Auto-detect API URL based on environment
 const isDevelopment = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-const API_URL = isDevelopment 
-  ? "http://localhost:3001/api/orders" 
-  : "https://galaretkarnia.onrender.com/api/orders";
-const PAYMENT_CONFIG_URL = isDevelopment
-  ? "http://localhost:3001/api/payment-config"
-  : "https://galaretkarnia.onrender.com/api/payment-config";
+const API_BASE_URL = isDevelopment 
+  ? "http://localhost:3001" 
+  : "https://galaretkarnia.onrender.com";
+const API_URL = `${API_BASE_URL}/api/orders`;
+const PAYMENT_CONFIG_URL = `${API_BASE_URL}/api/payment-config`;
 
 // Funkcja animacji - usuwa klasę, wymusza reflow i dodaje ponownie
 const animate = (el: HTMLElement, cls: string) => {
@@ -261,16 +260,28 @@ const formatOrderRef = (orderId: string) => orderId.slice(-8).toUpperCase();
 
 const createTransferTitle = (orderRef: string) => `Opłata za zamówienie nr: ${orderRef}`;
 
-const getPaymentMethodLabel = (method: PaymentMethod) =>
-  method === "blik" ? "BLIK na telefon" : "Przelew tradycyjny";
+const getPaymentMethodLabel = (method: PaymentMethod) => {
+  if (method === "blik") return "BLIK na telefon";
+  if (method === "stripe_online") return "Karta płatnicza / BLIK online (Stripe)";
+  return "Przelew tradycyjny";
+};
 
-const getPaymentTargetText = (method: PaymentMethod) =>
-  method === "blik"
-    ? `Telefon BLIK: ${paymentConfig.blikPhone}`
-    : `${paymentConfig.accountHolder}, konto: ${paymentConfig.accountNumber}`;
+const getPaymentTargetText = (method: PaymentMethod) => {
+  if (method === "blik") return `Telefon BLIK: ${paymentConfig.blikPhone}`;
+  if (method === "stripe_online") return "Płatność została przetworzona online";
+  return `${paymentConfig.accountHolder}, konto: ${paymentConfig.accountNumber}`;
+};
 
 const renderPaymentInstructions = () => {
   const method = paymentMethod.value as PaymentMethod;
+
+  if (method === "stripe_online") {
+    paymentInstructions.innerHTML = `
+      <p><strong>Płatność online:</strong> Zostaniesz przekierowany do bezpiecznej bramki Stripe.</p>
+      <p><small>⚡ Akceptujemy karty płatnicze, BLIK online, Przelewy24 i więcej.</small></p>
+    `;
+    return;
+  }
 
   if (method === "blik") {
     paymentInstructions.innerHTML = `
@@ -456,6 +467,59 @@ const handleCheckoutSubmit = async (event: SubmitEvent) => {
   const deliveryInfo = getDeliveryInfo(productsTotal);
   const totalWithDelivery = productsTotal + deliveryInfo.finalCost;
 
+  // Handle Stripe online payment
+  if (selectedPaymentMethod === 'stripe_online') {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cart,
+          productsTotal,
+          deliveryCost: deliveryInfo.finalCost,
+          total: totalWithDelivery,
+          orderData: {
+            phone,
+            phoneSuffix,
+            parcelLockerCode: parcelLocker,
+            notes: notes || undefined,
+            parcelLabel: deliveryInfo.parcelLabel,
+            createOptionalAccount: wantsOptionalAccount,
+            optionalAccountEmail: wantsOptionalAccount ? optionalEmail || undefined : undefined,
+          }
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Błąd przy tworzeniu sesji płatności");
+      }
+
+      // Save cart data temporarily for restoration after payment
+      sessionStorage.setItem('pendingOrderData', JSON.stringify({
+        phone,
+        parcelLocker,
+        notes,
+        wantsOptionalAccount,
+        optionalEmail
+      }));
+
+      // Redirect to Stripe Checkout
+      window.location.href = data.url;
+      return;
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Nieznany błąd";
+      setCheckoutMessage(`❌ ${errorMsg}`, true);
+      showToast("Błąd przy inicjalizacji płatności");
+      if (submitBtn) submitBtn.disabled = false;
+      return;
+    }
+  }
+
+  // Handle traditional payment methods (bank transfer, BLIK)
   try {
     const response = await fetch(API_URL, {
         method: "POST",
