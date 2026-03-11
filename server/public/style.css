@@ -1432,30 +1432,30 @@ button:active {
     position: relative;
     margin: 0;
     max-width: 100%;
-    padding: 15px;
-    gap: 12px;
+    padding: 8px;
+    gap: 8px;
   }
-  
+
   .mini-cart-icon {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
   }
-  
+
   .mini-cart-info {
-    gap: 15px;
-    font-size: 14px;
-  }
-  
-  .mini-cart-count {
-    padding: 6px 10px;
+    gap: 8px;
     font-size: 13px;
   }
-  
+
+  .mini-cart-count {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
   #cartList {
     position: relative;
-    margin: 12px 0 0;
+    margin: 8px 0 0;
     max-width: 100%;
-    padding: 15px;
+    padding: 8px;
   }
 }
 
@@ -1486,34 +1486,34 @@ button:active {
     font-size: 1.6rem;
   }
 
-  .hero-copy p {
-    font-size: 0.96rem;
+  .mini-cart {
+    position: relative;
+    margin: 0;
+    max-width: 100%;
+    padding: 8px;
+    gap: 8px;
   }
 
-  .hero-brand {
-    width: min(100%, 300px);
-    min-width: 0;
-    min-height: 74px;
-    padding: 8px 14px;
-    gap: 0;
-    justify-content: center;
-    margin: 0 auto 12px;
+  .mini-cart-icon {
+    width: 22px;
+    height: 22px;
   }
 
-  .hero-brand-text {
-    font-size: 0.95rem;
+  .mini-cart-info {
+    gap: 8px;
+    font-size: 13px;
   }
 
-  .parcel-search-row {
-    grid-template-columns: 1fr;
+  .mini-cart-count {
+    padding: 4px 6px;
+    font-size: 12px;
   }
-  
-  .about,
-  .benefits,
-  .product,
-  .checkout,
-  .trust {
-    padding: 30px 20px;
+
+  #cartList {
+    position: relative;
+    margin: 8px 0 0;
+    max-width: 100%;
+    padding: 8px;
   }
 
   .benefits h2 {
@@ -1569,32 +1569,37 @@ button:active {
   }
   
   .mini-cart {
-    padding: 12px 15px;
+    padding: 6px 8px;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
     align-items: stretch;
   }
-  
+
   .mini-cart-icon {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     align-self: center;
   }
-  
+
   .mini-cart-info {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
   }
-  
+
   .mini-cart-count {
     justify-content: space-between;
     width: 100%;
   }
-  
+
   #cartList {
-    font-size: 14px;
-    padding: 12px;
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  /* Smaller progress label on very small screens */
+  .cart-progress-label {
+    font-size: 11px;
   }
 
   .checkout,
