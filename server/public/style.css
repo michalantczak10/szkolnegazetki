@@ -25,24 +25,24 @@
 }
 
 /* Cart-specific actions: make buttons side-by-side and compact */
-.cart-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+.cart-dock {
+  position: static;
+  top: auto;
+  width: min(1200px, calc(100% - 80px));
+  margin: 24px auto 16px;
+  z-index: 995;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 18px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: box-shadow var(--transition);
 }
-.cart-actions .cart-clear-btn,
-.cart-actions .cart-checkout-btn {
-  width: auto;
-  flex: 1 1 auto;
-  margin-top: 0;
+.cart-dock:hover {
+  box-shadow: var(--shadow-lg);
 }
-
-/* Force side-by-side actions on very small screens as requested */
-@media (max-width: 600px) {
-  .cart-actions {
-    flex-direction: row;
     gap: 8px;
     align-items: center;
   }
