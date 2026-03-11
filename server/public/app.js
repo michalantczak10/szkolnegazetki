@@ -695,11 +695,6 @@ addButtons.forEach(btn => {
             cart.unshift({ name, price, qty: 1, image });
         }
         renderCart();
-        // After adding product, scroll to .hero section smoothly
-        const heroSection = document.querySelector('.hero');
-        if (heroSection) {
-            heroSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
         if (window.innerWidth <= 767) {
             miniCart.scrollIntoView({ behavior: "smooth", block: "center" });
         }
