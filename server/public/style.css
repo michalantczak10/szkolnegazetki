@@ -150,45 +150,41 @@
 @keyframes miniPulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
-    background: white;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
   }
 
   30% {
-    transform: scale(1.06);
-    box-shadow: 0 6px 22px rgb(255 0 0 / 35%);
-    background: #fff5f5;
+    transform: scale(1.04);
+    box-shadow: 0 6px 18px rgb(0 0 0 / 14%);
   }
 
   60% {
-    transform: scale(0.97);
-    box-shadow: 0 4px 16px rgb(255 0 0 / 25%);
-    background: #ffecec;
+    transform: scale(0.99);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
   }
 
   100% {
     transform: scale(1);
-    box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
-    background: white;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
   }
 }
 
 /* Highlight animation for the mini-cart title when items change */
 @keyframes miniCartTitlePulse {
   0% {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     color: var(--color-primary);
     text-shadow: none;
   }
 
-  30% {
-    transform: translateY(-4px) scale(1.06);
+  50% {
+    transform: scale(1.06);
     color: var(--color-primary-dark);
-    text-shadow: 0 6px 18px rgb(0 0 0 / 12%);
+    text-shadow: none;
   }
 
   100% {
-    transform: translateY(0) scale(1);
+    transform: scale(1);
     color: var(--color-primary);
     text-shadow: none;
   }
@@ -1269,7 +1265,7 @@ button:active {
 
 /* Toast action button (undo) */
 .toast-action {
-  background: transparent;
+  background: transparent !important;
   border: 1px solid rgba(255,255,255,0.12);
   color: var(--color-white);
   padding: 6px 10px;
@@ -1277,6 +1273,12 @@ button:active {
   border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
+  box-shadow: none !important;
+}
+
+.toast-action:hover {
+  background: rgba(255,255,255,0.04);
+  box-shadow: none !important;
 }
 
 /* Confirmation modal (custom styled dialog) */
