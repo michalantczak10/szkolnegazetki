@@ -1597,6 +1597,11 @@ button:active {
     padding: 8px;
   }
 
+  /* Smaller progress label on very small screens */
+  .cart-progress-label {
+    font-size: 11px;
+  }
+
   .checkout,
   .trust {
     padding: 25px 20px;
