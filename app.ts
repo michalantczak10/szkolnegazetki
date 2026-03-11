@@ -100,6 +100,8 @@ const copyTransferTitleBtn: HTMLButtonElement = copyTransferTitleBtnElement;
 const STORAGE_KEY = "galaretkarnia_cart";
 const ORDER_REF_STORAGE_KEY = "galaretkarnia_last_order_ref";
 const TOAST_DURATION = 2000;
+// Pixel offset when scrolling to the cart (positive number subtracts from element top)
+const CART_SCROLL_OFFSET = 80;
 let freeDeliveryThreshold = 50;
 
 type PaymentMethod = "bank_transfer" | "blik";
@@ -150,17 +152,43 @@ const animate = (el: HTMLElement, cls: string) => {
   }, animationDuration);
 };
 
-// Funkcja wyświetlania toast notyfikacji
-const showToast = (message: string, type: "default" | "success" = "default") => {
+// Funkcja wyświetlania toast notyfikacji (opcjonalnie z akcją: label + callback)
+const showToast = (
+  message: string,
+  type: "default" | "success" = "default",
+  actionLabel?: string,
+  actionCallback?: () => void
+) => {
   const toast = document.createElement("div");
   toast.className = `toast toast-show ${type === "success" ? "toast-success" : ""}`.trim();
-  toast.textContent = message;
+
+  const msg = document.createElement("span");
+  msg.className = "toast-message";
+  msg.innerHTML = message;
+  toast.appendChild(msg);
+
+  if (actionLabel && typeof actionCallback === "function") {
+    const actionBtn = document.createElement("button");
+    actionBtn.className = "toast-action";
+    actionBtn.textContent = actionLabel;
+    actionBtn.addEventListener("click", () => {
+      try {
+        actionCallback();
+      } catch (e) {
+        console.error("Toast action failed", e);
+      }
+      if (toast.parentElement) toast.parentElement.removeChild(toast);
+    });
+    toast.appendChild(actionBtn);
+  }
+
   document.body.appendChild(toast);
-  
+
   setTimeout(() => {
+    if (!document.body.contains(toast)) return;
     toast.classList.remove("toast-show");
     setTimeout(() => {
-      toast.remove();
+      if (toast.parentElement) toast.parentElement.removeChild(toast);
     }, 300);
   }, TOAST_DURATION);
 };
@@ -169,6 +197,50 @@ const setCheckoutMessage = (message: string, isError: boolean) => {
   checkoutMessage.innerHTML = message;
   checkoutMessage.classList.remove("is-error", "is-success");
   checkoutMessage.classList.add(isError ? "is-error" : "is-success");
+};
+
+// Show a custom confirmation modal. Returns a Promise that resolves to true if confirmed.
+const showConfirmModal = (title: string, message: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-modal-overlay';
+
+    const dialog = document.createElement('div');
+    dialog.className = 'confirm-modal';
+
+    const h = document.createElement('h3');
+    h.textContent = title;
+    const p = document.createElement('p');
+    p.textContent = message;
+
+    const actions = document.createElement('div');
+    actions.className = 'confirm-actions';
+
+    const btnCancel = document.createElement('button');
+    btnCancel.className = 'btn btn-cancel';
+    btnCancel.textContent = 'Anuluj';
+    btnCancel.addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resolve(false);
+    });
+
+    const btnConfirm = document.createElement('button');
+    btnConfirm.className = 'btn btn-confirm';
+    btnConfirm.textContent = 'Tak, wyczyść';
+    btnConfirm.addEventListener('click', () => {
+      document.body.removeChild(overlay);
+      resolve(true);
+    });
+
+    actions.appendChild(btnCancel);
+    actions.appendChild(btnConfirm);
+
+    dialog.appendChild(h);
+    dialog.appendChild(p);
+    dialog.appendChild(actions);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+  });
 };
 
 const scrollToCheckout = () => {
@@ -564,14 +636,30 @@ const increaseQty = (name: string) => {
 };
 
 // Funkcja wyczyszczenia koszyka
-const clearCart = () => {
+const clearCart = async () => {
   if (cart.length === 0) return;
-  if (confirm("Na pewno chcesz wyczyścić cały koszyk?")) {
-    cart = [];
-    renderCart();
-    showToast("✨ Koszyk został wyczyszczony", "success");
-    setCheckoutMessage("🧺 Koszyk został wyczyszczony. Możesz dodać produkty ponownie.", false);
-  }
+  const confirmed = await showConfirmModal("Wyczyść koszyk", "Na pewno chcesz wyczyścić cały koszyk?");
+  if (!confirmed) return;
+
+  // Zapisz kopię koszyka, aby umożliwić cofnięcie
+  const prev = cart.map(i => ({ ...i }));
+  cart = [];
+  renderCart();
+
+  // Pokazujemy toast z możliwością cofnięcia
+  showToast(
+    `✨ Koszyk został wyczyszczony.`,
+    "success",
+    "Cofnij",
+    () => {
+      cart = prev;
+      renderCart();
+      showToast("🟢 Przywrócono koszyk", "success");
+      setCheckoutMessage("🧺 Przywrócono zawartość koszyka.", false);
+    }
+  );
+
+  setCheckoutMessage("🧺 Koszyk został wyczyszczony. Możesz dodać produkty ponownie.", false);
 };
 
 // Funkcja zapisu koszyka do localStorage
@@ -787,9 +875,10 @@ addButtons.forEach(btn => {
     }
 
     renderCart();
-    const cartSection = document.querySelector('.cart') as HTMLElement | null;
-    if (cartSection) {
-      cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const cartDock = document.querySelector('.cart-dock') as HTMLElement | null;
+    if (cartDock) {
+      const top = cartDock.getBoundingClientRect().top + window.scrollY - CART_SCROLL_OFFSET;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     } else if (window.innerWidth <= 767) {
       miniCart.scrollIntoView({ behavior: "smooth", block: "center" });
     }

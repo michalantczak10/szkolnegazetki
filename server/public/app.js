@@ -86,6 +86,8 @@ const copyTransferTitleBtn = copyTransferTitleBtnElement;
 const STORAGE_KEY = "galaretkarnia_cart";
 const ORDER_REF_STORAGE_KEY = "galaretkarnia_last_order_ref";
 const TOAST_DURATION = 2000;
+// Pixel offset when scrolling to the cart (positive number subtracts from element top)
+const CART_SCROLL_OFFSET = 20;
 let freeDeliveryThreshold = 50;
 let parcelSizes = [
     { name: "A", label: "Paczkomat A (mały)", maxItems: 3, cost: 13 },
@@ -115,16 +117,38 @@ const animate = (el, cls) => {
         el.classList.remove(cls);
     }, animationDuration);
 };
-// Funkcja wyświetlania toast notyfikacji
-const showToast = (message, type = "default") => {
+// Funkcja wyświetlania toast notyfikacji (opcjonalnie z akcją: label + callback)
+const showToast = (message, type = "default", actionLabel, actionCallback) => {
     const toast = document.createElement("div");
     toast.className = `toast toast-show ${type === "success" ? "toast-success" : ""}`.trim();
-    toast.textContent = message;
+
+    const msg = document.createElement("span");
+    msg.className = "toast-message";
+    msg.innerHTML = message;
+    toast.appendChild(msg);
+
+    if (actionLabel && typeof actionCallback === "function") {
+        const actionBtn = document.createElement("button");
+        actionBtn.className = "toast-action";
+        actionBtn.textContent = actionLabel;
+        actionBtn.addEventListener("click", () => {
+            try {
+                actionCallback();
+            }
+            catch (e) {
+                console.error("Toast action failed", e);
+            }
+            if (toast.parentElement) toast.parentElement.removeChild(toast);
+        });
+        toast.appendChild(actionBtn);
+    }
+
     document.body.appendChild(toast);
     setTimeout(() => {
+        if (!document.body.contains(toast)) return;
         toast.classList.remove("toast-show");
         setTimeout(() => {
-            toast.remove();
+            if (toast.parentElement) toast.parentElement.removeChild(toast);
         }, 300);
     }, TOAST_DURATION);
 };
@@ -132,6 +156,49 @@ const setCheckoutMessage = (message, isError) => {
     checkoutMessage.innerHTML = message;
     checkoutMessage.classList.remove("is-error", "is-success");
     checkoutMessage.classList.add(isError ? "is-error" : "is-success");
+};
+// Show a custom confirmation modal. Returns a Promise that resolves to true if confirmed.
+const showConfirmModal = (title, message) => {
+    return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.className = 'confirm-modal-overlay';
+
+        const dialog = document.createElement('div');
+        dialog.className = 'confirm-modal';
+
+        const h = document.createElement('h3');
+        h.textContent = title;
+        const p = document.createElement('p');
+        p.textContent = message;
+
+        const actions = document.createElement('div');
+        actions.className = 'confirm-actions';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.className = 'btn btn-cancel';
+        btnCancel.textContent = 'Anuluj';
+        btnCancel.addEventListener('click', () => {
+            document.body.removeChild(overlay);
+            resolve(false);
+        });
+
+        const btnConfirm = document.createElement('button');
+        btnConfirm.className = 'btn btn-confirm';
+        btnConfirm.textContent = 'Tak, wyczyść';
+        btnConfirm.addEventListener('click', () => {
+            document.body.removeChild(overlay);
+            resolve(true);
+        });
+
+        actions.appendChild(btnCancel);
+        actions.appendChild(btnConfirm);
+
+        dialog.appendChild(h);
+        dialog.appendChild(p);
+        dialog.appendChild(actions);
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+    });
 };
 const scrollToCheckout = () => {
     const checkoutSection = document.getElementById("checkout");
@@ -462,15 +529,26 @@ const increaseQty = (name) => {
     }
 };
 // Funkcja wyczyszczenia koszyka
-const clearCart = () => {
+const clearCart = async () => {
     if (cart.length === 0)
         return;
-    if (confirm("Na pewno chcesz wyczyścić cały koszyk?")) {
-        cart = [];
+    const confirmed = await showConfirmModal("Wyczyść koszyk", "Na pewno chcesz wyczyścić cały koszyk?");
+    if (!confirmed) return;
+
+    // Zapisz kopię koszyka, aby umożliwić cofnięcie
+    const prev = cart.map(i => (Object.assign({}, i)));
+    cart = [];
+    renderCart();
+
+    // Pokazujemy toast z możliwością cofnięcia
+    showToast("✨ Koszyk został wyczyszczony.", "success", "Cofnij", () => {
+        cart = prev;
         renderCart();
-        showToast("✨ Koszyk został wyczyszczony", "success");
-        setCheckoutMessage("🧺 Koszyk został wyczyszczony. Możesz dodać produkty ponownie.", false);
-    }
+        showToast("🟢 Przywrócono koszyk", "success");
+        setCheckoutMessage("🧺 Przywrócono zawartość koszyka.", false);
+    });
+
+    setCheckoutMessage("🧺 Koszyk został wyczyszczony. Możesz dodać produkty ponownie.", false);
 };
 // Funkcja zapisu koszyka do localStorage
 const saveCart = () => {
@@ -584,17 +662,17 @@ function renderMiniCartList() {
     cartSummary.className = "cart-summary";
     const productsLine = document.createElement("div");
     productsLine.className = "cart-summary-line";
-    productsLine.innerHTML = `<span>Produkty (galaretki):</span><span>${totalPrice} zł</span>`;
+    productsLine.innerHTML = `<span>Produkty (galaretki):</span><span>&nbsp;${totalPrice}&nbsp;zł</span>`;
     const deliveryLine = document.createElement("div");
     deliveryLine.className = "cart-summary-line";
-    const deliveryText = deliveryInfo.finalCost === 0 ? "<strong>Gratis!</strong>" : `${deliveryInfo.finalCost} zł`;
+    const deliveryText = deliveryInfo.finalCost === 0 ? "<strong>Gratis!</strong>&nbsp;" : `${deliveryInfo.finalCost}&nbsp;zł`;
     const parcelInfo = deliveryInfo.numberOfParcels > 1
         ? `${deliveryInfo.numberOfParcels} paczki`
         : `1 paczka`;
     deliveryLine.innerHTML = `<span>Dostawa (${parcelInfo}, ${itemsCount} szt.):</span><span>${deliveryText}</span>`;
     const totalLine = document.createElement("div");
     totalLine.className = "cart-summary-total";
-    totalLine.innerHTML = `<span>Razem do zapłaty:</span><span>${totalWithDelivery} zł</span>`;
+    totalLine.innerHTML = `<span>Razem do zapłaty:</span><span>${totalWithDelivery}&nbsp;zł</span>`;
     cartSummary.appendChild(productsLine);
     cartSummary.appendChild(deliveryLine);
     cartSummary.appendChild(totalLine);
@@ -695,9 +773,13 @@ addButtons.forEach(btn => {
             cart.unshift({ name, price, qty: 1, image });
         }
         renderCart();
-        const cartSection = document.querySelector('.cart');
-        if (cartSection) {
-            cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const cartDock = document.querySelector('.cart-dock');
+        if (cartDock) {
+            try {
+                var top = cartDock.getBoundingClientRect().top + window.scrollY - CART_SCROLL_OFFSET;
+                window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+            }
+            catch (err) { }
         }
         else if (window.innerWidth <= 767) {
             miniCart.scrollIntoView({ behavior: "smooth", block: "center" });

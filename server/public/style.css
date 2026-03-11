@@ -1267,6 +1267,68 @@ button:active {
   border: 1px solid var(--color-accent);
 }
 
+/* Toast action button (undo) */
+.toast-action {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--color-white);
+  padding: 6px 10px;
+  margin-left: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Confirmation modal (custom styled dialog) */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+.confirm-modal {
+  width: min(520px, 94%);
+  background: var(--color-white);
+  color: var(--color-text);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border);
+}
+.confirm-modal h3 {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+}
+.confirm-modal p {
+  margin: 0 0 12px;
+  color: var(--color-text-light);
+}
+.confirm-modal .confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.confirm-modal .btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.confirm-modal .btn-cancel {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+.confirm-modal .btn-confirm {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: 1px solid var(--color-primary-dark);
+}
+
 /* ===== MEDIA QUERIES ===== */
 
 /* Tablet landscape & smaller desktops (992px - 1199px) */
