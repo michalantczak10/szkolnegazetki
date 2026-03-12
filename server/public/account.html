@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moje zamówienia — Galaretkarnia</title>
+  <link rel="stylesheet" href="/style.css?v=4">
+</head>
+<body>
+  <main class="container">
+    <h1>Podgląd zamówienia</h1>
+    <p>Wklej swój token dostępu otrzymany po złożeniu zamówienia, lub podaj numer zamówienia i ostatnie 4 cyfry telefonu.</p>
+
+    <section class="account-forms">
+      <div class="card">
+        <h2>Token dostępu</h2>
+        <textarea id="accessTokenInput" rows="3" style="width:100%"></textarea>
+        <button id="useTokenBtn" class="btn">Użyj tokenu</button>
+      </div>
+
+      <div class="card">
+        <h2>OrderRef + końcówka telefonu</h2>
+        <input id="orderRefInput" placeholder="Numer zamówienia (np. ABCD1234)" style="width:100%" />
+        <input id="phoneSuffixInput" placeholder="Ostatnie 4 cyfry telefonu" style="width:100%;margin-top:8px" />
+        <button id="claimBtn" class="btn">Odzyskaj dostęp</button>
+      </div>
+    </section>
+
+    <section id="orderResult" style="margin-top:16px"></section>
+
+    <p style="margin-top:24px"><a href="/">Powrót do sklepu</a></p>
+  </main>
+  <script src="/account.js"></script>
+</body>
+</html>

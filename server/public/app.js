@@ -483,7 +483,13 @@ const handleCheckoutSubmit = async (event) => {
         const paymentMessage = selectedPaymentMethod === "blik"
             ? `✅ Zamówienie zapisane.<br><strong style="font-size: 1.2em;">Numer: ${orderRef}</strong><br><small>Metoda: ${paymentMethodLabel}. Realizacja po zaksięgowaniu wpłaty. Numer BLIK: ${paymentConfig.blikPhone}</small>`
             : `✅ Zamówienie zapisane.<br><strong style="font-size: 1.2em;">Numer: ${orderRef}</strong><br><small>Metoda: ${paymentMethodLabel}. Realizacja po zaksięgowaniu wpłaty. Tytuł płatności: ${transferTitle}</small>`;
-        setCheckoutMessage(paymentMessage, false);
+            // If server returned an access token for claiming the order, show it and save locally
+            const accessToken = data.orderAccessToken;
+            let finalMessage = paymentMessage;
+            if (accessToken) {
+                finalMessage += `<p style="margin-top:8px;padding:8px;background:#f7f7f7;border-radius:6px;"><strong>Twój token dostępu:</strong> <code style="word-break:break-all;">${accessToken}</code></p><p style="font-size:0.9em;color:#555;">Zapisz ten token — pozwala na podgląd statusu zamówienia.</p>`;
+            }
+            setCheckoutMessage(finalMessage, false);
         showToast("Zamówienie przyjęte!");
         saveLastOrderReference({
             orderRef,
@@ -492,6 +498,7 @@ const handleCheckoutSubmit = async (event) => {
             paymentTarget,
             phoneSuffix,
             parcelLockerCode: parcelLocker,
+                accessToken: accessToken || undefined
         });
         renderLastOrderReference();
         // Clear form

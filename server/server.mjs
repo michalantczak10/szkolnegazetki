@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { MongoClient, ObjectId } from 'mongodb';
 import compression from 'compression';
+import crypto from 'crypto';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
@@ -293,6 +294,15 @@ app.post('/api/orders', async (req, res) => {
     const calculatedDeliveryCost = productsTotal >= FREE_DELIVERY_THRESHOLD ? 0 : deliveryInfo.cost;
 
     // Create order object
+    // Generate _id early so we can compute orderRef
+    const newObjectId = new ObjectId();
+    const orderRef = formatOrderRef(newObjectId.toString());
+
+    // Generate access token for order claim
+    const rawAccessToken = crypto.randomBytes(32).toString('hex');
+    const accessTokenHash = crypto.createHash('sha256').update(rawAccessToken).digest('hex');
+    const accessTokenExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+
     const order = {
       phone,
       phoneSuffix,
@@ -312,6 +322,10 @@ app.post('/api/orders', async (req, res) => {
         requested: Boolean(createOptionalAccount),
         email: createOptionalAccount ? (optionalAccountEmail || '') : ''
       },
+      _id: newObjectId,
+      orderRef,
+      accessTokenHash,
+      accessTokenExpiresAt,
       environment: process.env.NODE_ENV || 'development', // 'development' lub 'production'
       createdAt: new Date(),
       updatedAt: new Date()
@@ -320,7 +334,6 @@ app.post('/api/orders', async (req, res) => {
     // Save to MongoDB
     const result = await ordersCollection.insertOne(order);
     const orderId = result.insertedId.toString();
-    const orderRef = formatOrderRef(orderId);
     const transferTitle = createTransferTitle(orderRef);
     const paymentTarget = getPaymentTarget(selectedPaymentMethod);
 
@@ -329,6 +342,7 @@ app.post('/api/orders', async (req, res) => {
       success: true,
       orderId: orderId,
       orderRef,
+      orderAccessToken: rawAccessToken,
       transferTitle,
       paymentMethod: selectedPaymentMethod,
       paymentTarget,
@@ -404,6 +418,80 @@ app.post('/api/orders', async (req, res) => {
       error: 'Błąd przy przetwarzaniu zamówienia. Spróbuj ponownie.',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
+  }
+});
+
+// POST /api/auth/token - exchange raw access token for access to order
+app.post('/api/auth/token', async (req, res) => {
+  if (!ordersCollection) return res.status(503).json({ error: 'Baza danych niedostępna' });
+  try {
+    const { token } = req.body;
+    if (!token || typeof token !== 'string') return res.status(400).json({ error: 'Brak tokenu' });
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const order = await ordersCollection.findOne({ accessTokenHash: tokenHash });
+    if (!order) return res.status(404).json({ error: 'Nie znaleziono zamówienia dla podanego tokenu' });
+    if (order.accessTokenExpiresAt && new Date(order.accessTokenExpiresAt) < new Date()) {
+      return res.status(401).json({ error: 'Token wygasł' });
+    }
+    // Return minimal order metadata (no sensitive fields)
+    return res.json({ success: true, orderId: order._id.toString(), orderRef: order.orderRef });
+  } catch (err) {
+    console.error('Auth token error:', err);
+    return res.status(500).json({ error: 'Błąd serwera' });
+  }
+});
+
+// POST /api/auth/claim - claim by orderRef + phoneSuffix, issues new access token
+app.post('/api/auth/claim', async (req, res) => {
+  if (!ordersCollection) return res.status(503).json({ error: 'Baza danych niedostępna' });
+  try {
+    const { orderRef, phoneSuffix } = req.body;
+    if (!orderRef || !phoneSuffix) return res.status(400).json({ error: 'Brakuje danych' });
+    const order = await ordersCollection.findOne({ orderRef: String(orderRef) });
+    if (!order) return res.status(404).json({ error: 'Zamówienie nie znalezione' });
+    if (String(order.phoneSuffix) !== String(phoneSuffix)) return res.status(401).json({ error: 'Nieprawidłowa końcówka telefonu' });
+
+    // Generate new access token and store hash
+    const rawAccessToken = crypto.randomBytes(32).toString('hex');
+    const accessTokenHash = crypto.createHash('sha256').update(rawAccessToken).digest('hex');
+    const accessTokenExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    await ordersCollection.updateOne({ _id: order._id }, { $set: { accessTokenHash, accessTokenExpiresAt, updatedAt: new Date() } });
+    return res.json({ success: true, orderId: order._id.toString(), orderRef: order.orderRef, orderAccessToken: rawAccessToken });
+  } catch (err) {
+    console.error('Auth claim error:', err);
+    return res.status(500).json({ error: 'Błąd serwera' });
+  }
+});
+
+// GET /api/account/orders - returns order details when provided Authorization: Bearer <token>
+app.get('/api/account/orders', async (req, res) => {
+  if (!ordersCollection) return res.status(503).json({ error: 'Baza danych niedostępna' });
+  try {
+    const auth = req.headers.authorization || req.headers.Authorization;
+    if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ error: 'Brak tokenu autoryzacji' });
+    const token = auth.split(' ')[1];
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    const order = await ordersCollection.findOne({ accessTokenHash: tokenHash });
+    if (!order) return res.status(404).json({ error: 'Nie znaleziono zamówienia' });
+    if (order.accessTokenExpiresAt && new Date(order.accessTokenExpiresAt) < new Date()) return res.status(401).json({ error: 'Token wygasł' });
+
+    // Return order details but avoid leaking any sensitive fields (we keep phone but not full payment data)
+    const safeOrder = {
+      orderId: order._id.toString(),
+      orderRef: order.orderRef,
+      items: order.items,
+      productsTotal: order.productsTotal,
+      deliveryCost: order.deliveryCost,
+      total: order.total,
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+      parcelLockerCode: order.parcelLockerCode,
+      createdAt: order.createdAt
+    };
+    return res.json({ success: true, order: safeOrder });
+  } catch (err) {
+    console.error('Account orders error:', err);
+    return res.status(500).json({ error: 'Błąd serwera' });
   }
 });
 
