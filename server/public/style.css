@@ -936,6 +936,8 @@ button:active {
   justify-content: center;
   min-width: 160px;
   padding: 12px 18px;
+  height: 48px;
+  box-sizing: border-box;
   white-space: nowrap;
 }
 
@@ -944,6 +946,7 @@ button:active {
     width: 100%;
     min-width: 0;
     padding: 12px;
+    height: auto;
   }
 }
  
