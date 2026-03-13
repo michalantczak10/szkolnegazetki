@@ -1,9 +1,9 @@
 import express from 'express';
-import { Resend } from 'resend';
+// Resend SDK removed from dependencies; emails will be skipped unless configured elsewhere
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { MongoClient, ObjectId } from 'mongodb';
+// MongoDB driver removed from dependencies; DB integration disabled in this build
 import compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -19,48 +19,8 @@ const PORT = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/galaretkarnia';
 let ordersCollection;
 let mongoClient = null;
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function connectToDatabase({ maxRetries = 5, initialDelay = 1000 } = {}) {
-  let attempt = 0;
-  let client = null;
-  while (attempt < maxRetries) {
-    attempt++;
-    try {
-      client = new MongoClient(MONGODB_URI, {
-        maxPoolSize: 10,
-        minPoolSize: 2,
-      });
-
-      await client.connect();
-      const db = client.db('galaretkarnia');
-      ordersCollection = db.collection('orders');
-      // Create index for faster queries
-      await ordersCollection.createIndex({ createdAt: -1 });
-      console.log('✅ Connected to MongoDB');
-      return client;
-    } catch (error) {
-      const delay = initialDelay * Math.pow(2, attempt - 1);
-      console.error(`❌ MongoDB connection attempt ${attempt}/${maxRetries} failed:`, error.message);
-      if (attempt < maxRetries) {
-        console.log(`→ Retrying in ${delay}ms...`);
-        // wait before next attempt
-        // eslint-disable-next-line no-await-in-loop
-        await sleep(delay);
-        continue;
-      }
-      console.error('❌ MongoDB connection failed after retries. Continuing without DB (endpoints will return 503).');
-      return null;
-    }
-  }
-  return null;
-}
-
-// Try connecting on startup (non-fatal on failure)
-mongoClient = await connectToDatabase();
+// DB disabled in this build — keep ordersCollection null so DB-backed endpoints return 503
+ordersCollection = null;
 
 // Get directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -118,15 +78,7 @@ app.use('/favicon', express.static(join(projectRoot, 'favicon'), { maxAge: '7d',
 // Email configuration - Resend API (optional)
 let resend = null;
 if (process.env.RESEND_API_KEY) {
-  try {
-    resend = new Resend(process.env.RESEND_API_KEY);
-    console.log('✅ Resend API Key configured');
-  } catch (err) {
-    resend = null;
-    console.error('❌ Nie udało się zainicjalizować Resend:', err?.message || err);
-  }
-} else {
-  console.warn('⚠️ RESEND_API_KEY nie ustawiony — wysyłka maili będzie pominięta');
+  console.warn('⚠️ RESEND_API_KEY ustawiony, ale Resend SDK nie jest zainstalowany — wysyłka e-maili jest wyłączona w tej wersji.');
 }
 
 // Validation helper
