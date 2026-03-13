@@ -133,6 +133,31 @@ npm run build
 # Wynikowe pliki w: index.html, app.js, style.css
 ```
 
+### Generowanie favicon
+
+Skrypt `scripts/generate-favicons.cjs` konwertuje wektorowe `img/branding/logo-galaretkarnia.svg` na zestaw ikon (PNG, `favicon.ico`) i zapisuje je do katalogu `favicon/`.
+
+Wymagania: zainstalowane pakiety `sharp` i `to-ico`.
+
+Uruchom lokalnie:
+```bash
+# w katalogu projektu
+npm install
+npm run generate:favicons
+# lub bezpośrednio
+node ./scripts/generate-favicons.cjs
+```
+
+W CI (przykład):
+```yaml
+- uses: actions/checkout@v4
+- uses: actions/setup-node@v4
+  with:
+    node-version: '18'
+- run: npm ci
+- run: npm run generate:favicons
+```
+
 ## 📂 Struktura projektu
 
 ```
