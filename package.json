@@ -7,7 +7,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "dev": "tsc --watch",
-    "generate:favicons": "node ./scripts/generate-favicons.cjs"
+    "generate:favicons": "node ./tools/generate-favicons/generate-favicons.cjs"
   },
   "keywords": [
     "galaretka",

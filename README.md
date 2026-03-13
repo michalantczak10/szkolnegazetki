@@ -145,7 +145,7 @@ Uruchom lokalnie:
 npm install
 npm run generate:favicons
 # lub bezpośrednio
-node ./scripts/generate-favicons.cjs
+node ./tools/generate-favicons/generate-favicons.cjs
 ```
 
 W CI (przykład):
