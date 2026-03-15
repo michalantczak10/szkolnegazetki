@@ -2,25 +2,139 @@
 // Brak globalnych deklaracji — cała logika i deklaracje wewnątrz DOMContentLoaded
 
 window.addEventListener("DOMContentLoaded", () => {
-      // Stała STORAGE_KEY musi być zadeklarowana przed użyciem
-      const STORAGE_KEY = "cartStorage";
-      // Usuwanie koszyka przy każdym wejściu na stronę
-      localStorage.removeItem(STORAGE_KEY);
-    // Deklaracje zmiennych i funkcji
-    let freeDeliveryThreshold = 100;
-    let cart: any[] = [];
-    const cartList = document.getElementById("cartList") as HTMLElement;
-    const addButtons = document.querySelectorAll(".addToCartBtn") as NodeListOf<HTMLButtonElement>;
-    const miniCart = document.querySelector(".mini-cart") as HTMLElement;
-    const checkoutFormEl = document.getElementById("checkoutForm") as HTMLFormElement | null;
-    const checkoutMessage = document.getElementById("checkoutMessage") as HTMLElement;
-    const paymentMethod = document.getElementById("paymentMethod") as HTMLSelectElement;
-    const createOptionalAccount = document.getElementById("createOptionalAccount") as HTMLInputElement;
-    const optionalAccountFields = document.getElementById("optionalAccountFields") as HTMLElement;
-    const optionalAccountEmail = document.getElementById("optionalAccountEmail") as HTMLInputElement;
-    const parcelSearchQuery = document.getElementById("parcelSearchQuery") as HTMLInputElement;
-    const openParcelSearchBtn = document.getElementById("openParcelSearchBtn") as HTMLButtonElement;
-    const CART_SCROLL_OFFSET = 20;
+                                      // ...existing code...
+
+                                      // ...existing code...
+
+                                      // ...existing code...
+                            // Podsumowanie zamówienia
+                  // Debug: loguj wpisywaną frazę i wyniki
+                  const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement;
+                  parcelSearchInput.addEventListener("input", () => {
+                    const value = parcelSearchInput.value.trim().toLowerCase();
+                    searchAutocompleteBox.innerHTML = "";
+                    if (!value) {
+                      searchAutocompleteBox.style.display = "none";
+                      return;
+                    }
+                    const matches = parcelLockers.filter(locker =>
+                      locker.name.toLowerCase().includes(value) ||
+                      locker.address.toLowerCase().includes(value) ||
+                      locker.code.toLowerCase().includes(value)
+                    );
+                    if (matches.length > 0) {
+                      searchAutocompleteBox.style.display = "block";
+                      matches.forEach(locker => {
+                        const option = document.createElement("div");
+                        option.className = "autocomplete-option";
+                        option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
+                        option.addEventListener("click", () => {
+                          parcelLockerCodeInput.value = locker.code;
+                          parcelSearchInput.value = `${locker.name}, ${locker.address}`;
+                          searchAutocompleteBox.innerHTML = "";
+                          searchAutocompleteBox.style.display = "none";
+                        });
+                        searchAutocompleteBox.appendChild(option);
+                      });
+                    } else {
+                      searchAutocompleteBox.style.display = "block";
+                      const noResult = document.createElement("div");
+                      noResult.className = "autocomplete-option autocomplete-no-result";
+                      noResult.textContent = "Brak wyników";
+                      searchAutocompleteBox.appendChild(noResult);
+                    }
+                  });
+              // Przykładowa lista paczkomatów (możesz rozbudować lub pobrać z pliku)
+              const parcelLockers = [
+                { code: "WAW01A", name: "Warszawa 1", address: "ul. Mokotowska 1" },
+                { code: "WAW02B", name: "Warszawa 2", address: "ul. Marszałkowska 10" },
+                { code: "KRA01A", name: "Kraków 1", address: "ul. Karmelicka 5" },
+                { code: "POZ01A", name: "Poznań 1", address: "ul. Głogowska 20" },
+                { code: "GDA01A", name: "Gdańsk 1", address: "ul. Długa 15" },
+                { code: "LDZ01A", name: "Łódź 1", address: "ul. Piotrkowska 100" }
+              ];
+
+              const parcelLockerCodeInput = document.getElementById("parcelLockerCode") as HTMLInputElement;
+              // Tworzymy kontener na podpowiedzi
+              const searchWrapper = parcelSearchInput.parentElement as HTMLElement;
+              searchWrapper.style.position = "relative";
+              const searchAutocompleteBox = document.createElement("div");
+              searchAutocompleteBox.className = "autocomplete-box";
+              searchWrapper.appendChild(searchAutocompleteBox);
+
+              parcelSearchInput.addEventListener("input", () => {
+                const value = parcelSearchInput.value.trim().toLowerCase();
+                searchAutocompleteBox.innerHTML = "";
+                if (!value) return;
+                const matches = parcelLockers.filter(locker =>
+                  locker.name.toLowerCase().includes(value) ||
+                  locker.address.toLowerCase().includes(value) ||
+                  locker.code.toLowerCase().includes(value)
+                );
+                matches.forEach(locker => {
+                  const option = document.createElement("div");
+                  option.className = "autocomplete-option";
+                  option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
+                  option.addEventListener("click", () => {
+                    parcelLockerCodeInput.value = locker.code;
+                    parcelSearchInput.value = `${locker.name}, ${locker.address}`;
+                    searchAutocompleteBox.innerHTML = "";
+                  });
+                  searchAutocompleteBox.appendChild(option);
+                });
+              });
+              parcelSearchInput.addEventListener("blur", () => {
+                setTimeout(() => {
+                  searchAutocompleteBox.innerHTML = "";
+                  searchAutocompleteBox.style.display = "none";
+                }, 150);
+              });
+          // Stała STORAGE_KEY musi być zadeklarowana przed użyciem
+          const STORAGE_KEY = "cartStorage";
+          let cart: any[] = [];
+          localStorage.removeItem(STORAGE_KEY);
+          let freeDeliveryThreshold = 100;
+          // ...existing code...
+          const cartList = document.getElementById("cartList") as HTMLElement | null;
+          const addButtons = document.querySelectorAll(".addToCartBtn") as NodeListOf<HTMLButtonElement>;
+          const miniCart = document.querySelector(".mini-cart") as HTMLElement | null;
+          const checkoutFormEl = document.getElementById("checkoutForm") as HTMLFormElement | null;
+          const checkoutMessage = document.getElementById("checkoutMessage") as HTMLElement | null;
+          const paymentMethod = document.getElementById("paymentMethod") as HTMLSelectElement | null;
+          const createOptionalAccount = document.getElementById("createOptionalAccount") as HTMLInputElement | null;
+          const optionalAccountFields = document.getElementById("optionalAccountFields") as HTMLElement | null;
+          const optionalAccountEmail = document.getElementById("optionalAccountEmail") as HTMLInputElement | null;
+          const parcelSearchQuery = document.getElementById("parcelSearchQuery") as HTMLInputElement | null;
+          const openParcelSearchBtn = document.getElementById("openParcelSearchBtn") as HTMLButtonElement | null;
+          const customerPhone = document.getElementById("customerPhone") as HTMLInputElement | null;
+          const CART_SCROLL_OFFSET = 20;
+
+          // Sprawdzenie czy wymagane elementy istnieją, ale nie przerywaj działania
+          if (!cartList) console.warn("Brak elementu cartList");
+          if (!miniCart) console.warn("Brak elementu miniCart");
+          if (!checkoutFormEl) console.warn("Brak elementu checkoutFormEl");
+          if (!paymentMethod) console.warn("Brak elementu paymentMethod");
+          if (!createOptionalAccount) console.warn("Brak elementu createOptionalAccount");
+          if (!optionalAccountFields) console.warn("Brak elementu optionalAccountFields");
+          if (!optionalAccountEmail) console.warn("Brak elementu optionalAccountEmail");
+          if (!parcelSearchQuery) console.warn("Brak elementu parcelSearchQuery");
+          if (!openParcelSearchBtn) console.warn("Brak elementu openParcelSearchBtn");
+          if (!customerPhone) console.warn("Brak elementu customerPhone");
+
+          // Maskowanie numeru telefonu: 000 000 000
+          if (customerPhone) {
+            customerPhone.addEventListener("input", () => {
+              let val = customerPhone.value.replace(/\D/g, "");
+              if (val.length > 9) val = val.slice(0, 9);
+              let masked = val;
+              if (val.length > 3 && val.length <= 6) {
+                masked = val.slice(0, 3) + " " + val.slice(3);
+              } else if (val.length > 6) {
+                masked = val.slice(0, 3) + " " + val.slice(3, 6) + " " + val.slice(6);
+              }
+              customerPhone.value = masked;
+            });
+          }
 
     function showToast(message: string) {
       alert(message);
@@ -69,21 +183,11 @@ window.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     };
 
-    // Funkcja załadowania koszyka z localStorage
-    const loadCart = () => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          cart = JSON.parse(saved);
-        } catch (e) {
-          console.error("Błąd przy ładowaniu koszyka", e);
-          cart = [];
-        }
-      }
-    };
+    // Funkcja załadowania koszyka z localStorage — niepotrzebna, koszyk zawsze pusty
 
     // Wyświetlanie listy produktów
     function renderMiniCartList() {
+      if (!cartList) return;
       cartList.innerHTML = "";
       const totalPrice = getCartTotalPrice();
 
@@ -239,8 +343,10 @@ window.addEventListener("DOMContentLoaded", () => {
   // Przeliczanie koszyka
   function renderCart() {
     // Animacje mini‑koszyka
-    animate(miniCart, "mini-cart-shake");
-    animate(miniCart, "mini-cart-pulse");
+    if (miniCart) {
+      animate(miniCart, "mini-cart-shake");
+      animate(miniCart, "mini-cart-pulse");
+    }
 
     renderMiniCartList();
     // renderCheckoutSummary(); // funkcja niezaimplementowana
@@ -280,26 +386,28 @@ window.addEventListener("DOMContentLoaded", () => {
       if (cartDock) {
         const top = cartDock.getBoundingClientRect().top + window.scrollY - CART_SCROLL_OFFSET;
         window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-      } else if (window.innerWidth <= 767) {
+      } else if (window.innerWidth <= 767 && miniCart) {
         miniCart.scrollIntoView({ behavior: "smooth", block: "center" });
       }
       // If a 'cart cleared' message/toast is present, dismiss it when adding a new item
       // dismissToastContaining("Koszyk został wyczyszczony"); // funkcja niezaimplementowana
-      if (checkoutMessage.innerHTML.includes("Koszyk został wyczyszczony")) {
+      if (checkoutMessage && checkoutMessage.innerHTML.includes("Koszyk został wyczyszczony")) {
         setCheckoutMessage("");
       }
       showToast(`${name} dodany do koszyka!`);
     });
   });
 
-  openParcelSearchBtn.addEventListener("click", () => {
-    const query = parcelSearchQuery.value.trim();
-    const targetUrl = query
-      ? `https://www.google.com/maps/search/paczkomat+${encodeURIComponent(query)}`
-      : "https://inpost.pl/znajdz-paczkomat";
+  if (openParcelSearchBtn && parcelSearchQuery) {
+    openParcelSearchBtn.addEventListener("click", () => {
+      const query = parcelSearchQuery.value.trim();
+      const targetUrl = query
+        ? `https://www.google.com/maps/search/paczkomat+${encodeURIComponent(query)}`
+        : "https://inpost.pl/znajdz-paczkomat";
 
-    window.open(targetUrl, "_blank", "noopener,noreferrer");
-  });
+      window.open(targetUrl, "_blank", "noopener,noreferrer");
+    });
+  }
 
   // copyTransferTitleBtn.addEventListener("click", async () => {
   //   // const lastOrder = loadLastOrderReference(); // funkcja niezaimplementowana
@@ -330,20 +438,24 @@ window.addEventListener("DOMContentLoaded", () => {
     checkoutClearBtn.addEventListener('click', clearCart);
   }
 
-  paymentMethod.addEventListener("change", () => {
-    // renderPaymentInstructions();
-  });
+  if (paymentMethod) {
+    paymentMethod.addEventListener("change", () => {
+      // renderPaymentInstructions();
+    });
+  }
 
-  createOptionalAccount.addEventListener("change", () => {
-    optionalAccountFields.hidden = !createOptionalAccount.checked;
-    if (!createOptionalAccount.checked) {
-      optionalAccountEmail.value = "";
-    }
-  });
+  if (createOptionalAccount && optionalAccountFields && optionalAccountEmail) {
+    createOptionalAccount.addEventListener("change", () => {
+      optionalAccountFields.hidden = !createOptionalAccount.checked;
+      if (!createOptionalAccount.checked) {
+        optionalAccountEmail.value = "";
+      }
+    });
+  }
 
   // Załaduj koszyk z localStorage przy starcie
   // checkoutForm.addEventListener("submit", handleCheckoutSubmit);
-  loadCart();
+  // ...existing code...
   renderMiniCartList();
   // renderPaymentInstructions();
   // void loadPaymentConfig();

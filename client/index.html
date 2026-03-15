@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="style.css?v=4" />
   </head>
   <body>
+    <div id="checkoutMessage"></div>
+    <button id="openParcelSearchBtn" style="display:none">Szukaj paczkomatu</button>
+    <div class="autocomplete-box" style="display:none"></div>
+    <!-- Pozostałe elementy już są w szablonie -->
     <header class="hero">
       <div class="hero-content">
         <div class="hero-copy">
@@ -145,7 +149,6 @@
           <label for="parcelSearchQuery">Wyszukaj paczkomat</label>
           <div class="parcel-search-row">
             <input id="parcelSearchQuery" name="parcelSearchQuery" type="text" placeholder="Np. Warszawa, Mokotów" />
-            <button type="button" id="openParcelSearchBtn">Szukaj</button>
           </div>
 
           <label for="parcelLockerCode">Kod paczkomatu</label>
