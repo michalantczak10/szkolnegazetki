@@ -2,6 +2,8 @@
 // Brak globalnych deklaracji — cała logika i deklaracje wewnątrz DOMContentLoaded
 
 window.addEventListener("DOMContentLoaded", () => {
+      // Usuwanie koszyka przy każdym wejściu na stronę
+      localStorage.removeItem(STORAGE_KEY);
     // Deklaracje zmiennych i funkcji
     let freeDeliveryThreshold = 100;
     let cart: any[] = [];

@@ -1,5 +1,7 @@
 // Cała logika DOM wewnątrz DOMContentLoaded
 window.addEventListener("DOMContentLoaded", () => {
+        // Usuwanie koszyka przy każdym wejściu na stronę
+        localStorage.removeItem(STORAGE_KEY);
     // Pobranie elementów z HTML z bezpieczną obsługą null
     const addButtons = document.querySelectorAll(".addToCartBtn");
     const miniCartElement = document.querySelector(".mini-cart");
