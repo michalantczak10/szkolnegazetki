@@ -1,95 +1,59 @@
-// Typy, stałe i funkcje globalne (nie korzystające z DOM)
-// Brak globalnych deklaracji — cała logika i deklaracje wewnątrz DOMContentLoaded
+import { parcelLockers } from "./parcelLockers";
 
 window.addEventListener("DOMContentLoaded", () => {
-                                      // ...existing code...
+  const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement;
+  const parcelLockerCodeInput = document.getElementById("parcelLockerCode") as HTMLInputElement;
+  const searchWrapper = parcelSearchInput.parentElement as HTMLElement;
+  searchWrapper.style.position = "relative";
+  const searchAutocompleteBox = document.createElement("div");
+  searchAutocompleteBox.className = "autocomplete-box";
+  searchAutocompleteBox.style.display = "none";
+  searchAutocompleteBox.style.width = parcelSearchInput.offsetWidth + "px";
+  searchWrapper.appendChild(searchAutocompleteBox);
 
-                                      // ...existing code...
+  parcelSearchInput.addEventListener("input", () => {
+    const value = parcelSearchInput.value.trim().toLowerCase();
+    searchAutocompleteBox.innerHTML = "";
+    searchAutocompleteBox.style.width = parcelSearchInput.offsetWidth + "px";
+    if (!value) {
+      searchAutocompleteBox.style.display = "none";
+      return;
+    }
+    const matches = parcelLockers.filter(locker =>
+      locker.name.toLowerCase().includes(value) ||
+      locker.address.toLowerCase().includes(value) ||
+      locker.code.toLowerCase().includes(value)
+    );
+    if (matches.length > 0) {
+      searchAutocompleteBox.style.display = "block";
+      matches.forEach(locker => {
+        const option = document.createElement("div");
+        option.className = "autocomplete-option";
+        option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
+        option.addEventListener("click", () => {
+          parcelLockerCodeInput.value = locker.code;
+          parcelSearchInput.value = `${locker.name}, ${locker.address}`;
+          searchAutocompleteBox.innerHTML = "";
+          searchAutocompleteBox.style.display = "none";
+        });
+        searchAutocompleteBox.appendChild(option);
+      });
+    } else {
+      searchAutocompleteBox.style.display = "block";
+      const noResult = document.createElement("div");
+      noResult.className = "autocomplete-option autocomplete-no-result";
+      noResult.textContent = "Brak wyników";
+      searchAutocompleteBox.appendChild(noResult);
+    }
+  });
+  parcelSearchInput.addEventListener("blur", () => {
+    setTimeout(() => {
+      searchAutocompleteBox.innerHTML = "";
+      searchAutocompleteBox.style.display = "none";
+    }, 150);
+  });
 
-                                      // ...existing code...
-                            // Podsumowanie zamówienia
-                  // Debug: loguj wpisywaną frazę i wyniki
-                  const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement;
-                  parcelSearchInput.addEventListener("input", () => {
-                    const value = parcelSearchInput.value.trim().toLowerCase();
-                    searchAutocompleteBox.innerHTML = "";
-                    if (!value) {
-                      searchAutocompleteBox.style.display = "none";
-                      return;
-                    }
-                    const matches = parcelLockers.filter(locker =>
-                      locker.name.toLowerCase().includes(value) ||
-                      locker.address.toLowerCase().includes(value) ||
-                      locker.code.toLowerCase().includes(value)
-                    );
-                    if (matches.length > 0) {
-                      searchAutocompleteBox.style.display = "block";
-                      matches.forEach(locker => {
-                        const option = document.createElement("div");
-                        option.className = "autocomplete-option";
-                        option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
-                        option.addEventListener("click", () => {
-                          parcelLockerCodeInput.value = locker.code;
-                          parcelSearchInput.value = `${locker.name}, ${locker.address}`;
-                          searchAutocompleteBox.innerHTML = "";
-                          searchAutocompleteBox.style.display = "none";
-                        });
-                        searchAutocompleteBox.appendChild(option);
-                      });
-                    } else {
-                      searchAutocompleteBox.style.display = "block";
-                      const noResult = document.createElement("div");
-                      noResult.className = "autocomplete-option autocomplete-no-result";
-                      noResult.textContent = "Brak wyników";
-                      searchAutocompleteBox.appendChild(noResult);
-                    }
-                  });
-              // Przykładowa lista paczkomatów (możesz rozbudować lub pobrać z pliku)
-              const parcelLockers = [
-                { code: "WAW01A", name: "Warszawa 1", address: "ul. Mokotowska 1" },
-                { code: "WAW02B", name: "Warszawa 2", address: "ul. Marszałkowska 10" },
-                { code: "KRA01A", name: "Kraków 1", address: "ul. Karmelicka 5" },
-                { code: "POZ01A", name: "Poznań 1", address: "ul. Głogowska 20" },
-                { code: "GDA01A", name: "Gdańsk 1", address: "ul. Długa 15" },
-                { code: "LDZ01A", name: "Łódź 1", address: "ul. Piotrkowska 100" }
-              ];
-
-              const parcelLockerCodeInput = document.getElementById("parcelLockerCode") as HTMLInputElement;
-              // Tworzymy kontener na podpowiedzi
-              const searchWrapper = parcelSearchInput.parentElement as HTMLElement;
-              searchWrapper.style.position = "relative";
-              const searchAutocompleteBox = document.createElement("div");
-              searchAutocompleteBox.className = "autocomplete-box";
-              searchWrapper.appendChild(searchAutocompleteBox);
-
-              parcelSearchInput.addEventListener("input", () => {
-                const value = parcelSearchInput.value.trim().toLowerCase();
-                searchAutocompleteBox.innerHTML = "";
-                if (!value) return;
-                const matches = parcelLockers.filter(locker =>
-                  locker.name.toLowerCase().includes(value) ||
-                  locker.address.toLowerCase().includes(value) ||
-                  locker.code.toLowerCase().includes(value)
-                );
-                matches.forEach(locker => {
-                  const option = document.createElement("div");
-                  option.className = "autocomplete-option";
-                  option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
-                  option.addEventListener("click", () => {
-                    parcelLockerCodeInput.value = locker.code;
-                    parcelSearchInput.value = `${locker.name}, ${locker.address}`;
-                    searchAutocompleteBox.innerHTML = "";
-                  });
-                  searchAutocompleteBox.appendChild(option);
-                });
-              });
-              parcelSearchInput.addEventListener("blur", () => {
-                setTimeout(() => {
-                  searchAutocompleteBox.innerHTML = "";
-                  searchAutocompleteBox.style.display = "none";
-                }, 150);
-              });
-          // Stała STORAGE_KEY musi być zadeklarowana przed użyciem
+          // Stała STORAGE_KEY
           const STORAGE_KEY = "cartStorage";
           let cart: any[] = [];
           localStorage.removeItem(STORAGE_KEY);
@@ -109,7 +73,7 @@ window.addEventListener("DOMContentLoaded", () => {
           const customerPhone = document.getElementById("customerPhone") as HTMLInputElement | null;
           const CART_SCROLL_OFFSET = 20;
 
-          // Sprawdzenie czy wymagane elementy istnieją, ale nie przerywaj działania
+          // Sprawdzenie czy wymagane elementy istnieją
           if (!cartList) console.warn("Brak elementu cartList");
           if (!miniCart) console.warn("Brak elementu miniCart");
           if (!checkoutFormEl) console.warn("Brak elementu checkoutFormEl");
@@ -121,7 +85,7 @@ window.addEventListener("DOMContentLoaded", () => {
           if (!openParcelSearchBtn) console.warn("Brak elementu openParcelSearchBtn");
           if (!customerPhone) console.warn("Brak elementu customerPhone");
 
-          // Maskowanie numeru telefonu: 000 000 000
+          // Maskowanie numeru telefonu
           if (customerPhone) {
             customerPhone.addEventListener("input", () => {
               let val = customerPhone.value.replace(/\D/g, "");
@@ -178,12 +142,12 @@ window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => el.classList.remove(cls), 500);
     }
 
-    // Funkcja zapisu koszyka do localStorage
+    // Zapis koszyka do localStorage
     const saveCart = () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
     };
 
-    // Funkcja załadowania koszyka z localStorage — niepotrzebna, koszyk zawsze pusty
+    // Załadowanie koszyka z localStorage — niepotrzebne, koszyk zawsze pusty
 
     // Wyświetlanie listy produktów
     function renderMiniCartList() {
@@ -409,26 +373,9 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // copyTransferTitleBtn.addEventListener("click", async () => {
-  //   // const lastOrder = loadLastOrderReference(); // funkcja niezaimplementowana
-  //   // const isBlikPayment = lastOrder?.paymentMethod === "blik"; // lastOrder niezaimplementowane
-  //   // const value = isBlikPayment
-  //   //   ? lastOrderPaymentTarget.textContent?.trim()
-  //   //   : lastOrderTransferTitle.textContent?.trim();
-  //   // if (!value || value === "-") {
-  //   //   showToast(isBlikPayment ? "Brak numeru BLIK do skopiowania" : "Brak tytułu płatności do skopiowania");
-  //   //   return;
-  //   // }
-  //   // try {
-  //   //   await navigator.clipboard.writeText(value);
-  //   //   showToast(isBlikPayment ? "Skopiowano numer BLIK" : "Skopiowano tytuł płatności");
-  //   // } catch (error) {
-  //   //   console.error("Nie udało się skopiować danych płatności", error);
-  //   //   showToast("Nie udało się skopiować danych");
-  //   // }
-  // });
+  // ...
 
-  // Static checkout buttons: apply cart button styles and wire the clear action
+  // Przycisk zamówienia i wyczyszczenia koszyka
   const checkoutSubmitBtn = document.getElementById('submitOrderBtn') as HTMLButtonElement | null;
   if (checkoutSubmitBtn) {
     checkoutSubmitBtn.classList.add('cart-checkout-btn');
@@ -453,12 +400,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Załaduj koszyk z localStorage przy starcie
-  // checkoutForm.addEventListener("submit", handleCheckoutSubmit);
-  // ...existing code...
   renderMiniCartList();
-  // renderPaymentInstructions();
-  // void loadPaymentConfig();
-  // renderLastOrderReference();
 });
 
