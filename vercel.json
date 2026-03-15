@@ -1,7 +1,4 @@
 {
   "buildCommand": "cp -r server/public/* . || true",
-  "outputDirectory": ".",
-  "env": {
-    "API_URL": "https://galaretkarnia.onrender.com/api/orders"
-  }
+  "outputDirectory": "."
 }

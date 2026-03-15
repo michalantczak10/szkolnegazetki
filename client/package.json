@@ -4,28 +4,20 @@
   "description": "Sklep z tradycyjną galaretką z nóżek",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "dev": "tsc --watch",
-    "generate:favicons": "node ./tools/generate-favicons/generate-favicons.cjs"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "galaretka",
-    "e-commerce",
-    "typescript"
+    "frontend"
   ],
-  "author": "Galaretkarnia.pl",
+  "author": "Michał Antczak <michal.antczak@outlook.com>",
   "license": "MIT",
   "devDependencies": {
-    "png-to-ico": "^3.0.1",
-    "sharp": "^0.34.5",
     "stylelint": "^17.4.0",
     "stylelint-config-standard": "^40.0.0",
-    "to-ico": "^1.1.5",
     "typescript": "^5.0.0",
     "vite": "^7.3.1"
-  },
-  "dependencies": {
-    "resend": "^6.9.3"
   }
-  }
+}

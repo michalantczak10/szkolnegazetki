@@ -85,8 +85,8 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '64kb' }));
 
 // Serve static files from `public` directory inside the server folder
-const publicDir = join(__dirname, 'public');
-app.use(express.static(publicDir, { maxAge: '7d', immutable: true, dotfiles: 'ignore', index: false }));
+const clientDir = join(projectRoot, 'client');
+app.use(express.static(clientDir, { maxAge: '7d', immutable: true, dotfiles: 'ignore', index: false }));
 // Serve images and favicons from project root via dedicated routes (keeps other files private)
 app.use('/img', express.static(join(projectRoot, 'img'), { maxAge: '7d', immutable: true, dotfiles: 'ignore' }));
 app.use('/favicon', express.static(join(projectRoot, 'favicon'), { maxAge: '7d', immutable: true, dotfiles: 'ignore' }));
@@ -451,8 +451,8 @@ app.get('/api/health', (req, res) => {
 
 // Serve index.html for all routes (SPA support)
 app.get('*', (req, res) => {
-  // Serve SPA from public directory
-  res.sendFile(join(publicDir, 'index.html'));
+  // Serve SPA from client directory
+  res.sendFile(join(clientDir, 'index.html'));
 });
 
 // Start server
