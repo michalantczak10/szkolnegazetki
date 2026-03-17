@@ -1,5 +1,74 @@
 // Cała logika DOM wewnątrz DOMContentLoaded
 window.addEventListener("DOMContentLoaded", () => {
+                                // Pobieranie paczkomatów z pliku JSON
+                                let parcelLockers = [];
+                                fetch("parcelLockers.json?v=" + Date.now())
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        // Mapowanie nowej struktury na starą
+                                        parcelLockers = data.map(locker => ({
+                                            code: locker.n,
+                                            name: `${locker.c}, ${locker.e} ${locker.b}`,
+                                            address: locker.d ? locker.d : `${locker.e} ${locker.b}, ${locker.c}, ${locker.o}`,
+                                            postalCode: locker.o
+                                        }));
+                                        console.log(`Baza paczkomatów załadowana: ${parcelLockers.length} rekordów. Wszystko OK.`);
+                                    })
+                                    .catch(() => {
+                                        parcelLockers = [];
+                                        console.warn("Nie udało się pobrać listy paczkomatów.");
+                                    });
+
+                const parcelSearchInput = document.getElementById("parcelSearchQuery");
+                const parcelLockerCodeInput = document.getElementById("parcelLockerCode");
+                // Tworzymy kontener na podpowiedzi
+                const searchWrapper = parcelSearchInput.parentElement;
+                searchWrapper.style.position = "relative";
+                const searchAutocompleteBox = document.createElement("div");
+                searchAutocompleteBox.className = "autocomplete-box";
+                searchWrapper.appendChild(searchAutocompleteBox);
+
+                parcelSearchInput.addEventListener("input", () => {
+                    const value = parcelSearchInput.value.trim().toLowerCase();
+                    searchAutocompleteBox.innerHTML = "";
+                    if (!value) {
+                        searchAutocompleteBox.style.display = "none";
+                        return;
+                    }
+                    const matches = parcelLockers.filter(locker =>
+                        locker.name.toLowerCase().includes(value) ||
+                        locker.address.toLowerCase().includes(value) ||
+                        locker.code.toLowerCase().includes(value) ||
+                        locker.postalCode.toLowerCase().includes(value)
+                    );
+                    if (matches.length > 0) {
+                        searchAutocompleteBox.style.display = "block";
+                        matches.forEach(locker => {
+                            const option = document.createElement("div");
+                            option.className = "autocomplete-option";
+                            option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name} <span style="color:#888">(${locker.postalCode})</span><br><small>${locker.address}</small>`;
+                            option.addEventListener("click", () => {
+                                parcelLockerCodeInput.value = locker.code;
+                                parcelSearchInput.value = `${locker.name} (${locker.postalCode})`;
+                                searchAutocompleteBox.innerHTML = "";
+                                searchAutocompleteBox.style.display = "none";
+                            });
+                            searchAutocompleteBox.appendChild(option);
+                        });
+                    } else {
+                        searchAutocompleteBox.style.display = "block";
+                        const noResult = document.createElement("div");
+                        noResult.className = "autocomplete-option autocomplete-no-result";
+                        noResult.textContent = "Brak wyników";
+                        searchAutocompleteBox.appendChild(noResult);
+                    }
+                });
+                parcelSearchInput.addEventListener("blur", () => {
+                    setTimeout(() => {
+                        searchAutocompleteBox.innerHTML = "";
+                        searchAutocompleteBox.style.display = "none";
+                    }, 150);
+                });
         // Usuwanie koszyka przy każdym wejściu na stronę
         localStorage.removeItem(STORAGE_KEY);
     // Pobranie elementów z HTML z bezpieczną obsługą null

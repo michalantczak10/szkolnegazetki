@@ -1,0 +1,17 @@
+[
+  {
+    "code": "POZ123",
+    "name": "Poznańska 1",
+    "address": "ul. Poznańska 1, Poznań"
+  },
+  {
+    "code": "WAW456",
+    "name": "Warszawska 2",
+    "address": "ul. Warszawska 2, Warszawa"
+  },
+  {
+    "code": "KRA789",
+    "name": "Krakowska 3",
+    "address": "ul. Krakowska 3, Kraków"
+  }
+]

@@ -1,4 +1,3 @@
-import { parcelLockers } from "./parcelLockers";
 
 window.addEventListener("DOMContentLoaded", () => {
   const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement;
@@ -11,6 +10,17 @@ window.addEventListener("DOMContentLoaded", () => {
   searchAutocompleteBox.style.width = parcelSearchInput.offsetWidth + "px";
   searchWrapper.appendChild(searchAutocompleteBox);
 
+  let parcelLockers: any[] = [];
+  fetch("parcelLockers.json")
+    .then(res => res.json())
+    .then(data => {
+      parcelLockers = data;
+    })
+    .catch((error) => {
+      parcelLockers = [];
+      console.warn("Nie udało się pobrać listy paczkomatów.", error);
+    });
+
   parcelSearchInput.addEventListener("input", () => {
     const value = parcelSearchInput.value.trim().toLowerCase();
     searchAutocompleteBox.innerHTML = "";
@@ -19,14 +29,22 @@ window.addEventListener("DOMContentLoaded", () => {
       searchAutocompleteBox.style.display = "none";
       return;
     }
-    const matches = parcelLockers.filter(locker =>
+    if (!parcelLockers || parcelLockers.length === 0) {
+      searchAutocompleteBox.style.display = "block";
+      const noResult = document.createElement("div");
+      noResult.className = "autocomplete-option autocomplete-no-result";
+      noResult.textContent = "Brak danych paczkomatów";
+      searchAutocompleteBox.appendChild(noResult);
+      return;
+    }
+    const matches = parcelLockers.filter((locker: any) =>
       locker.name.toLowerCase().includes(value) ||
       locker.address.toLowerCase().includes(value) ||
       locker.code.toLowerCase().includes(value)
     );
     if (matches.length > 0) {
       searchAutocompleteBox.style.display = "block";
-      matches.forEach(locker => {
+      matches.forEach((locker: any) => {
         const option = document.createElement("div");
         option.className = "autocomplete-option";
         option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;

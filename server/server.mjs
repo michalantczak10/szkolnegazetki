@@ -1,219 +1,54 @@
 import express from 'express';
-// Resend SDK removed from dependencies; emails will be skipped unless configured elsewhere
-import dotenv from 'dotenv';
-import { Resend } from 'resend';
-import { MongoClient } from 'mongodb';
+import fs from 'fs';
+import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-// MongoDB driver removed from dependencies; DB integration disabled in this build
-import compression from 'compression';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import morgan from 'morgan';
-import responseTime from 'response-time';
-
-dotenv.config();
-
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/galaretkarnia';
-let ordersCollection;
-let mongoClient = null;
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '..');
 
-async function connectToMongo() {
-  try {
-    mongoClient = new MongoClient(MONGODB_URI);
-    await mongoClient.connect();
-    const db = mongoClient.db();
-    ordersCollection = db.collection('orders');
-    console.log('✅ Połączono z MongoDB');
-  } catch (error) {
-    ordersCollection = null;
-    console.error('❌ Błąd połączenia z MongoDB:', error);
-  }
-}
+app.use(express.json());
+app.use(express.static(path.join(projectRoot, 'client')));
 
-connectToMongo();
-
-// Get directory path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const projectRoot = join(__dirname, '..');
-
-// Middleware
-// Security & performance middleware (before routes)
-app.use(helmet());
-app.use(compression());
-app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(responseTime());
-
-// Rate limiter for API
-const apiLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 200,
-  standardHeaders: true,
-  legacyHeaders: false
-});
-app.use('/api', apiLimiter);
-
-// CORS and caching - allow caching for static assets, disable cache for API
-app.use((req, res, next) => {
-  const origin = '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.setHeader('Access-Control-Max-Age', '3600');
-
-  // Only disable caching for API responses
-  if (req.path.startsWith('/api') || req.path.startsWith('/server')) {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-  }
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-  next();
-});
-
-// Limit request body size to avoid huge payloads
-app.use(express.json({ limit: '64kb' }));
-
-// Serve static files from `public` directory inside the server folder
-const clientDir = join(projectRoot, 'client');
-app.use(express.static(clientDir, { maxAge: '7d', immutable: true, dotfiles: 'ignore', index: false }));
-// Serve images and favicons from project root via dedicated routes (keeps other files private)
-app.use('/img', express.static(join(projectRoot, 'img'), { maxAge: '7d', immutable: true, dotfiles: 'ignore' }));
-app.use('/favicon', express.static(join(projectRoot, 'favicon'), { maxAge: '7d', immutable: true, dotfiles: 'ignore' }));
-
-// Email configuration - Resend API (optional)
-let resend = null;
-if (process.env.RESEND_API_KEY) {
-  resend = new Resend(process.env.RESEND_API_KEY);
-  console.log('✅ Resend SDK zainstalowany i skonfigurowany.');
-}
-
-// Validation helper
-const isPhoneValid = (phone) => /^[0-9+()\-\s]{7,20}$/.test(phone);
-const isParcelLockerCodeValid = (code) => /^[A-Z]{3}\d{2}[A-Z0-9]?$/.test(String(code || '').toUpperCase());
-
-const normalizePhone = (phone) => String(phone || '').replace(/\D/g, '');
-
-const getPhoneSuffix = (phone) => normalizePhone(phone).slice(-4);
-
-const formatOrderRef = (orderId) => orderId.slice(-8).toUpperCase();
-
-const createTransferTitle = (orderRef) => `Opłata za zamówienie nr: ${orderRef}`;
-
-const PAYMENT_CONFIG = {
-  accountNumber: process.env.BANK_ACCOUNT_NUMBER || '60 1140 2004 0000 3102 4831 8846',
-  accountHolder: process.env.BANK_ACCOUNT_HOLDER || 'Galaretkarnia',
-  blikPhone: process.env.BLIK_PHONE || '+48 794 535 366'
-};
-
-const FREE_DELIVERY_THRESHOLD = Number(process.env.FREE_DELIVERY_THRESHOLD || 50);
-
-// Konfiguracja paczek InPost - rozmiary, pojemności, ceny
-const PARCEL_SIZES = [
-  {
-    name: 'A',
-    label: 'Paczkomat A (mały)',
-    maxItems: 3,
-    cost: Number(process.env.PARCEL_A_COST || 13)
-  },
-  {
-    name: 'B',
-    label: 'Paczkomat B (średni)',
-    maxItems: 8,
-    cost: Number(process.env.PARCEL_B_COST || 15)
-  },
-  {
-    name: 'C',
-    label: 'Paczkomat C (duży)',
-    maxItems: 15,  // Maksymalna pojemność jednej paczki
-    cost: Number(process.env.PARCEL_C_COST || 17)
-  }
-];
-
-// Funkcja obliczająca ile paczek jest potrzebnych i całkowity koszt
-const calculateDeliveryCost = (itemsCount) => {
-  // Tworzymy paczki optymalizując liczbę pojemników
-  let parcels = [];
-  let remainingItems = itemsCount;
-
-  // Najpierw próbujemy paczkami A
-  while (remainingItems > 0 && remainingItems <= PARCEL_SIZES[0].maxItems) {
-    parcels.push(PARCEL_SIZES[0]);
-    remainingItems = 0;
-    break;
-  }
-
-  // Jeśli więcej niż A, próbujemy B
-  if (remainingItems > PARCEL_SIZES[0].maxItems && remainingItems <= PARCEL_SIZES[1].maxItems) {
-    parcels.push(PARCEL_SIZES[1]);
-    remainingItems = 0;
-  }
-
-  // Jeśli więcej niż B, używamy C (może być wiele)
-  if (remainingItems > PARCEL_SIZES[1].maxItems) {
-    const maxC = PARCEL_SIZES[2].maxItems;
-    const parcelCount = Math.ceil(remainingItems / maxC);
-    for (let i = 0; i < parcelCount; i++) {
-      parcels.push(PARCEL_SIZES[2]);
+// Endpoint API do pobierania paczkomatów
+// ...existing code...
+// Endpoint API do pobierania paczkomatów
+app.get('/api/parcelLockers', (req, res) => {
+  const lockersPath = path.join(projectRoot, 'client', 'parcelLockers.json');
+  fs.readFile(lockersPath, 'utf8', (err, data) => {
+    if (err) {
+      res.status(500).json({ error: 'Nie udało się pobrać listy paczkomatów.' });
+      return;
     }
-  }
-
-  // Jeśli puste (nie powinno się zdarzyć), fallback
-  if (parcels.length === 0) {
-    parcels.push(PARCEL_SIZES[1]);
-  }
-
-  const totalCost = parcels.reduce((sum, p) => sum + p.cost, 0);
-  const parcelLabel = parcels.length === 1 
-    ? parcels[0].label 
-    : `${parcels.length} paczki (${parcels.map(p => p.name).join('+')})`;
-
-  return {
-    cost: totalCost,
-    parcelSize: parcels.map(p => p.name).join('+'),
-    parcelLabel: parcelLabel,
-    numberOfParcels: parcels.length
-  };
-};
-
-const PAYMENT_METHODS = ['bank_transfer', 'blik', 'stripe_online'];
-
-const getPaymentTarget = (method) => {
-  if (method === 'blik') {
-    return `Telefon BLIK: ${PAYMENT_CONFIG.blikPhone}`;
-  }
-
-  return `${PAYMENT_CONFIG.accountHolder}, konto: ${PAYMENT_CONFIG.accountNumber}`;
-};
-
-const isEmailValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
-
-app.get('/api/payment-config', (req, res) => {
-  res.json({
-    success: true,
-    payment: {
-      accountNumber: PAYMENT_CONFIG.accountNumber,
-      accountHolder: PAYMENT_CONFIG.accountHolder,
-      blikPhone: PAYMENT_CONFIG.blikPhone
-    },
-    cart: {
-      freeDeliveryThreshold: Number.isFinite(FREE_DELIVERY_THRESHOLD) && FREE_DELIVERY_THRESHOLD > 0
-        ? FREE_DELIVERY_THRESHOLD
-        : 50,
-      parcelSizes: PARCEL_SIZES
+    try {
+      const lockers = JSON.parse(data);
+      res.json(lockers);
+    } catch (parseErr) {
+      res.status(500).json({ error: 'Błąd parsowania pliku paczkomatów.' });
     }
   });
 });
+
+// Endpoint API do pobierania paczkomatów (po inicjalizacji app)
+app.get('/api/parcelLockers', (req, res) => {
+  const lockersPath = path.join(projectRoot, 'client', 'parcelLockers.json');
+  fs.readFile(lockersPath, 'utf8', (err, data) => {
+    if (err) {
+      res.status(500).json({ error: 'Nie udało się pobrać listy paczkomatów.' });
+      return;
+    }
+    try {
+      const lockers = JSON.parse(data);
+      res.json(lockers);
+    } catch (parseErr) {
+      res.status(500).json({ error: 'Błąd parsowania pliku paczkomatów.' });
+    }
+  });
+});
+
+// ...pozostaw tylko jedną deklarację app i PORT po importach...
 
 // POST /api/orders - Accept order, save to DB and send email to owner
 app.post('/api/orders', async (req, res) => {
@@ -449,9 +284,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Galaretkarnia API is running' });
 });
 
-// Serve index.html for all routes (SPA support)
+// ...existing code...
+// SPA fallback — przeniesione na sam koniec pliku
 app.get('*', (req, res) => {
-  // Serve SPA from client directory
   res.sendFile(join(clientDir, 'index.html'));
 });
 

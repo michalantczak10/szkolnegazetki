@@ -18,6 +18,8 @@
     "helmet": "^7.0.0",
     "mongodb": "^7.1.0",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.39.1",
     "resend": "^6.9.3",
     "response-time": "^2.3.2"
   },
