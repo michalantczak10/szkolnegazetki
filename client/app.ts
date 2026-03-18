@@ -1,5 +1,5 @@
 
-import { renderCart, showCartError } from "./modules/cart";
+import { renderCartList, showCartError } from "./modules/cart";
 import { setupParcelAutocomplete } from "./modules/autocomplete";
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Przykład użycia renderCart i showCartError
   if (cartList) {
-    renderCart(cart, cartList);
+    renderCartList(cart, cartList);
   }
 
   // ...existing code...

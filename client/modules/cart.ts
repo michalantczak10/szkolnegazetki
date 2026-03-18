@@ -1,5 +1,5 @@
 // Cart module
-export function renderCart(cart: any[], cartList: HTMLElement) {
+export function renderCartList(cart: any[], cartList: HTMLElement) {
   cartList.innerHTML = '';
   if (!cart || cart.length === 0) {
     cartList.innerHTML = '<p>Twój koszyk jest pusty.</p>';
