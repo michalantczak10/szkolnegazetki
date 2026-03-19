@@ -4,6 +4,21 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const app = express();
+
+// Payment config endpoint
+app.get('/api/payment-config', (req, res) => {
+  res.json({
+    payment: {
+      accountNumber: '60 1140 2004 0000 3102 4831 8846',
+      accountHolder: 'Galaretkarnia',
+      blikPhone: '+48 794 535 366'
+    },
+    cart: {
+      freeDeliveryThreshold: 100,
+      parcelSizes: ['S', 'M', 'L']
+    }
+  });
+});
 const PORT = process.env.PORT || 3000;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

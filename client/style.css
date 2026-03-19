@@ -1480,11 +1480,13 @@ button:active {
 
 /* ===== TOAST NOTIFICATIONS ===== */
 .toast {
-  position: static;
-  top: auto;
-  bottom: auto;
-  left: auto;
-  transform: none;
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%) translateY(0);
+  min-width: 220px;
+  max-width: 90vw;
+  text-align: center;
   background: var(--color-primary);
   color: var(--color-white);
   padding: 12px 20px;

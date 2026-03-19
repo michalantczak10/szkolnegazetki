@@ -1,4 +1,11 @@
 
+// ...existing code...
+declare global {
+  interface Window {
+    showToast: (msg: string) => void;
+  }
+}
+
 import { renderCartList, showCartError } from "./modules/cart";
 import { setupParcelAutocomplete } from "./modules/autocomplete";
 
@@ -78,9 +85,36 @@ window.addEventListener("DOMContentLoaded", () => {
             });
           }
 
-    function showToast(message: string) {
-      alert(message);
-    }
+function showToast(message: string) {
+  let toast = document.getElementById('toastMessage');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toastMessage';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.style.position = 'fixed';
+    toast.style.bottom = '24px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = '#b30000';
+    toast.style.color = '#fff';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '8px';
+    toast.style.fontSize = '1rem';
+    toast.style.zIndex = '9999';
+    toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.display = 'block';
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3000);
+}
+// Udostępnij showToast globalnie
+(window as any).showToast = showToast;
+
+    // ...existing code...
     function setCheckoutMessage(msg: string) {
       if (checkoutMessage) checkoutMessage.innerText = msg;
     }
@@ -138,6 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
         empty.textContent = "Koszyk jest pusty — dodaj pierwszą galaretkę 😊";
         empty.classList.add("fade-in", "cart-empty-state");
         cartList.appendChild(empty);
+  // ...existing code...
         return;
       }
 

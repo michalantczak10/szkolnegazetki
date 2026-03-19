@@ -22,11 +22,9 @@ window.addEventListener("DOMContentLoaded", () => {
                                             address: locker.d ? locker.d : `${locker.e} ${locker.b}, ${locker.c}, ${locker.o}`,
                                             postalCode: locker.o
                                         }));
-                                        console.log(`Baza paczkomatów załadowana: ${parcelLockers.length} rekordów. Wszystko OK.`);
                                     })
                                     .catch(() => {
                                         parcelLockers = [];
-                                        console.warn("Nie udało się pobrać listy paczkomatów.");
                                     });
 
                 const parcelSearchInput = document.getElementById("parcelSearchQuery");
@@ -183,6 +181,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
     // ...existing code...
+    window.showToast = showToast;
 });
 // Tablica koszyka
 let cart = [];
@@ -285,7 +284,7 @@ let paymentConfig = {
 // Auto-detect API URL based on environment
 const isDevelopment = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
 const API_BASE_URL = isDevelopment
-    ? "http://localhost:3001"
+    ? "http://localhost:3000"
     : "https://galaretkarnia.onrender.com";
 const API_URL = `${API_BASE_URL}/api/orders`;
 const PAYMENT_CONFIG_URL = `${API_BASE_URL}/api/payment-config`;
@@ -334,7 +333,9 @@ const showToast = (message, type = "default", actionLabel, actionCallback) => {
             if (toast.parentElement) toast.parentElement.removeChild(toast);
         }, 300);
     }, TOAST_DURATION);
+    return toast;
 };
+
 
  
 const dismissToastContaining = (text) => {
@@ -409,7 +410,7 @@ const calculateDeliveryCost = (itemsCount) => {
     
     const parcels = [];
     let remainingItems = itemsCount;
-    
+
     if (parcelSizes.length < 3) {
         parcelSizes = [
             { name: "A", label: "Paczkomat A (mały)", maxItems: 3, cost: 13 },
@@ -420,18 +421,28 @@ const calculateDeliveryCost = (itemsCount) => {
     const parcelA = parcelSizes[0];
     const parcelB = parcelSizes[1];
     const parcelC = parcelSizes[2];
-    
+
+    // Jeśli koszyk jest pusty, koszt dostawy = 0
+    if (itemsCount === 0) {
+        return {
+            cost: 0,
+            parcelSize: '',
+            parcelLabel: 'Brak paczek',
+            numberOfParcels: 0
+        };
+    }
+
     while (remainingItems > 0 && remainingItems <= parcelA.maxItems) {
         parcels.push(parcelA);
         remainingItems = 0;
         break;
     }
-    
+
     if (remainingItems > parcelA.maxItems && remainingItems <= parcelB.maxItems) {
         parcels.push(parcelB);
         remainingItems = 0;
     }
-    
+
     if (remainingItems > parcelB.maxItems) {
         const maxC = parcelC.maxItems;
         const parcelCount = Math.ceil(remainingItems / maxC);
@@ -439,9 +450,9 @@ const calculateDeliveryCost = (itemsCount) => {
             parcels.push(parcelC);
         }
     }
-    
-    if (parcels.length === 0) {
-        parcels.push(parcelB);
+
+    if (parcels.length === 0 && itemsCount > 0) {
+        parcels.push(parcelA);
     }
     const totalCost = parcels.reduce((sum, p) => sum + p.cost, 0);
     const parcelLabel = parcels.length === 1
@@ -519,7 +530,10 @@ const loadPaymentConfig = async () => {
                 }
             }
             if (data?.cart?.parcelSizes && Array.isArray(data.cart.parcelSizes)) {
-                parcelSizes = data.cart.parcelSizes;
+                // Walidacja: czy każdy obiekt ma cost i maxItems
+                if (data.cart.parcelSizes.every(p => typeof p.cost === 'number' && typeof p.maxItems === 'number')) {
+                    parcelSizes = data.cart.parcelSizes;
+                }
             }
             renderCart();
         } catch (error) {
@@ -729,7 +743,6 @@ const handleCheckoutSubmit = async (event) => {
                                                 address: locker.d ? locker.d : `${locker.e} ${locker.b}, ${locker.c}, ${locker.o}`,
                                                 postalCode: locker.o
                                             }));
-                                            console.log(`Baza paczkomatów załadowana: ${parcelLockers.length} rekordów. Wszystko OK.`);
                                         })
                                         .catch(() => {
                                             parcelLockers = [];
@@ -792,6 +805,7 @@ function renderMiniCartList() {
             img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='55' height='55'%3E%3Crect fill='%23ddd' width='55' height='55'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='12'%3E?%3C/text%3E%3C/svg%3E";
         };
         
+        const info = document.createElement("div");
         info.classList.add("cart-item-info");
         const name = document.createElement("div");
         name.classList.add("cart-item-name");
@@ -977,63 +991,13 @@ addButtons.forEach(btn => {
         }
         renderCart();
         const cartDock = document.querySelector('.cart-dock');
-        if (cartDock) {
-            try {
-                var top = cartDock.getBoundingClientRect().top + window.scrollY - CART_SCROLL_OFFSET;
-                window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-            }
-            catch (err) { }
-        }
-        else if (window.innerWidth <= 767) {
-            miniCart.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-        
-        
-        dismissToastContaining("Koszyk został wyczyszczony");
-        showToast(`${name} dodany do koszyka!`);
+        });
     });
-});
-openParcelSearchBtn.addEventListener("click", () => {
-    const query = parcelSearchQuery.value.trim();
-    const targetUrl = query
-        ? `https://inpost.pl/znajdz-paczkomat?query=${encodeURIComponent(query)}`
-        : "https://inpost.pl/znajdz-paczkomat";
-    window.open(targetUrl, "_blank", "noopener,noreferrer");
-});
-copyTransferTitleBtn.addEventListener("click", async () => {
-    const lastOrder = loadLastOrderReference();
-    const isBlikPayment = lastOrder?.paymentMethod === "blik";
-    const value = isBlikPayment
-        ? lastOrderPaymentTarget.textContent?.trim()
-        : lastOrderTransferTitle.textContent?.trim();
-    if (!value || value === "-") {
-        showToast(isBlikPayment ? "Brak numeru BLIK do skopiowania" : "Brak tytułu płatności do skopiowania");
-        return;
-    }
-    try {
-        await navigator.clipboard.writeText(value);
-        showToast(isBlikPayment ? "Skopiowano numer BLIK" : "Skopiowano tytuł płatności");
-    }
-    catch (error) {
-        console.error("Nie udało się skopiować danych płatności", error);
-        showToast("Nie udało się skopiować danych");
-    }
-});
-paymentMethod.addEventListener("change", () => {
+
+    checkoutForm.addEventListener("submit", handleCheckoutSubmit);
+    renderCart();
     renderPaymentInstructions();
-});
-createOptionalAccount.addEventListener("change", () => {
-    optionalAccountFields.hidden = !createOptionalAccount.checked;
-    if (!createOptionalAccount.checked) {
-        optionalAccountEmail.value = "";
-    }
-});
-// Załaduj koszyk z localStorage przy starcie
-checkoutForm.addEventListener("submit", handleCheckoutSubmit);
-    
-renderCart();
-renderPaymentInstructions();
-void loadPaymentConfig();
-renderLastOrderReference();
-export {};
-//# sourceMappingURL=app.js.map
+    void loadPaymentConfig();
+    renderLastOrderReference();
+    export {};
+    //# sourceMappingURL=app.js.map
