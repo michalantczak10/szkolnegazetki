@@ -246,13 +246,7 @@ function showOrderConfirmationModal(data: OrderConfirmationData) {
   const modal = document.createElement('div');
   modal.className = 'order-confirm-modal';
 
-  // Close button (X)
-  const closeBtn = document.createElement('button');
-  closeBtn.className = 'order-confirm-modal-close';
-  closeBtn.setAttribute('aria-label', 'Zamknij');
-  closeBtn.innerHTML = '&times;';
-  closeBtn.addEventListener('click', () => overlay.remove());
-  modal.appendChild(closeBtn);
+  // Usunięto przycisk zamykania (X)
 
   // Body
   const body = document.createElement('div');
@@ -301,8 +295,9 @@ function showOrderConfirmationModal(data: OrderConfirmationData) {
   const actions = document.createElement('div');
   actions.className = 'order-confirm-modal-actions';
   const okBtn = document.createElement('button');
-  okBtn.className = 'order-confirm-modal-btn';
+  okBtn.className = 'browse-products-btn clear-cart-btn';
   okBtn.textContent = 'OK';
+  okBtn.style.margin = '0 auto';
   okBtn.addEventListener('click', () => {
     overlay.remove();
     // Wyczyść dane formularza zamówienia
@@ -756,6 +751,13 @@ function showToast(message: string) {
         if (!parcelCode || !parcelCode.match(/^[A-Z0-9]{6,}$/)) {
           setCheckoutMessage("Wybierz paczkomat przed złożeniem zamówienia. Kod paczkomatu jest wymagany i musi być poprawny (np. WAW01A).");
           showToast("Wybierz paczkomat przed złożeniem zamówienia. Kod paczkomatu jest wymagany i musi być poprawny (np. WAW01A).");
+          parcelLockerCodeInput.focus();
+          return;
+        }
+        // Sprawdź, czy kod istnieje w liście paczkomatów
+        if (!parcelLockers.some(locker => locker.code === parcelCode)) {
+          setCheckoutMessage("Podany kod paczkomatu nie istnieje. Wybierz poprawny paczkomat z listy.");
+          showToast("Podany kod paczkomatu nie istnieje. Wybierz poprawny paczkomat z listy.");
           parcelLockerCodeInput.focus();
           return;
         }
