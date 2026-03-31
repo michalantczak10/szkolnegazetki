@@ -527,6 +527,13 @@
   min-height: 18px;
 }
 
+.input-hint {
+  color: #6b7280;
+  font-size: 0.88em;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
 .notes-counter {
   color: #6b7280;
   font-size: 0.92em;
@@ -1920,6 +1927,12 @@ button:active {
   text-decoration: underline;
 }
 
+.legal section[id],
+.legal h2[id],
+.legal h3[id] {
+  scroll-margin-top: 24px;
+}
+
 .trust p {
   background: var(--color-white);
   border-radius: var(--radius-lg);
@@ -1967,23 +1980,29 @@ button:active {
 }
 .page-btn {
   display: inline-block;
-  padding: 12px 20px;
-  background: var(--color-primary);
+  padding: 12px 32px;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: var(--color-white);
-  border-radius: 10px;
+  border-radius: 14px;
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
+  font-weight: bold;
+  font-size: 1.125rem;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
 .page-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  opacity: 0.95;
 }
 
 /* Ensure CTA inside contact card has visible text (higher specificity) */
 .privacy-contact .page-btn {
   color: var(--color-white);
   text-decoration: none;
+  display: block;
+  text-align: center;
+  margin-top: 16px;
 }
 
 /* Section heading icons */
@@ -2053,13 +2072,14 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 12px;
   z-index: 1100;
 }
 .confirm-modal {
-  display: inline-block;
-  min-width: 220px;
+  display: block;
+  width: min(92vw, 520px);
+  min-width: 0;
   max-width: 520px;
-  width: auto;
   background: var(--color-white);
   color: var(--color-text);
   border-radius: 12px;
@@ -2080,10 +2100,17 @@ button:active {
   display: flex;
   gap: 10px;
   margin-top: 12px;
+  flex-wrap: wrap;
 }
 
 .confirm-modal .confirm-actions {
   justify-content: center !important;
+}
+.confirm-modal .confirm-actions .browse-products-btn {
+  width: auto;
+  min-width: 140px;
+  max-width: 220px;
+  margin: 0;
 }
 .confirm-modal .btn-confirm {
   min-width: 120px;
@@ -2108,6 +2135,25 @@ button:active {
   background: var(--color-primary);
   color: var(--color-white);
   border: 1px solid var(--color-primary-dark);
+}
+
+@media (max-width: 600px) {
+  .confirm-modal {
+    width: min(94vw, 420px);
+    padding: 14px;
+  }
+
+  .confirm-modal .confirm-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .confirm-modal .confirm-actions .browse-products-btn,
+  .confirm-modal .confirm-actions .btn {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
 }
 
 /* ===== MEDIA QUERIES ===== */
@@ -2474,6 +2520,20 @@ button:active {
 
 /* Small mobile (below 480px) */
 @media (max-width: 479px) {
+  .about,
+  .benefits,
+  .product,
+  .checkout,
+  .trust,
+  .cart-dock {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .checkout {
+    margin-bottom: 12px;
+  }
+
   .product-card {
     padding: 12px;
   }
@@ -2582,6 +2642,12 @@ button:active {
   .trust,
   .cart-dock {
     width: calc(100% - 12px);
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .checkout {
+    margin-bottom: 6px;
   }
 
   .about,

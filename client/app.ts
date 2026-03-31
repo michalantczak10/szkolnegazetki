@@ -365,6 +365,35 @@ declare global {
 
 
 window.addEventListener("DOMContentLoaded", () => {
+    const legalTocLinks = document.querySelectorAll('nav[aria-label="Spis treści"] a[href^="#"]') as NodeListOf<HTMLAnchorElement>;
+    const LEGAL_SCROLL_OFFSET = 24;
+
+    const scrollToLegalHash = (hash: string, pushHash = false) => {
+      if (!hash || !hash.startsWith("#")) return;
+      const target = document.querySelector(hash) as HTMLElement | null;
+      if (!target) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - LEGAL_SCROLL_OFFSET;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+      if (pushHash) {
+        history.replaceState(null, "", hash);
+      }
+    };
+
+    if (legalTocLinks.length > 0) {
+      legalTocLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const hash = link.getAttribute("href") || "";
+          if (!hash.startsWith("#")) return;
+          event.preventDefault();
+          scrollToLegalHash(hash, true);
+        });
+      });
+
+      if (window.location.hash) {
+        setTimeout(() => scrollToLegalHash(window.location.hash), 0);
+      }
+    }
+
     // Konfiguracja płatności (możesz rozbudować o pobieranie z backendu)
     const paymentConfig = {
       accountHolder: "Galaretkarnia",
@@ -399,7 +428,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement;
+  const parcelSearchInput = document.getElementById("parcelSearchQuery") as HTMLInputElement | null;
   // Dodaj margines pod etykietą 'Wyszukaj paczkomat', jeśli istnieje
   const parcelSearchLabel = document.querySelector("label[for='parcelSearchQuery']") as HTMLElement | null;
   if (parcelSearchLabel) {
@@ -407,7 +436,8 @@ window.addEventListener("DOMContentLoaded", () => {
     parcelSearchLabel.style.display = "block";
   }
 
-  const parcelLockerCodeInput = document.getElementById("parcelLockerCode") as HTMLInputElement;
+  const parcelLockerCodeInput = document.getElementById("parcelLockerCode") as HTMLInputElement | null;
+  if (!parcelSearchInput || !parcelLockerCodeInput) return;
   const searchWrapper = parcelSearchInput.parentElement as HTMLElement;
   searchWrapper.style.position = "relative";
   const searchAutocompleteBox = document.createElement("div");
@@ -601,6 +631,10 @@ function showToast(message: string) {
     toast.style.padding = '12px 24px';
     toast.style.borderRadius = '8px';
     toast.style.fontSize = '1rem';
+    toast.style.textAlign = 'center';
+    toast.style.whiteSpace = 'normal';
+    toast.style.overflowWrap = 'anywhere';
+    toast.style.maxWidth = '92vw';
     toast.style.zIndex = '9999';
     toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
     document.body.appendChild(toast);

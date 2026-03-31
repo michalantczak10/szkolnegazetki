@@ -30,42 +30,43 @@
 
             <nav aria-label="Spis treści">
               <ul>
-                <li><a href="#info">Informacje ogólne</a></li>
-                <li><a href="#orders">Składanie zamówień</a></li>
-                <li><a href="#delivery">Dostawa</a></li>
-                <li><a href="#payments">Płatności</a></li>
-                <li><a href="#complaints">Reklamacje</a></li>
-                <li><a href="#final">Postanowienia końcowe</a></li>
+                <li><a href="#section-info">Informacje ogólne</a></li>
+                <li><a href="#section-orders">Składanie zamówień</a></li>
+                <li><a href="#section-delivery">Dostawa</a></li>
+                <li><a href="#section-payments">Płatności</a></li>
+                <li><a href="#section-complaints">Reklamacje</a></li>
+                <li><a href="#section-final">Postanowienia końcowe</a></li>
               </ul>
             </nav>
 
             <section id="info">
-              <h3><span class="section-icon" aria-hidden="true">ℹ️</span>1. Informacje ogólne</h3>
+              <h3 id="section-info"><span class="section-icon" aria-hidden="true">ℹ️</span>1. Informacje ogólne</h3>
               <p>Sklep prowadzony jest przez Galaretkarnia. Niniejszy regulamin określa zasady składania zamówień, płatności, realizacji i reklamacji.</p>
             </section>
 
             <section id="orders">
-              <h3><span class="section-icon" aria-hidden="true">📝</span>2. Składanie zamówień</h3>
+              <h3 id="section-orders"><span class="section-icon" aria-hidden="true">📝</span>2. Składanie zamówień</h3>
               <p>Zamówienia można składać poprzez formularz zamówienia na stronie. Zamówienia realizujemy po otrzymaniu płatności, chyba że w treści oferty wskazano inaczej.</p>
             </section>
 
             <section id="delivery">
-              <h3><span class="section-icon" aria-hidden="true">🚚</span>3. Dostawa</h3>
+              <h3 id="section-delivery"><span class="section-icon" aria-hidden="true">🚚</span>3. Dostawa</h3>
               <p>📦 Dostawa do paczkomatu wskazanego przez klienta. W polu kodu paczkomatu należy podać poprawny identyfikator (np. WAW01A).</p>
+              <p>Jeśli nie znalazłeś swojego paczkomatu w naszej bazie, wybierz najbliższy dostępny, a w polu „Uwagi do zamówienia” podaj faktyczną nazwę lub kod paczkomatu, do którego mamy wysłać zamówienie. Po weryfikacji, jeśli nasza baza jest nieaktualna, wyślemy paczkę do wskazanego paczkomatu i dodamy go do naszej bazy.</p>
             </section>
 
             <section id="payments">
-              <h3><span class="section-icon" aria-hidden="true">💳</span>4. Płatności</h3>
+              <h3 id="section-payments"><span class="section-icon" aria-hidden="true">💳</span>4. Płatności</h3>
               <p>Akceptujemy przelew tradycyjny oraz płatność BLIK na telefon. Szczegóły i dane do przelewu są dostępne w podsumowaniu zamówienia oraz w panelu ostatniego zamówienia.</p>
             </section>
 
             <section id="complaints">
-              <h3><span class="section-icon" aria-hidden="true">📩</span>5. Reklamacje</h3>
-              <p>W przypadku problemów prosimy o kontakt na adres <a href="mailto:kontakt@galaretkarnia.pl">kontakt@galaretkarnia.pl</a> — rozpatrujemy reklamacje zgodnie z obowiązującymi przepisami.</p>
+              <h3 id="section-complaints"><span class="section-icon" aria-hidden="true">📩</span>5. Reklamacje</h3>
+              <p>W przypadku problemów prosimy o kontakt na adres <a href="mailto:reklamacje@galaretkarnia.pl">reklamacje@galaretkarnia.pl</a> — rozpatrujemy reklamacje zgodnie z obowiązującymi przepisami.</p>
             </section>
 
             <section id="final">
-              <h3><span class="section-icon" aria-hidden="true">✅</span>6. Postanowienia końcowe</h3>
+              <h3 id="section-final"><span class="section-icon" aria-hidden="true">✅</span>6. Postanowienia końcowe</h3>
               <p>Regulamin może być aktualizowany; aktualna wersja jest dostępna na tej stronie. Korzystanie ze sklepu oznacza akceptację regulaminu.</p>
             </section>
           </div>
@@ -74,6 +75,7 @@
             <div class="privacy-contact">
               <h2 id="contact">Kontakt</h2>
               <p>Kontakt: <a href="mailto:kontakt@galaretkarnia.pl">kontakt@galaretkarnia.pl</a></p>
+              <p>Reklamacje: <a href="mailto:reklamacje@galaretkarnia.pl">reklamacje@galaretkarnia.pl</a></p>
               <p><a href="/privacy.html">Szczegóły w Polityce prywatności</a></p>
               <p><a href="/" class="page-btn" aria-label="Powrót do strony głównej">Powrót do strony głównej</a></p>
             </div>
@@ -82,6 +84,6 @@
       </section>
     </main>
 
-    <script src="app.js?v=4"></script>
+    <script type="module" src="./app.ts"></script>
   </body>
 </html>

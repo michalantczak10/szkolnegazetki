@@ -139,7 +139,7 @@ app.get('/api/payment-config', (req, res) => {
     payment: {
       accountNumber: '60 1140 2004 0000 3102 4831 8846',
       accountHolder: 'Galaretkarnia',
-      blikPhone: '+48 794 535 366'
+      blikPhone: '794 535 366'
     },
     cart: {
       freeDeliveryThreshold: 100,
