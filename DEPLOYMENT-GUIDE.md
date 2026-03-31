@@ -85,7 +85,7 @@ Wypełnij formularz:
 | **Region** | `Frankfurt (EU Central)` |
 | **Root Directory** | `.` (root projektu) |
 | **Runtime** | `Node` |
-| **Build Command** | `npm run build` |
+| **Build Command** | `npm install && npm run build` |
 | **Start Command** | `npm start` |
 | **Plan** | **Free** |
 
