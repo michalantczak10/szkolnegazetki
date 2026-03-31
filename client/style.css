@@ -2017,6 +2017,11 @@ button:active {
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
+.trust p.trust-hanging {
+  padding-left: 2.8em;
+  text-indent: -1.6em;
+}
+
 .trust p:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);

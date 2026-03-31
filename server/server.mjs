@@ -20,7 +20,7 @@ function formatOrderRef(orderId) {
 }
 // Generuje tytuł przelewu na podstawie numeru zamówienia
 function createTransferTitle(orderRef) {
-  return `Zamówienie ${orderRef} Galaretkarnia`;
+  return `Zamówienie ${orderRef}`;
 }
 // Zwraca dane do przelewu w zależności od metody płatności
 function getPaymentTarget(paymentMethod) {
@@ -231,6 +231,8 @@ app.post('/api/orders', async (req, res) => {
     const orderId = result.insertedId.toString();
     const orderRef = formatOrderRef(orderId);
     const transferTitle = createTransferTitle(orderRef);
+    const displayOrderRef = orderRef.replace(/^GALA-/, '');
+    const displayTransferTitle = transferTitle.replace('GALA-', '').replace(/\s+Galaretkarnia\s*$/i, '');
     const paymentTarget = getPaymentTarget(selectedPaymentMethod);
     const safeNotes = normalizedNotes ? escapeHtml(normalizedNotes).replace(/\n/g, '<br>') : 'Brak';
 
@@ -249,32 +251,31 @@ app.post('/api/orders', async (req, res) => {
 
     
     const itemsText = items
-      .map(item => `- ${item.name}: ${item.qty} słoik(ów) × ${item.price} zł = ${item.qty * item.price} zł`)
+      .map(item => `${item.name}: ${item.qty} słoik(ów) × ${item.price} zł = ${item.qty * item.price} zł`)
       .join('\n');
 
     const isDev = process.env.NODE_ENV === 'development';
     const mailOptions = {
       to: process.env.ORDER_EMAIL || 'kontakt@galaretkarnia.pl',
       from: process.env.RESEND_FROM_EMAIL || 'noreply@galaretkarnia.onresend.com',
-      subject: `${isDev ? '[TEST]' : '📦'} Nowe zamówienie - ${orderRef}`,
+      subject: `${isDev ? '[TEST]' : '📦'} Nowe zamówienie - ${displayOrderRef}`,
       html: `
         <div style="margin:0;padding:24px;background:#f6f7fb;font-family:'Segoe UI',Arial,sans-serif;color:#1f2937;">
           <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.08);">
-            <div style="background:linear-gradient(90deg,#b30000 0%,#d62828 100%);padding:18px 22px;text-align:center;">
-              <img src='https://galaretkarnia.pl/img/branding/logo-galaretkarnia-z-napisem-bialy.png' alt='Galaretkarnia' style="max-width:250px;height:52px;object-fit:contain;"/>
+            <div style="background:#ffffff;padding:16px 22px;text-align:center;border-bottom:2px solid #b30000;">
+              <img src='https://galaretkarnia.pl/img/branding/logo-galaretkarnia-z-napisem.png' alt='Galaretkarnia' style="max-width:360px;height:76px;object-fit:contain;display:block;margin:0 auto;"/>
             </div>
             <div style="padding:22px;">
               <h2 style="margin:0 0 12px 0;color:#b30000;font-size:24px;line-height:1.2;">${isDev ? '[TEST] ' : ''}Nowe zamówienie</h2>
 
-              <div style="background:#fff4dc;border:1px solid #f1d6ab;border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5;">
-                <div><strong>ID zamówienia:</strong> ${orderId}</div>
-                <div><strong>Numer dla klienta:</strong> <span style="color:#b30000;font-weight:700;">${orderRef}</span></div>
-                <div><strong>Tytuł przelewu:</strong> ${transferTitle}</div>
+              <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:16px;line-height:1.5;">
+                <div><strong>Numer dla klienta:</strong> <span style="color:#b30000;font-weight:700;">${displayOrderRef}</span></div>
+                <div><strong>Tytuł przelewu:</strong> ${displayTransferTitle}</div>
               </div>
 
               <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:14px;">
                 <h3 style="margin:0 0 8px 0;color:#b30000;font-size:17px;">Pozycje zamówienia</h3>
-                <pre style="margin:0;white-space:pre-wrap;word-break:break-word;background:#fafafa;border:1px solid #ececec;border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.45;color:#111827;">${itemsText}</pre>
+                <pre style="margin:0;white-space:pre-wrap;word-break:break-word;background:transparent;border:none;border-radius:0;padding:0;font-size:14px;line-height:1.45;color:#111827;font-family:inherit;">${itemsText}</pre>
                 <div style="margin-top:10px;"><strong>Łączna ilość słoików:</strong> ${totalItemsCount} szt.</div>
               </div>
 
@@ -287,21 +288,18 @@ app.post('/api/orders', async (req, res) => {
 
               <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:14px;line-height:1.6;">
                 <h3 style="margin:0 0 8px 0;color:#b30000;font-size:17px;">Płatność</h3>
-                <div><strong>Metoda:</strong> ${selectedPaymentMethod === 'blik' ? 'BLIK na telefon' : 'przelew tradycyjny'} (oczekiwanie na zaksięgowanie)</div>
-                <div><strong>Dane płatności:</strong> ${paymentTarget}</div>
+                <div><strong>Metoda:</strong> ${selectedPaymentMethod === 'blik' ? 'BLIK na telefon' : 'przelew tradycyjny'}</div>
               </div>
 
               <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;line-height:1.6;">
                 <h3 style="margin:0 0 8px 0;color:#b30000;font-size:17px;">Dane klienta</h3>
                 <div><strong>Telefon:</strong> ${phone}</div>
                 <div><strong>Paczkomat:</strong> ${normalizedParcelLockerCode}</div>
-                <div><strong>Konto klienta (opcjonalne):</strong> ${createOptionalAccount ? `TAK${optionalAccountEmail ? ` (${optionalAccountEmail})` : ''}` : 'NIE'}</div>
                 <div><strong>Uwagi:</strong> ${safeNotes}</div>
               </div>
 
               <div style="margin-top:16px;font-size:12px;color:#6b7280;line-height:1.5;">
-                Zamówienie przyjęte: ${new Date().toLocaleString('pl-PL')}<br>
-                Status: <strong style="color:#b30000;">OCZEKUJE NA WPŁATĘ</strong>
+                Zamówienie przyjęte: ${new Date().toLocaleString('pl-PL')}
               </div>
             </div>
           </div>
