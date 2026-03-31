@@ -131,7 +131,15 @@ connectToMongo();
 const app = express();
 app.use(express.json());
 
-app.use(express.static(path.join(projectRoot, 'client')));
+// Serve built client from dist directory
+app.use(express.static(path.join(projectRoot, 'client', 'dist')));
+
+// SPA fallback: serve index.html for non-API routes
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(projectRoot, 'client', 'dist', 'index.html'));
+  }
+});
 
 // Payment config endpoint
 app.get('/api/payment-config', (req, res) => {
