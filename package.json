@@ -1,21 +1,30 @@
 {
+  "type": "module",
   "dependencies": {
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.4",
     "@types/jest": "^30.0.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "playwright": "^1.58.2",
+    "secretlint": "^11.2.4",
+    "simple-git-hooks": "^2.13.1",
     "ts-jest": "^29.4.6",
     "vite": "^8.0.3",
     "concurrently": "^8.2.2"
   },
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "prepare": "simple-git-hooks",
+    "secrets:check:staged": "node ./scripts/secretlint-staged.mjs",
     "stop": "taskkill /F /IM node.exe || exit 0",
     "restart": "npm run stop && npm run dev"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npm run secrets:check:staged"
   },
   "test": "echo \"No tests specified\""
 }
