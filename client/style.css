@@ -1927,6 +1927,81 @@ button:active {
   text-decoration: underline;
 }
 
+.legal-home-grid {
+  align-items: stretch;
+}
+
+.legal-home-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.legal-home-card h3 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}
+
+.legal-home-card p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.legal-home-link {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  text-decoration: none !important;
+  color: var(--color-white) !important;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
+  font-weight: 700;
+}
+
+.legal-home-contacts {
+  grid-column: 1 / -1;
+  background: var(--color-white);
+  border: 1px solid rgb(17 24 39 / 10%);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.legal-home-contacts p {
+  margin: 0 0 8px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.legal-home-contacts strong {
+  color: var(--color-text);
+}
+
+.legal-home-contacts a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.legal-home-contacts p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .legal-home-card {
+    padding: 16px;
+  }
+
+  .legal-home-link {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .legal section[id],
 .legal h2[id],
 .legal h3[id] {
@@ -2021,29 +2096,63 @@ button:active {
   position: fixed;
   left: 50%;
   bottom: 40px;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(12px);
   min-width: 0;
   width: min(92vw, 560px);
   text-align: center;
   background: var(--color-primary);
   color: var(--color-white);
-  padding: 12px 20px;
+  padding: 12px 16px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   z-index: 1000;
-  transition: transform var(--transition);
+  transition: transform 180ms ease, opacity 180ms ease;
   font-weight: 500;
   white-space: normal;
   overflow-wrap: anywhere;
+  opacity: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
 }
 
 .toast-show {
   transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-hide {
+  transform: translateX(-50%) translateY(12px);
+  opacity: 0;
 }
 
 .toast-success {
-  background: var(--color-primary-dark);
+  background: #167a36;
   border: 1px solid var(--color-accent);
+}
+
+.toast-warning {
+  background: #8f1200;
+  border: 1px solid #ffb38a;
+}
+
+.toast-info {
+  background: #8b2b00;
+  border: 1px solid #ffd39c;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.toast-text {
+  font-size: 0.98rem;
+  line-height: 1.35;
 }
 
 /* Toast action button (undo) */

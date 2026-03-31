@@ -616,34 +616,71 @@ window.addEventListener("DOMContentLoaded", () => {
   // ...pozostała logika bez zmian...
 
 function showToast(message: string) {
+  const TOAST_DURATION_MS = 3000;
+  const TOAST_ANIMATION_MS = 180;
+  const getToastVariant = (text: string) => {
+    if (/dodano|zapisano|wysłano|gotowe|udane/i.test(text)) return 'success';
+    if (/usun|wyczyść|wyczyszcz|brak|popraw|błąd|nie udało|nieprawidł/i.test(text)) return 'warning';
+    return 'info';
+  };
+  const getToastIcon = (text: string, variant: string) => {
+    if (/usun|wyczyść|wyczyszcz/i.test(text)) return '🗑️';
+    if (variant === 'success') return '✅';
+    if (variant === 'warning') return '⚠️';
+    return 'ℹ️';
+  };
+
   let toast = document.getElementById('toastMessage');
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'toastMessage';
+    toast.className = 'toast';
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
-    toast.style.position = 'fixed';
-    toast.style.bottom = '24px';
-    toast.style.left = '50%';
-    toast.style.transform = 'translateX(-50%)';
-    toast.style.background = '#b30000';
-    toast.style.color = '#fff';
-    toast.style.padding = '12px 24px';
-    toast.style.borderRadius = '8px';
-    toast.style.fontSize = '1rem';
-    toast.style.textAlign = 'center';
-    toast.style.whiteSpace = 'normal';
-    toast.style.overflowWrap = 'anywhere';
-    toast.style.maxWidth = '92vw';
-    toast.style.zIndex = '9999';
-    toast.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+    toast.innerHTML = `
+      <span class="toast-icon" aria-hidden="true"></span>
+      <span class="toast-text"></span>
+    `;
     document.body.appendChild(toast);
   }
-  toast.textContent = message;
-  toast.style.display = 'block';
-  setTimeout(() => {
-    toast.style.display = 'none';
-  }, 3000);
+
+  const variant = getToastVariant(message);
+  const icon = getToastIcon(message, variant);
+  const iconEl = toast.querySelector('.toast-icon') as HTMLElement | null;
+  const textEl = toast.querySelector('.toast-text') as HTMLElement | null;
+
+  if (iconEl) iconEl.textContent = icon;
+  if (textEl) textEl.textContent = message;
+
+  toast.classList.remove('toast-success', 'toast-warning', 'toast-info');
+  toast.classList.add(`toast-${variant}`);
+
+  toast.classList.remove('toast-show');
+  toast.classList.add('toast-hide');
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      toast?.classList.remove('toast-hide');
+      toast?.classList.add('toast-show');
+    });
+  });
+
+  const previousTimer = Number(toast.dataset.hideTimer || '0');
+  if (previousTimer) window.clearTimeout(previousTimer);
+  const previousFinalizeTimer = Number(toast.dataset.finalizeTimer || '0');
+  if (previousFinalizeTimer) window.clearTimeout(previousFinalizeTimer);
+
+  const hideTimer = window.setTimeout(() => {
+    toast?.classList.remove('toast-show');
+    toast?.classList.add('toast-hide');
+
+    const finalizeTimer = window.setTimeout(() => {
+      toast?.classList.remove('toast-hide');
+      if (toast) toast.dataset.finalizeTimer = '0';
+    }, TOAST_ANIMATION_MS);
+
+    if (toast) toast.dataset.finalizeTimer = String(finalizeTimer);
+  }, TOAST_DURATION_MS);
+  toast.dataset.hideTimer = String(hideTimer);
 }
 
 // Udostępnij showToast globalnie
@@ -758,7 +795,6 @@ function showToast(message: string) {
       if (!confirmed) return;
       cart = [];
       renderCart();
-      setCheckoutMessage("Koszyk został wyczyszczony.");
       showToast("Koszyk został wyczyszczony.");
     }
     window.clearCart = clearCart;
@@ -821,11 +857,6 @@ function showToast(message: string) {
         window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
       } else if (window.innerWidth <= 767 && miniCart) {
         miniCart.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-      // If a 'cart cleared' message/toast is present, dismiss it when adding a new item
-      // dismissToastContaining("Koszyk został wyczyszczony"); // funkcja niezaimplementowana
-      if (checkoutMessage && checkoutMessage.innerHTML.includes("Koszyk został wyczyszczony")) {
-        setCheckoutMessage("");
       }
       showToast(`Dodano 1 szt. produktu ${name}.`);
     });
