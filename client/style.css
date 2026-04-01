@@ -18,7 +18,7 @@
   margin-top: 8px !important;
   outline: none !important;
   position: relative !important;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
   width: 100% !important;
   min-width: 0 !important;
   max-width: 320px !important;
@@ -29,9 +29,11 @@
 
 .product-card .addToCartBtn:hover {
   background: linear-gradient(90deg, #fff12b 0%, #ffc131 100%) !important;
+  transform: scale(1.04) !important;
 }
 .product-card .addToCartBtn:active {
   opacity: 0.92 !important;
+  transform: scale(0.99) !important;
 }
 /* Wymuś styl Wyczysc koszyk na Zamawiam teraz nawet jeśli .checkout-form button nadpisuje */
 .checkout-form .browse-products-btn.clear-cart-btn {
@@ -47,7 +49,7 @@
   margin-top: 8px !important;
   outline: none !important;
   position: relative !important;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s !important;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s !important;
   width: auto !important;
   max-width: 320px !important;
   display: block !important;
@@ -60,9 +62,11 @@
 }
 .checkout-form .browse-products-btn.clear-cart-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%) !important;
+  transform: scale(1.04) !important;
 }
 .checkout-form .browse-products-btn.clear-cart-btn:active {
   opacity: 0.92 !important;
+  transform: scale(0.99) !important;
 }
 .cart-checkout-btn {
   background: linear-gradient(90deg,#e74c3c 0%,#b30000 100%);
@@ -77,7 +81,7 @@
   margin-top: 8px;
   outline: none;
   position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
   width: auto;
   max-width: 320px;
   display: block;
@@ -91,6 +95,7 @@
 }
 .cart-checkout-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%);
+  transform: scale(1.04);
 }
 .cart-checkout-btn:active {
   opacity: 0.92;
@@ -110,10 +115,11 @@
   margin-top: 8px;
   outline: none;
   position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .addToCartBtn:hover {
   background: linear-gradient(90deg, #fffbe0 0%, #ffe066 100%);
+  transform: scale(1.04);
 }
 
 .cart-checkout-btn {
@@ -134,24 +140,23 @@
 
 .addToCartBtn:focus, .cart-checkout-btn:focus {
   outline: none;
-  box-shadow: none;
+}
+.addToCartBtn:focus {
+  box-shadow: 0 0 0 2px #b30000;
+}
+.cart-checkout-btn:focus {
+  box-shadow: 0 0 0 2px #ffd600;
 }
 .addToCartBtn:hover, .cart-checkout-btn:hover {
   background: linear-gradient(90deg, #ffe066 0%, #fffbe0 100%);
 }
 .addToCartBtn:active, .cart-checkout-btn:active {
   opacity: 0.92;
+  transform: scale(0.99);
 }
 .addToCartBtn:hover {
   background: linear-gradient(90deg, #ffe066 0%, #fffbe0 100%);
-}
-.addToCartBtn:active {
-  opacity: 0.92;
-}
-.addToCartBtn:focus {
-  outline: none;
-  box-shadow: none;
-  border: none;
+  transform: scale(1.04);
 }
 
 /* Margin below price above addToCartBtn */
@@ -174,7 +179,7 @@
   margin-top: 8px;
   outline: none;
   position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .browse-products-btn:focus {
@@ -183,9 +188,11 @@
 }
 .browse-products-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%);
+  transform: scale(1.04);
 }
 .browse-products-btn:active {
   opacity: 0.92;
+  transform: scale(0.99);
 }
 
 .browse-products-btn.clear-cart-btn {
@@ -1959,12 +1966,13 @@ button:active {
   color: var(--color-white) !important;
   background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   font-weight: 700;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
   cursor: pointer;
 }
 
 .legal-home-link:hover {
   background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  transform: scale(1.04);
 }
 
 .legal-home-link:focus {
@@ -1974,6 +1982,7 @@ button:active {
 
 .legal-home-link:active {
   opacity: 0.92;
+  transform: scale(0.99);
 }
 
 .legal-home-contacts {
@@ -2107,12 +2116,13 @@ button:active {
   font-weight: bold;
   font-size: 1.125rem;
   box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
   cursor: pointer;
 }
 .page-btn:hover {
   background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
   opacity: 0.95;
+  transform: scale(1.04);
 }
 .page-btn:focus {
   outline: none;
@@ -2120,6 +2130,7 @@ button:active {
 }
 .page-btn:active {
   opacity: 0.92;
+  transform: scale(0.99);
 }
 
 /* Ensure CTA inside contact card has visible text (higher specificity) */
