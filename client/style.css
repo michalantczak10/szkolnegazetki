@@ -56,8 +56,7 @@
 }
 .checkout-form .browse-products-btn.clear-cart-btn:focus {
   outline: none !important;
-  box-shadow: none !important;
-  border-color: #ffd600 !important;
+  box-shadow: 0 0 0 2px #ffd600 !important;
 }
 .checkout-form .browse-products-btn.clear-cart-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%) !important;
@@ -180,8 +179,7 @@
 
 .browse-products-btn:focus {
   outline: none;
-  box-shadow: none;
-  border-color: #ffd600;
+  box-shadow: 0 0 0 2px #ffd600;
 }
 .browse-products-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%);
