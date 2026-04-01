@@ -2115,7 +2115,7 @@ button:active {
 }
 .page-btn {
   display: inline-block;
-  padding: 12px 26px;
+  padding: 12px 20px;
   background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: var(--color-white);
   border-radius: 14px;
