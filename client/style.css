@@ -31,6 +31,11 @@
   background: linear-gradient(90deg, #fff12b 0%, #ffc131 100%) !important;
   transform: scale(1.04) !important;
 }
+.product-card .addToCartBtn:focus,
+.product-card .addToCartBtn:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px #b30000 !important;
+}
 .product-card .addToCartBtn:active {
   opacity: 0.92 !important;
   transform: scale(0.99) !important;
