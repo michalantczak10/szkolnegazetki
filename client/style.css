@@ -2008,7 +2008,7 @@ button:active {
   scroll-margin-top: 24px;
 }
 
-.trust p {
+.trust-grid > p {
   background: var(--color-white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -2017,12 +2017,38 @@ button:active {
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
+.trust .trust-contact-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 16px;
+  margin: 0;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.trust .trust-contact-item {
+  margin: 0;
+}
+
+.trust .trust-contact-item.trust-hanging {
+  padding-left: 1.8em;
+}
+
+.trust .trust-contact-item + .trust-contact-item {
+  margin-top: 6px;
+}
+
 .trust p.trust-hanging {
   padding-left: 2.8em;
   text-indent: -1.6em;
 }
 
-.trust p:hover {
+.trust-grid > p:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.trust .trust-contact-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
