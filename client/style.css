@@ -786,6 +786,9 @@ body {
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: var(--color-white);
   padding: 56px 30px;
+  min-height: 450px;
+  display: flex;
+  align-items: center;
 }
 
 .hero-content {
@@ -815,16 +818,34 @@ body {
 }
 
 .hero-tagline {
-  margin-top: 20px !important;
-  font-size: 0.9rem;
+  margin: 20px 0 0 !important;
+  font-size: 1.08rem;
+  line-height: 1.45;
   font-weight: 600;
   color: var(--color-white);
   background: rgb(0 0 0 / 20%);
-  padding: 10px 16px;
+  padding: 14px 18px 14px 34px;
   border-radius: var(--radius-md);
-  display: inline-block;
+  display: inline-flex;
+  width: min(100%, 520px);
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
   backdrop-filter: blur(4px);
   border: 1px solid rgb(255 255 255 / 20%);
+}
+
+.hero-tagline li {
+  position: relative;
+  margin: 0;
+}
+
+.hero-tagline li::before {
+  content: "✓";
+  position: absolute;
+  left: -18px;
+  color: #fff12b;
+  font-weight: 700;
 }
 
 .hero-brand {
@@ -1985,8 +2006,10 @@ button:active {
 .legal-home-link {
   align-self: center;
   margin-top: 4px;
-  padding: 8px 12px;
-  border-radius: 999px;
+  padding: 12px 32px;
+  border-radius: 14px;
+  font-size: 1.125rem;
+  line-height: 1.2;
   text-decoration: none !important;
   color: var(--color-white) !important;
   background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
@@ -2031,6 +2054,18 @@ button:active {
 
 .legal-home-contacts a {
   color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.legal-home-contacts a:link,
+.legal-home-contacts a:visited {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.legal-home-contacts a:hover,
+.legal-home-contacts a:active {
+  color: var(--color-primary-dark);
   text-decoration: underline;
 }
 
@@ -2085,6 +2120,22 @@ button:active {
   margin-top: 6px;
 }
 
+.trust .trust-contact-item a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.trust .trust-contact-item a:link,
+.trust .trust-contact-item a:visited {
+  color: var(--color-primary);
+}
+
+.trust .trust-contact-item a:hover,
+.trust .trust-contact-item a:active {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
 .trust p.trust-hanging {
   padding-left: 2.8em;
   text-indent: -1.6em;
@@ -2131,6 +2182,17 @@ button:active {
   text-align: center;
   margin: 20px 0 36px;
 }
+
+.page-cta-legal {
+  margin: 12px 0 8px;
+  text-align: left;
+}
+
+.page-cta-legal .page-btn {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
 .page-btn {
   display: inline-block;
   padding: 10px 14px;
