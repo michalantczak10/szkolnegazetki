@@ -1965,7 +1965,7 @@ button:active {
 }
 
 .legal-home-link {
-  align-self: flex-start;
+  align-self: center;
   margin-top: 4px;
   padding: 8px 12px;
   border-radius: 999px;
@@ -2115,7 +2115,7 @@ button:active {
 }
 .page-btn {
   display: inline-block;
-  padding: 12px 20px;
+  padding: 10px 14px;
   background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: var(--color-white);
   border-radius: 14px;
@@ -2144,9 +2144,9 @@ button:active {
 .privacy-contact .page-btn {
   color: var(--color-white);
   text-decoration: none;
-  display: block;
+  display: inline-block;
   text-align: center;
-  margin-top: 16px;
+  margin-top: 12px;
 }
 
 /* Section heading icons */
