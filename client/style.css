@@ -329,21 +329,19 @@
 }
 .order-confirm-modal-btn {
   min-width: 90px;
-  padding: 8px 18px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 14px;
   border: none;
   font-size: 1em;
   font-weight: 600;
   cursor: pointer;
-  background: #b30000;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: #fff;
-  border: 1.5px solid #b30000;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition: background 0.2s, transform 0.2s, opacity 0.2s;
 }
 .order-confirm-modal-btn:hover {
-  background: #900000;
-  border-color: #b30000;
-  color: #b30000;
+  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  transform: scale(1.04);
 }
 @media (max-width: 600px) {
   .order-confirm-modal {
@@ -571,16 +569,20 @@
 }
 
 .browse-products-btn.btn-cancel {
-  background: #fff;
-  color: #b30000;
-  border: 1.5px solid #bbb;
+  background: #f3f4f6;
+  color: #111827;
+  border: none;
+  border-radius: 14px;
   box-shadow: none;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition: transform 0.2s, opacity 0.2s;
 }
 .browse-products-btn.btn-cancel:hover {
-  background: #f5f5f5;
-  border-color: #b30000;
-  color: #b30000;
+  transform: scale(1.03);
+  background: #e5e7eb;
+}
+.browse-products-btn.btn-cancel:active {
+  transform: scale(0.99);
+  opacity: 0.94;
 }
 
 @media (max-width: 600px) {
@@ -1481,26 +1483,26 @@ button:active {
 
 .cart-clear-btn {
   width: 100%;
-  background: #dc3545;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: var(--color-white);
   border: none;
   padding: 12px;
-  border-radius: var(--radius-md);
+  border-radius: 14px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 15px;
-  transition: all var(--transition);
+  transition: background 0.2s, transform 0.2s, opacity 0.2s;
 }
 
 .cart-clear-btn:hover {
-  background: #c82333;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  transform: scale(1.04);
 }
 
 .cart-clear-btn:active {
   transform: scale(0.98);
+  opacity: 0.92;
 }
 
 
@@ -2204,6 +2206,22 @@ button:active {
   font-size: 0.92rem;
 }
 
+.cookie-consent-note a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.cookie-consent-note a:link,
+.cookie-consent-note a:visited {
+  color: var(--color-primary);
+}
+
+.cookie-consent-note a:hover,
+.cookie-consent-note a:active {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
 .cookie-consent-actions {
   margin-top: 12px;
   display: flex;
@@ -2213,7 +2231,7 @@ button:active {
 
 .cookie-btn {
   border: none;
-  border-radius: 999px;
+  border-radius: 14px;
   padding: 9px 14px;
   font-weight: 700;
   cursor: pointer;
@@ -2267,21 +2285,32 @@ button:active {
   left: 14px;
   bottom: 14px;
   z-index: 9999;
-  border: 1px solid rgb(122 17 0 / 45%);
-  border-radius: 999px;
-  padding: 8px 12px;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 14px;
   font-weight: 700;
-  background: transparent;
-  color: #7a1100;
-  box-shadow: none;
-  backdrop-filter: blur(2px);
+  font-size: 0.95rem;
+  background: #f3f4f6;
+  color: #111827;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
   cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.cookie-manage-btn:hover {
+  transform: scale(1.03);
+  background: #e5e7eb;
 }
 
 .cookie-manage-btn:focus,
 .cookie-manage-btn:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #b30000;
+  box-shadow: 0 0 0 2px #ffd600;
+}
+
+.cookie-manage-btn:active {
+  transform: scale(0.99);
+  opacity: 0.94;
 }
 
 @media (max-width: 600px) {
@@ -2451,19 +2480,20 @@ button:active {
 
 .confirm-modal .btn {
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 14px;
   border: none;
   cursor: pointer;
 }
 .confirm-modal .btn-cancel {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
+  background: #f3f4f6;
+  color: #111827;
+  border: none;
+  border-radius: 14px;
 }
 .confirm-modal .btn-confirm {
-  background: var(--color-primary);
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: var(--color-white);
-  border: 1px solid var(--color-primary-dark);
+  border: none;
 }
 
 @media (max-width: 600px) {
@@ -3152,18 +3182,19 @@ button:active {
   margin-top: 18px;
 }
 .order-confirm-modal-btn {
-  background: #b30000;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 14px;
   padding: 10px 32px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 .order-confirm-modal-btn:hover {
-  background: #8a0000;
+  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  transform: scale(1.04);
 }
 .order-confirm-modal-info {
   font-size: 0.98rem;
@@ -3182,16 +3213,20 @@ button:active {
 }
 
 .browse-products-btn.btn-cancel {
-  background: #fff;
-  color: #b30000;
-  border: 1.5px solid #bbb;
+  background: #f3f4f6;
+  color: #111827;
+  border: none;
+  border-radius: 14px;
   box-shadow: none;
-  transition: background 0.18s, color 0.18s, border 0.18s;
+  transition: transform 0.2s, opacity 0.2s;
 }
 .browse-products-btn.btn-cancel:hover {
-  background: #f5f5f5;
-  border-color: #b30000;
-  color: #b30000;
+  transform: scale(1.03);
+  background: #e5e7eb;
+}
+.browse-products-btn.btn-cancel:active {
+  transform: scale(0.99);
+  opacity: 0.94;
 }
 
 #submitOrderBtn {
