@@ -105,6 +105,8 @@ function getPhoneSuffix(phone) {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 dotenv.config({ path: path.join(__dirname, '.env') });
+const frontendBaseUrl = (process.env.FRONTEND_URL || process.env.CLIENT_ORIGIN || 'https://galaretkarnia.pl').replace(/\/$/, '');
+const emailLogoUrl = `${frontendBaseUrl}/branding-logo-email.png`;
 
 let mongoClient;
 let ordersCollection;
@@ -264,7 +266,7 @@ app.post('/api/orders', async (req, res) => {
         <div style="margin:0;padding:24px;background:#f6f7fb;font-family:'Segoe UI',Arial,sans-serif;color:#1f2937;">
           <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.08);">
             <div style="background:#ffffff;padding:16px 22px;text-align:center;border-bottom:2px solid #b30000;">
-              <img src='https://galaretkarnia.pl/img/branding/logo-galaretkarnia-z-napisem.png' alt='Galaretkarnia' style="max-width:360px;height:76px;object-fit:contain;display:block;margin:0 auto;"/>
+              <img src='${emailLogoUrl}' alt='Galaretkarnia' style="max-width:360px;height:76px;object-fit:contain;display:block;margin:0 auto;"/>
             </div>
             <div style="padding:22px;">
               <h2 style="margin:0 0 12px 0;color:#b30000;font-size:24px;line-height:1.2;">${isDev ? '[TEST] ' : ''}Nowe zamówienie</h2>
