@@ -9,7 +9,7 @@ Galaretkarnia to prosta, responsywna strona e-commerce oferująca najlepszą tra
 ## 🚀 Funkcjonalności
 
 - **Dynamiczny koszyk zakupowy** - dodawanie produktów z automatycznym przeliczaniem
-- **Mini-koszyk** - zawsze widoczny w prawym górnym rogu
+- **Checkout z walidacją** - walidacja telefonu, paczkomatu i uwag
 - **Animacje** - płynne animacje przy dodawaniu produktów
 - **Responsywny design** - działa na wszystkich urządzeniach
 - **Dostępność (a11y)** - ARIA labels, focus states dla czytników ekranu
@@ -116,17 +116,16 @@ ORDER_EMAIL=kontakt@galaretkarnia.pl
 
 ### Dla developmentu
 ```bash
-# Zainstaluj zależności backendu i uruchom serwer
-cd server
+# uruchom frontend + backend równolegle
 npm install
 npm run dev
 ```
-Otwórz `http://localhost:3001` w przeglądarce. Frontend jest serwowany przez backend (statyczne pliki w `server/public`).
+Otwórz `http://localhost:5173` w przeglądarce.
 
 ### Dla produkcji - Frontend
 ```bash
 npm run build
-# Wynikowe pliki w: index.html, app.js, style.css
+# Wynikowe pliki w: client/dist
 ```
 
 ## 🧪 Testy E2E
@@ -188,16 +187,18 @@ W CI (przykład):
 
 ```
 galaretkarnia.pl/
-├── index.html              # Główna strona HTML
-├── app.ts                  # Frontend (TypeScript)
-├── app.js                  # Frontend skompilowany
-├── style.css               # Style CSS
+├── client/                 # Frontend (Vite + TypeScript)
+│   ├── index.html
+│   ├── app.ts
+│   ├── style.css
+│   ├── terms.html
+│   ├── privacy.html
+│   └── ...
 ├── package.json            # Konfiguracja npm
 ├── tsconfig.json           # Konfiguracja TypeScript
-├── img/                    # Obrazy strony (produkty, hero, zespół, branding)
-├── favicon/                # Ikony strony + manifest PWA
 └── server/                 # Backend (Node.js + Express)
     ├── server.mjs          # API serwera
+  ├── test-server.mjs     # Start backendu w trybie testowym
     ├── .env                # Zmienne środowiska (lokalne)
     ├── .env.example        # Szablon .env
     └── package.json        # Zależności backendu
@@ -210,14 +211,16 @@ galaretkarnia.pl/
 **POST `/api/orders`** - Złóż nowe zamówienie
 ```json
 {
-  "name": "Jan Nowak",
-  "phone": "+48-123-456-789",
-  "address": "ul. Galaretki 10, 00-000 Warszawa",
+  "phone": "512345678",
+  "parcelLockerCode": "WAW01A",
+  "paymentMethod": "bank_transfer",
   "notes": "Proszę dostarczyć po 18:00",
   "items": [
-    {"name": "Kurczaczek", "price": 18, "qty": 2}
+    {"name": "Galaretka drobiowa", "price": 18, "qty": 2}
   ],
-  "total": 36
+  "productsTotal": 36,
+  "deliveryCost": 15,
+  "total": 51
 }
 ```
 
@@ -238,15 +241,15 @@ Każde zamówienie w MongoDB zawiera:
 ```json
 {
   "_id": "ObjectId",
-  "name": "string",
   "phone": "string",
-  "address": "string",
+  "parcelLockerCode": "string",
   "notes": "string",
   "items": [
     {"name": "string", "price": "number", "qty": "number"}
   ],
   "total": "number",
-  "status": "nowe|w-realizacji|gotowe|anulowane",
+  "status": "oczekuje-na-platnosc|oplacone|w-realizacji|gotowe|anulowane",
+  "paymentStatus": "oczekiwanie-na-wplate",
   "createdAt": "Date",
   "updatedAt": "Date"
 }
@@ -254,11 +257,8 @@ Każde zamówienie w MongoDB zawiera:
 
 ## 🎨 Produkty
 
-1. **Kurczaczek** - Galaretka drobiowa z warzywami (18 zł)
-2. **Kogucisko** - Galaretka drobiowa bez warzyw (20 zł)
-3. **Prosiaczek** - Galaretka wieprzowa z warzywami (19 zł)
-4. **Dzika Świnia** - Galaretka wieprzowa bez warzyw (22 zł)
-5. **Warzywniak** - Galaretka warzywna na agarze (17 zł)
+1. **Galaretka drobiowa** - tradycyjna receptura z warzywami (18 zł)
+2. **Galaretka wieprzowa** - tradycyjna receptura z warzywami (19 zł)
 
 ## 🔧 Konfiguracja
 
