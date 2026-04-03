@@ -12,6 +12,9 @@
     "@secretlint/secretlint-rule-preset-recommend": "^11.2.4",
     "@types/jest": "^30.0.0",
     "concurrently": "^8.2.2",
+    "imagemin": "^9.0.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "playwright": "^1.58.2",
@@ -21,6 +24,7 @@
     "vite": "^8.0.3"
   },
   "scripts": {
+    "compress:images": "node ./scripts/compress-images.mjs",
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
     "dev:test": "concurrently \"npm run dev --prefix client\" \"npm run dev:test --prefix server\"",
     "dev:prodlike": "npm run build --prefix client && node server/server.mjs",
