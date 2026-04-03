@@ -530,23 +530,45 @@ window.addEventListener("DOMContentLoaded", () => {
   searchWrapper.appendChild(searchAutocompleteBox);
 
   let parcelLockers: any[] = [];
-  fetch("parcelLockers.json")
-    .then(res => res.json())
-    .then(data => {
-      // Mapuj dane z JSON-a na oczekiwane przez autocomplete pola
-      parcelLockers = data.map((locker: any) => ({
-        code: locker.n,
-        name: `${locker.c}${locker.e ? ", " + locker.e : ""}${locker.b ? " " + locker.b : ""}`.trim(),
-        address: locker.d || ""
-      }));
-      // Wywołanie funkcji importowanej na górze pliku
-      setupParcelAutocomplete(parcelLockers, parcelSearchInput, parcelLockerCodeInput, searchAutocompleteBox);
-    })
-    .catch((error) => {
-      parcelLockers = [];
-      showCartError("Nie udało się pobrać listy paczkomatów.", searchAutocompleteBox);
-      console.warn("Nie udało się pobrać listy paczkomatów.", error);
-    });
+  let parcelLockersPromise: Promise<void> | null = null;
+  let autocompleteInitialized = false;
+  const loadParcelLockers = () => {
+    if (parcelLockersPromise) return parcelLockersPromise;
+
+    parcelLockersPromise = fetch("parcelLockers.json")
+      .then((res) => res.json())
+      .then((data) => {
+        // Mapuj dane z JSON-a na oczekiwane przez autocomplete pola.
+        parcelLockers = data.map((locker: any) => ({
+          code: locker.n,
+          name: `${locker.c}${locker.e ? ", " + locker.e : ""}${locker.b ? " " + locker.b : ""}`.trim(),
+          address: locker.d || ""
+        }));
+
+        if (!autocompleteInitialized) {
+          setupParcelAutocomplete(parcelLockers, parcelSearchInput, parcelLockerCodeInput, searchAutocompleteBox);
+          autocompleteInitialized = true;
+        }
+      })
+      .catch((error) => {
+        parcelLockers = [];
+        showCartError("Nie udało się pobrać listy paczkomatów.", searchAutocompleteBox);
+        console.warn("Nie udało się pobrać listy paczkomatów.", error);
+      });
+
+    return parcelLockersPromise;
+  };
+
+  // Odłóż pobranie dużego JSON-a do pierwszej interakcji użytkownika z polami paczkomatu.
+  parcelSearchInput.addEventListener("focus", () => {
+    void loadParcelLockers();
+  }, { once: true });
+  parcelSearchInput.addEventListener("input", () => {
+    void loadParcelLockers();
+  }, { once: true });
+  parcelLockerCodeInput.addEventListener("focus", () => {
+    void loadParcelLockers();
+  }, { once: true });
 
   // localStorage.removeItem(STORAGE_KEY); // Usunięto czyszczenie koszyka przy starcie strony (UX)
 
