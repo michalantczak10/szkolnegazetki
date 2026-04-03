@@ -142,6 +142,16 @@ npm run test:e2e:smoke
 npm run test:e2e:live
 ```
 
+3. `prod smoke` - szybkie testy produkcji bez tworzenia realnych zamówień:
+```bash
+npm run test:prod:smoke
+```
+
+Opcjonalnie możesz wskazać inny URL:
+```bash
+PROD_BASE_URL=https://twoj-url npm run test:prod:smoke
+```
+
 ### Izolacja testów i produkcji na jednym klastrze MongoDB
 
 Jeśli używasz tylko jednego klastra MongoDB Free, testy live są odseparowane logicznie:
@@ -222,6 +232,10 @@ galaretkarnia.pl/
   "deliveryCost": 15,
   "total": 51
 }
+
+### Health check
+
+**GET `/api/health`** - Status API i bazy danych
 ```
 
 **GET `/api/orders`** - Pobierz wszystkie zamówienia (admin)

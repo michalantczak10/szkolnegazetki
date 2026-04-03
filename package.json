@@ -43,7 +43,8 @@
     "test:e2e:all": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:smoke": "playwright test tests/e2e/smoke.spec.ts",
-    "test:e2e:live": "playwright test -c playwright.live.config.ts tests/e2e/checkout-live.spec.ts --workers=1"
+    "test:e2e:live": "playwright test -c playwright.live.config.ts tests/e2e/checkout-live.spec.ts --workers=1",
+    "test:prod:smoke": "node ./scripts/prod-smoke.mjs"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run secrets:check:staged"

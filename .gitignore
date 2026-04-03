@@ -31,3 +31,5 @@ Thumbs.db
 
 # Test results
 test-results/
+.vercel
+.env*.local

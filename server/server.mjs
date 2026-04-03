@@ -479,9 +479,26 @@ app.put('/api/orders/id/:orderId', async (req, res) => {
   }
 });
 
-// Health check
+// Health check for monitoring systems
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Galaretkarnia API is running' });
+  const dbConnected = Boolean(ordersCollection);
+  const payload = {
+    status: dbConnected ? 'ok' : 'degraded',
+    service: 'galaretkarnia-api',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString(),
+    uptimeSeconds: Math.round(process.uptime()),
+    database: {
+      connected: dbConnected,
+      collection: ordersCollectionName,
+    },
+  };
+
+  if (!dbConnected) {
+    return res.status(503).json(payload);
+  }
+
+  return res.status(200).json(payload);
 });
 
 // SPA fallback — przeniesione na sam koniec pliku
