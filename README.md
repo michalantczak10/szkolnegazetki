@@ -129,6 +129,34 @@ npm run build
 # Wynikowe pliki w: index.html, app.js, style.css
 ```
 
+## 🧪 Testy E2E
+
+Projekt ma dwa profile testów Playwright:
+
+1. `smoke` - szybkie testy bez efektów ubocznych (bez tworzenia realnych zamówień):
+```bash
+npm run test:e2e:smoke
+```
+
+2. `live` - testy realnego checkoutu (tworzą prawdziwe zamówienia):
+```bash
+npm run test:e2e:live
+```
+
+### Izolacja testów i produkcji na jednym klastrze MongoDB
+
+Jeśli używasz tylko jednego klastra MongoDB Free, testy live są odseparowane logicznie:
+
+1. `NODE_ENV=test` używa osobnej kolekcji (`orders_test` domyślnie).
+2. Możesz ustawić osobny adres odbioru maili testowych (`ORDER_EMAIL_TEST`).
+3. Testowe zamówienia mają automatyczny cleanup przez TTL (`TEST_ORDER_TTL_DAYS`).
+
+Konfiguracja znajduje się w:
+
+1. `server/.env.example`
+2. `server/server.mjs`
+3. `playwright.live.config.ts`
+
 ### Generowanie favicon
 
 Skrypt `scripts/generate-favicons.cjs` konwertuje wektorowe `img/branding/logo-galaretkarnia.svg` na zestaw ikon (PNG, `favicon.ico`) i zapisuje je do katalogu `favicon/`.

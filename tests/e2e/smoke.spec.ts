@@ -107,28 +107,4 @@ test.describe('Galaretkarnia smoke', () => {
     await page.goto('/privacy.html');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Polityka prywatności');
   });
-
-  test('resets form and cart after closing order confirmation modal', async ({ page }) => {
-    const parcelResponse = await page.request.get('/parcelLockers.json');
-    expect(parcelResponse.ok()).toBeTruthy();
-    const parcelLockers = (await parcelResponse.json()) as Array<{ n?: string }>;
-    const lockerCode = parcelLockers.find((locker) => typeof locker.n === 'string' && locker.n.trim().length >= 6)?.n;
-    expect(lockerCode).toBeTruthy();
-
-    await page.getByTestId('btn-add-to-cart').first().click();
-    await page.getByTestId('input-customer-phone').fill('512345678');
-    await page.getByTestId('input-parcel-locker-code').fill(String(lockerCode));
-    await page.getByTestId('input-customer-notes').fill(`E2E reset check ${Date.now()}`);
-    await page.getByTestId('btn-submit-order').click();
-
-    const modal = page.locator('#order-confirm-modal');
-    await expect(modal).toBeVisible({ timeout: 15000 });
-    await modal.getByRole('button', { name: 'OK' }).click();
-    await expect(modal).toHaveCount(0);
-
-    await expect(page.getByTestId('input-customer-phone')).toHaveValue('');
-    await expect(page.getByTestId('input-parcel-locker-code')).toHaveValue('');
-    await expect(page.getByTestId('input-customer-notes')).toHaveValue('');
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Zamówienie nie zawiera wybranego produktu.');
-  });
 });

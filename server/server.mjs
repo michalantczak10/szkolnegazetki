@@ -7,6 +7,12 @@ import express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import { Resend } from 'resend';
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+const mongoDbName = isTestEnvironment ? process.env.MONGODB_DB_NAME_TEST : process.env.MONGODB_DB_NAME;
+const ordersCollectionName = isTestEnvironment
+  ? (process.env.ORDERS_COLLECTION_TEST || 'orders_test')
+  : (process.env.ORDERS_COLLECTION || 'orders');
+const testOrderTtlDays = Number(process.env.TEST_ORDER_TTL_DAYS || '14');
 
 // --- KLUCZOWE STAŁE I FUNKCJE ---
 // Próg darmowej dostawy (taki sam jak w frontendzie)
@@ -117,9 +123,21 @@ async function connectToMongo() {
     uri = uri.replace(/([&?])appName=[^&]+(&|$)/, (m, p1, p2) => (p2 === '&' ? p1 : ''));
     mongoClient = new MongoClient(uri); // usunięto useUnifiedTopology
     await mongoClient.connect();
-    const db = mongoClient.db();
-    ordersCollection = db.collection('orders');
-    console.log('✅ Połączono z MongoDB i ustawiono ordersCollection');
+    const db = mongoDbName ? mongoClient.db(mongoDbName) : mongoClient.db();
+    ordersCollection = db.collection(ordersCollectionName);
+
+    if (isTestEnvironment && Number.isFinite(testOrderTtlDays) && testOrderTtlDays > 0) {
+      const expireAfterSeconds = Math.round(testOrderTtlDays * 24 * 60 * 60);
+      await ordersCollection.createIndex(
+        { createdAt: 1 },
+        { expireAfterSeconds, name: 'ttl_test_orders_createdAt' },
+      );
+      console.log(`[ORDER] 🧹 TTL for test orders enabled: ${testOrderTtlDays} day(s)`);
+    }
+
+    console.log(
+      `[ORDER] ✅ Połączono z MongoDB (db=${db.databaseName}, collection=${ordersCollectionName}, mode=${isTestEnvironment ? 'test' : 'default'})`,
+    );
   } catch (err) {
     console.error('❌ Błąd połączenia z MongoDB:', err?.message || err);
     ordersCollection = undefined;
@@ -130,6 +148,13 @@ connectToMongo();
 
 const app = express();
 app.use(express.json());
+
+function getOrderNotificationEmail() {
+  if (isTestEnvironment && process.env.ORDER_EMAIL_TEST) {
+    return process.env.ORDER_EMAIL_TEST;
+  }
+  return process.env.ORDER_EMAIL || 'kontakt@galaretkarnia.pl';
+}
 
 // CORS middleware - allow requests from galaretkarnia.pl and localhost
 app.use((req, res, next) => {
@@ -283,9 +308,9 @@ app.post('/api/orders', async (req, res) => {
 
     const isDev = process.env.NODE_ENV === 'development';
     const mailOptions = {
-      to: process.env.ORDER_EMAIL || 'kontakt@galaretkarnia.pl',
+      to: getOrderNotificationEmail(),
       from: process.env.RESEND_FROM_EMAIL || 'noreply@galaretkarnia.onresend.com',
-      subject: `${isDev ? '[TEST]' : '📦'} Nowe zamówienie - ${displayOrderRef}`,
+      subject: `${isTestEnvironment || isDev ? '[TEST]' : '📦'} Nowe zamówienie - ${displayOrderRef}`,
       html: `
         <div style="margin:0;padding:24px;background:#f6f7fb;font-family:'Segoe UI',Arial,sans-serif;color:#1f2937;">
           <div style="max-width:620px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.08);">
@@ -467,7 +492,8 @@ app.get('*', (req, res) => {
 // Start server
 const server = app.listen(PORT, () => {
   console.log(`🚀 Galaretkarnia API running on port ${PORT}`);
-  console.log(`[EMAIL] 📧 Orders will be sent to: ${process.env.ORDER_EMAIL || 'kontakt@galaretkarnia.pl'}`);
+  console.log(`[ORDER] 📚 Active orders collection: ${ordersCollectionName}`);
+  console.log(`[EMAIL] 📧 Orders will be sent to: ${getOrderNotificationEmail()}`);
 });
 
 // Graceful shutdown - close Mongo client and HTTP server
