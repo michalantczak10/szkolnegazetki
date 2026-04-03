@@ -1,6 +1,7 @@
 import imagemin from 'imagemin';
 import imageminPngquant from 'imagemin-pngquant';
 import imageminMozjpeg from 'imagemin-mozjpeg';
+import imageminWebp from 'imagemin-webp';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -11,14 +12,16 @@ const imgDir = join(projectRoot, 'client', 'img');
 const dirs = ['products', 'team', 'hero', 'branding'];
 
 try {
-  console.log('🎨 Starting image compression...\n');
-  let totalProcessed = 0;
+  console.log('🎨 Starting image compression with WebP generation...\n');
+  let totalCompressed = 0;
+  let totalWebp = 0;
   
   for (const dir of dirs) {
     const dirPath = join(imgDir, dir);
-    console.log(`📁 Compressing ${dir}...`);
+    console.log(`📁 Processing ${dir}...`);
     
-    const files = await imagemin([`${dirPath}/**/*.{jpg,png}`], {
+    // Compress PNG/JPG
+    const compressedFiles = await imagemin([`${dirPath}/**/*.{jpg,png}`], {
       destination: dirPath,
       plugins: [
         imageminPngquant({
@@ -32,12 +35,23 @@ try {
       ],
     });
     
-    totalProcessed += files.length;
-    console.log(`   ✓ ${files.length} images processed`);
+    // Generate WebP versions
+    const webpFiles = await imagemin([`${dirPath}/**/*.{jpg,png}`], {
+      destination: dirPath,
+      plugins: [
+        imageminWebp({
+          quality: 75,
+        }),
+      ],
+    });
+    
+    totalCompressed += compressedFiles.length;
+    totalWebp += webpFiles.length;
+    console.log(`   ✓ ${compressedFiles.length} images compressed, ${webpFiles.length} WebP generated`);
   }
 
   console.log(`\n✅ Compression completed!`);
-  console.log(`📦 Total: ${totalProcessed} images compressed\n`);
+  console.log(`📦 Total: ${totalCompressed} PNG/JPG compressed, ${totalWebp} WebP generated\n`);
 } catch (error) {
   console.error('❌ Compression failed:', error.message);
   process.exit(1);

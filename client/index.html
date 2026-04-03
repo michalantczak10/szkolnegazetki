@@ -65,11 +65,16 @@
           </ul>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <img
-            src="img/hero/galaretki.png"
-            alt="Trzy rodzaje galaretek: wieprzowa, drobiowa i warzywna"
-            class="hero-image"
-          />
+          <picture>
+            <source srcset="img/hero/galaretki.webp" type="image/webp" />
+            <img
+              src="img/hero/galaretki.png"
+              alt="Trzy rodzaje galaretek: wieprzowa, drobiowa i warzywna"
+              class="hero-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </div>
       </div>
     </header>
@@ -94,19 +99,27 @@
 
         <div class="about-photos" aria-label="Założyciele Galaretkarni">
           <figure class="about-photo-card">
-            <img
-              src="img/team/zespol-michal.jpg"
-              alt="Michał, współzałożyciel Galaretkarni"
-              loading="lazy"
-            />
+            <picture>
+              <source srcset="img/team/zespol-michal.webp" type="image/webp" />
+              <img
+                src="img/team/zespol-michal.jpg"
+                alt="Michał, współzałożyciel Galaretkarni"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption>Michał</figcaption>
           </figure>
           <figure class="about-photo-card">
-            <img
-              src="img/team/zespol-justyna.jpg"
-              alt="Justynka, współzałożycielka Galaretkarni"
-              loading="lazy"
-            />
+            <picture>
+              <source srcset="img/team/zespol-justyna.webp" type="image/webp" />
+              <img
+                src="img/team/zespol-justyna.jpg"
+                alt="Justynka, współzałożycielka Galaretkarni"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption>Justynka</figcaption>
           </figure>
         </div>
@@ -118,13 +131,16 @@
 
       <div class="product-grid">
         <div class="product-card" data-product-id="drobiowa">
-          <img
-            src="img/products/galaretka_drobiowa.png"
-            alt="Galaretka drobiowa"
-            loading="lazy"
-            decoding="async"
-            data-product-image
-          />
+          <picture>
+            <source srcset="img/products/galaretka_drobiowa.webp" type="image/webp" />
+            <img
+              src="img/products/galaretka_drobiowa.png"
+              alt="Galaretka drobiowa"
+              loading="lazy"
+              decoding="async"
+              data-product-image
+            />
+          </picture>
           <h3 data-product-name>Galaretka drobiowa</h3>
           <p data-product-description>Z warzywami, tradycyjna receptura</p>
           <p class="price" data-product-price>18 zł</p>
@@ -142,13 +158,16 @@
         </div>
 
         <div class="product-card" data-product-id="wieprzowa">
-          <img
-            src="img/products/galaretka_wieprzowa.png"
-            alt="Galaretka wieprzowa"
-            loading="lazy"
-            decoding="async"
-            data-product-image
-          />
+          <picture>
+            <source srcset="img/products/galaretka_wieprzowa.webp" type="image/webp" />
+            <img
+              src="img/products/galaretka_wieprzowa.png"
+              alt="Galaretka wieprzowa"
+              loading="lazy"
+              decoding="async"
+              data-product-image
+            />
+          </picture>
           <h3 data-product-name>Galaretka wieprzowa</h3>
           <p data-product-description>Z warzywami, tradycyjna receptura</p>
           <p class="price" data-product-price>19 zł</p>
