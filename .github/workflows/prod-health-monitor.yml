@@ -30,6 +30,8 @@ jobs:
     if: failure()
     needs: health-check
     runs-on: ubuntu-latest
+    env:
+      ALERT_MESSAGE: "ALERT: Production health-check failing for https://galaretkarnia.onrender.com/api/health"
 
     steps:
       - name: Create alert issue
@@ -66,3 +68,23 @@ jobs:
               body,
               labels: ['monitoring', 'production'],
             });
+
+      - name: Notify Discord (optional)
+        if: ${{ secrets.DISCORD_WEBHOOK_URL != '' }}
+        shell: bash
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          payload="{\"content\":\"${ALERT_MESSAGE}\"}"
+          curl -fsS -H "Content-Type: application/json" -d "$payload" "$DISCORD_WEBHOOK_URL"
+
+      - name: Notify Slack (optional)
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
+        shell: bash
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          payload="{\"text\":\"${ALERT_MESSAGE}\"}"
+          curl -fsS -H "Content-Type: application/json" -d "$payload" "$SLACK_WEBHOOK_URL"

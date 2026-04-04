@@ -165,6 +165,12 @@ Automatyzacja CI:
 
 - Workflow `Production Smoke` uruchamia `npm run test:prod:smoke` po każdym pushu na `main`.
 - Workflow `Production Health Monitor` sprawdza `GET /api/health` co 15 minut.
+- W przypadku awarii monitor tworzy GitHub Issue oraz opcjonalnie wysyła webhook do Discord/Slack.
+
+Sekrety opcjonalne dla alertów:
+
+- `DISCORD_WEBHOOK_URL`
+- `SLACK_WEBHOOK_URL`
 
 Opcjonalnie możesz wskazać inny URL:
 ```bash
