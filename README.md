@@ -149,6 +149,8 @@ Projekt ma dwa profile testów Playwright:
 npm run test:e2e:smoke
 ```
 
+`npm run test:e2e:all` używa domyślnego profilu E2E i celowo pomija test live checkout.
+
 2. `live` - testy realnego checkoutu (tworzą prawdziwe zamówienia):
 ```bash
 npm run test:e2e:live
