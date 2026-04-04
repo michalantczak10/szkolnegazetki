@@ -1,36 +1,37 @@
 # ✅ Checklist produkcyjny Galaretkarnia
 
-## Backend
-- [ ] Wszystkie zmienne środowiskowe ustawione (.env)
-- [ ] Klucz API Resend poprawny
-- [ ] Connection string MongoDB poprawny
-- [ ] Serwer uruchamia się bez błędów
-- [ ] Endpoint `/api/health` zwraca OK
-- [ ] Testowe zamówienie zapisuje się w bazie
+## 1) Pre-release (na `develop`)
+- [ ] `git status` czysty (brak lokalnych zmian)
+- [ ] `develop` zsynchronizowany z `origin/develop`
+- [ ] `npm run test:e2e:smoke` przechodzi lokalnie
+- [ ] `npm run test:prod:smoke` przechodzi przeciwko produkcji
+- [ ] Backend health: `GET /api/health` zwraca `status=ok` i `database.connected=true`
 
-## Frontend
-- [ ] API_URL ustawiony na produkcyjny backend
-- [ ] Kompilacja TypeScript bez błędów
-- [ ] Responsywność i dostępność sprawdzona
-- [ ] SEO: metatagi, favicon, manifest
-- [ ] Brak błędów w konsoli przeglądarki
+## 2) Konfiguracja i bezpieczeństwo
+- [ ] Wszystkie zmienne środowiskowe poprawnie ustawione (Render, Vercel)
+- [ ] Klucze i sekrety nie występują w repozytorium
+- [ ] `MONGODB_URI`, `RESEND_API_KEY`, `ORDER_EMAIL`, `RESEND_FROM_EMAIL` ustawione dla produkcji
+- [ ] Zależności są aktualne i bez krytycznych podatności
 
-## Deployment
-- [ ] Backend wdrożony na Render (status Live)
-- [ ] Frontend wdrożony na Vercel (status Live)
-- [ ] Domena własna podpięta (opcjonalnie)
-- [ ] Testowe zamówienie przechodzi przez cały flow
+## 3) Release (`main`)
+- [ ] Merge `develop -> main` wykonany
+- [ ] Push na `origin/main` wykonany
+- [ ] Render rozpoczął deployment backendu
+- [ ] Vercel ma poprawny build frontendu
+- [ ] Workflow `Production Smoke` uruchomił się po pushu na `main`
 
-## Dokumentacja
-- [ ] README.md, DEPLOYMENT-GUIDE.md, EMAIL-SETUP.md, KROK-PO-KROKU.md aktualne
-- [ ] Brak zbędnych plików i folderów
-- [ ] Kod wyczyszczony z dead code
+## 4) Post-release (weryfikacja)
+- [ ] `npm run test:prod:smoke` nadal przechodzi po deployu
+- [ ] `POST /api/orders` zwraca poprawne błędy walidacji dla niepoprawnych danych
+- [ ] Legal pages i checkout działają poprawnie na produkcji
+- [ ] Brak błędów krytycznych w logach Render
 
-## Bezpieczeństwo
-- [ ] Brak wrażliwych danych w repozytorium
-- [ ] .env nie jest publiczny
-- [ ] Zaktualizowane zależności
+## 5) Monitoring i operacje
+- [ ] Workflow `Production Health Monitor` działa cyklicznie (co 15 min)
+- [ ] Alert issue tworzy się automatycznie przy awarii health-check
+- [ ] Lokalny housekeeping wykonany (`npm run ops:local:check`)
+- [ ] Niepotrzebne lokalne gałęzie usunięte (`npm run ops:local:cleanup`)
 
 ---
 
-Przed wdrożeniem sprawdź każdy punkt!
+Ta lista zakłada workflow: codzienna praca na `develop`, release wyłącznie przez `main`.

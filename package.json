@@ -44,7 +44,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:smoke": "playwright test tests/e2e/smoke.spec.ts",
     "test:e2e:live": "playwright test -c playwright.live.config.ts tests/e2e/checkout-live.spec.ts --workers=1",
-    "test:prod:smoke": "node ./scripts/prod-smoke.mjs"
+    "test:prod:smoke": "node ./scripts/prod-smoke.mjs",
+    "ops:local:check": "node ./scripts/local-housekeeping.mjs",
+    "ops:local:cleanup": "node ./scripts/local-housekeeping.mjs --delete-merged"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run secrets:check:staged"

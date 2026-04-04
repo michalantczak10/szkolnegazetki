@@ -29,6 +29,20 @@ Chcesz od razu wdrożyć aplikację na produkcję?
 
 Czas setup: **~15 minut**
 
+## 🌿 Workflow gałęzi
+
+Aktualny model pracy:
+
+- `develop` - codzienna praca i testy zmian
+- `main` - wyłącznie release na produkcję
+
+Zasady:
+
+1. Każdą zmianę przygotuj i zweryfikuj na `develop`.
+2. Na produkcję wypychaj tylko po merge do `main`.
+3. Każdy push na `main` uruchamia automatyczny smoke test produkcyjny.
+4. Monitoring health-check działa cyklicznie co 15 minut i zgłasza alert przez GitHub Issue.
+
 ## 🛠️ Technologie
 
 - **Frontend**: TypeScript, CSS3, HTML5
@@ -147,6 +161,11 @@ npm run test:e2e:live
 npm run test:prod:smoke
 ```
 
+Automatyzacja CI:
+
+- Workflow `Production Smoke` uruchamia `npm run test:prod:smoke` po każdym pushu na `main`.
+- Workflow `Production Health Monitor` sprawdza `GET /api/health` co 15 minut.
+
 Opcjonalnie możesz wskazać inny URL:
 ```bash
 PROD_BASE_URL=https://twoj-url npm run test:prod:smoke
@@ -236,6 +255,20 @@ galaretkarnia.pl/
 ### Health check
 
 **GET `/api/health`** - Status API i bazy danych
+```
+
+## 🧹 Lokalny housekeeping
+
+Szybki przegląd stanu lokalnego środowiska:
+
+```bash
+npm run ops:local:check
+```
+
+Automatyczne usunięcie lokalnych gałęzi, które są już zmergowane:
+
+```bash
+npm run ops:local:cleanup
 ```
 
 **GET `/api/orders`** - Pobierz wszystkie zamówienia (admin)

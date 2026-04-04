@@ -1,0 +1,68 @@
+name: Production Health Monitor
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check /api/health
+        shell: bash
+        run: |
+          set -euo pipefail
+          response="$(curl -fsS https://galaretkarnia.onrender.com/api/health)"
+          echo "Health response: $response"
+
+          echo "$response" | grep -q '"status":"ok"'
+          echo "$response" | grep -q '"database"'
+          echo "$response" | grep -q '"connected":true'
+
+  alert-on-failure:
+    if: failure()
+    needs: health-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create alert issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'ALERT: Production health-check failing';
+            const body = [
+              'Automatyczny monitor wykryl blad health-check.',
+              '',
+              '- Endpoint: https://galaretkarnia.onrender.com/api/health',
+              `- Workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Sprawdz backend na Render i logi aplikacji.'
+            ].join('\n');
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50,
+            });
+
+            const alreadyOpen = issues.find((issue) => issue.title === title);
+            if (alreadyOpen) {
+              core.info(`Issue already open: #${alreadyOpen.number}`);
+              return;
+            }
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['monitoring', 'production'],
+            });
