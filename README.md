@@ -4,7 +4,7 @@ Strona internetowa sklepu z tradycyjną galaretką z nóżek.
 
 ## 📋 Opis
 
-Galaretkarnia to prosta, responsywna strona e-commerce oferująca najlepszą tradycyjną galaretką z nóżek w Polsce. Projekt wykorzystuje TypeScript dla typowania i bezpieczeństwa kodu.
+Galaretkarnia to prosta, responsywna strona e-commerce oferująca tradycyjną galaretkę z nóżek. Projekt wykorzystuje TypeScript dla typowania i bezpieczeństwa kodu.
 
 ## 🚀 Funkcjonalności
 
@@ -45,14 +45,13 @@ Zasady:
 
 ## 🛠️ Technologie
 
-- **Frontend**: TypeScript, CSS3, HTML5
+- **Frontend**: Vite, TypeScript, CSS3, HTML5
 - **Backend**: Node.js + Express
 - **Baza danych**: MongoDB (archiwizacja zamówień)
 - **Email**: Resend API
+- **Testy E2E**: Playwright
 
 ## 📦 Instalacja
-
-### Frontend
 
 1. Sklonuj repozytorium:
 ```bash
@@ -60,29 +59,38 @@ git clone https://github.com/michalantczak10/galaretkarnia.git
 cd galaretkarnia
 ```
 
-2. Zainstaluj zależności:
+2. Zainstaluj zależności dla wszystkich części projektu:
 ```bash
 npm install
+npm install --prefix client
+npm install --prefix server
 ```
 
-3. Kompiluj TypeScript:
+3. Skonfiguruj plik środowiskowy backendu:
+```bash
+copy server/.env.example server/.env
+```
+
+4. Uzupełnij zmienne w `server/.env` (patrz sekcja konfiguracji niżej).
+
+## 🏃 Uruchomienie
+
+### Development (frontend + backend)
+```bash
+npm run dev
+```
+Otwórz `http://localhost:5173` w przeglądarce.
+
+### Produkcyjny build frontendu
 ```bash
 npm run build
+# Wynikowe pliki: client/dist
 ```
 
-### Backend
-
-1. Przejdź do folderu `server`:
+### Uruchomienie backendu lokalnie
 ```bash
-cd server
+npm run start --prefix server
 ```
-
-2. Zainstaluj zależności:
-```bash
-npm install
-```
-
-3. Skonfiguruj `.env` (patrz sekcja poniżej)
 
 ## ⚙️ Konfiguracja
 
@@ -122,25 +130,15 @@ Szybka konfiguracja:
 ```env
 RESEND_API_KEY=re_twoj_klucz_api
 ORDER_EMAIL=kontakt@galaretkarnia.pl
+RESEND_FROM_EMAIL=noreply@twoja-domena.pl
+```
+
+2. Opcjonalnie dla testów live ustaw oddzielny adres:
+```env
+ORDER_EMAIL_TEST=testy@twoja-domena.pl
 ```
 
 **Uwaga**: Zamówienia są zapisywane w MongoDB niezależnie od konfiguracji email!
-
-## 🏃 Uruchomienie
-
-### Dla developmentu
-```bash
-# uruchom frontend + backend równolegle
-npm install
-npm run dev
-```
-Otwórz `http://localhost:5173` w przeglądarce.
-
-### Dla produkcji - Frontend
-```bash
-npm run build
-# Wynikowe pliki w: client/dist
-```
 
 ## 🧪 Testy E2E
 
@@ -208,6 +206,8 @@ galaretkarnia.pl/
 
 ## 🔌 API Endpoints
 
+**GET `/api/payment-config`** - Konfiguracja płatności dla frontendu
+
 ### Zamówienia
 
 **POST `/api/orders`** - Złóż nowe zamówienie
@@ -218,13 +218,12 @@ galaretkarnia.pl/
   "paymentMethod": "bank_transfer",
   "notes": "Proszę dostarczyć po 18:00",
   "items": [
-    {"name": "Galaretka drobiowa", "price": 18, "qty": 2}
-  ],
-  "productsTotal": 36,
-  "deliveryCost": 15,
-  "total": 51
+    {"name": "Galaretka drobiowa", "qty": 2}
+  ]
 }
 ```
+
+`productsTotal`, `deliveryCost` i `total` są wyliczane po stronie backendu na podstawie `items`.
 
 **GET `/api/orders`** - Pobierz wszystkie zamówienia (admin)
 
