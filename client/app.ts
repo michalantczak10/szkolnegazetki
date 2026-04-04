@@ -175,11 +175,6 @@ window.scrollToCheckout = scrollToCheckout;
         btn.style.background = "linear-gradient(90deg,#e74c3c 0%,#b30000 100%)";
       }
     });
-    btn.addEventListener("mouseleave", () => {
-      if (!btn.disabled) {
-        btn.style.background = "linear-gradient(90deg,#e74c3c 0%,#b30000 100%)";
-      }
-    });
     btn.addEventListener("click", () => {
       if (!btn.disabled) window.clearCart();
     });

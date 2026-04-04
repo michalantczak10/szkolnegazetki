@@ -26,7 +26,10 @@ export function setupParcelAutocomplete(parcelLockers: any[], parcelSearchInput:
       matches.forEach((locker: any, idx: number) => {
         const option = document.createElement("div");
         option.className = "autocomplete-option";
-        option.innerHTML = `<strong>${locker.code}</strong> — ${locker.name}, ${locker.address}`;
+        const code = document.createElement("strong");
+        code.textContent = locker.code;
+        option.appendChild(code);
+        option.appendChild(document.createTextNode(` — ${locker.name}, ${locker.address}`));
         option.addEventListener("mousedown", (e) => {
           // Zapobiegaj blur na input zanim handler się wykona
           e.preventDefault();

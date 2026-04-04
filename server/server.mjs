@@ -63,6 +63,12 @@ const PAYMENT_METHODS = [
   'gotowka'
 ];
 const ORDER_NOTES_MAX_LENGTH = 300;
+const MAX_ITEM_QTY = 50;
+const PRODUCT_CATALOG = [
+  { id: 'drobiowa', name: 'Galaretka drobiowa', price: 18 },
+  { id: 'wieprzowa', name: 'Galaretka wieprzowa', price: 19 },
+];
+const PRODUCT_PRICE_BY_NAME = new Map(PRODUCT_CATALOG.map((product) => [product.name, product.price]));
 
 function normalizeOrderNotes(notes) {
   if (typeof notes !== 'string') return '';
@@ -112,6 +118,28 @@ function getPhoneSuffix(phone) {
   const cleaned = phone.replace(/\D/g, '');
   return cleaned.slice(-3);
 }
+
+function normalizeOrderItems(items) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return { ok: false, error: 'Koszyk jest pusty.' };
+  }
+
+  const normalized = [];
+  for (const rawItem of items) {
+    const name = typeof rawItem?.name === 'string' ? rawItem.name.trim() : '';
+    const qty = Number(rawItem?.qty);
+    const serverPrice = PRODUCT_PRICE_BY_NAME.get(name);
+
+    if (!name || !Number.isInteger(qty) || qty <= 0 || qty > MAX_ITEM_QTY || typeof serverPrice !== 'number') {
+      return { ok: false, error: 'Koszyk zawiera nieprawidłowe pozycje.' };
+    }
+
+    normalized.push({ name, price: serverPrice, qty });
+  }
+
+  return { ok: true, items: normalized };
+}
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const frontendBaseUrl = (process.env.FRONTEND_URL || process.env.CLIENT_ORIGIN || 'https://galaretkarnia.pl').replace(/\/$/, '');
@@ -226,9 +254,11 @@ app.post('/api/orders', async (req, res) => {
       return res.status(400).json({ error: 'Podaj poprawny kod paczkomatu.' });
     }
 
-    if (!Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ error: 'Koszyk jest pusty.' });
+    const normalizedItemsResult = normalizeOrderItems(items);
+    if (!normalizedItemsResult.ok) {
+      return res.status(400).json({ error: normalizedItemsResult.error });
     }
+    const normalizedItems = normalizedItemsResult.items;
 
     const selectedPaymentMethod = paymentMethod || 'bank_transfer';
 
@@ -249,9 +279,9 @@ app.post('/api/orders', async (req, res) => {
     const phoneSuffix = getPhoneSuffix(phone);
 
     
-    const totalItemsCount = items.reduce((sum, item) => sum + (item.qty || 0), 0);
+    const totalItemsCount = normalizedItems.reduce((sum, item) => sum + item.qty, 0);
 
-    const calculatedProductsTotal = items.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 0)), 0);
+    const calculatedProductsTotal = normalizedItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     const deliveryInfo = calculateDeliveryCost(totalItemsCount);
     const calculatedDeliveryCost = calculatedProductsTotal >= FREE_DELIVERY_THRESHOLD ? 0 : deliveryInfo.cost;
@@ -262,7 +292,7 @@ app.post('/api/orders', async (req, res) => {
       phoneSuffix,
       parcelLockerCode: normalizedParcelLockerCode,
       notes: normalizedNotes,
-      items,
+      items: normalizedItems,
       totalItemsCount,
       productsTotal: calculatedProductsTotal,
       deliveryCost: calculatedDeliveryCost,
@@ -305,7 +335,7 @@ app.post('/api/orders', async (req, res) => {
     });
 
     
-    const itemsText = items
+    const itemsText = normalizedItems
       .map(item => `${item.name}: ${item.qty} słoik(ów) × ${item.price} zł = ${item.qty * item.price} zł`)
       .join('\n');
 
