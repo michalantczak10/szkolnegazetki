@@ -5,24 +5,35 @@
 - [ ] `develop` zsynchronizowany z `origin/develop`
 - [ ] `npm run test:e2e:smoke` przechodzi lokalnie
 - [ ] `npm run test:prod:smoke` przechodzi przeciwko produkcji
-- [ ] Backend health: `GET /api/health` zwraca `status=ok` i `database.connected=true`
+- [ ] Backend health: `GET https://galaretkarnia.onrender.com/api/health` zwraca `status=ok` i `database.connected=true`
 
 ## 2) Konfiguracja i bezpieczeństwo
 - [ ] Wszystkie zmienne środowiskowe poprawnie ustawione (Render, Vercel)
 - [ ] Klucze i sekrety nie występują w repozytorium
 - [ ] `MONGODB_URI`, `RESEND_API_KEY`, `ORDER_EMAIL`, `RESEND_FROM_EMAIL` ustawione dla produkcji
-- [ ] Zależności są aktualne i bez krytycznych podatności
+- [ ] (Opcjonalnie dla testów live) `ORDER_EMAIL_TEST` ustawiony na osobny adres
+- [ ] Brak podatności o poziomie `high/critical`:
+	- [ ] root: `npm audit --audit-level=high`
+	- [ ] client: `npm audit --prefix client --audit-level=high`
+	- [ ] server: `npm audit --prefix server --audit-level=high`
 
 ## 3) Release (`main`)
-- [ ] Merge `develop -> main` wykonany
+- [ ] Merge `develop -> main` wykonany (merge commit lub fast-forward zgodnie z polityką repo)
 - [ ] Push na `origin/main` wykonany
 - [ ] Render rozpoczął deployment backendu
-- [ ] Vercel ma poprawny build frontendu
+- [ ] Vercel ma poprawny build frontendu i zielony status deployu
+- [ ] Vercel używa aktualnej konfiguracji:
+	- [ ] `installCommand = npm install --prefix client`
+	- [ ] `buildCommand = npm run build --prefix client`
+	- [ ] `outputDirectory = client/dist`
 - [ ] Workflow `Production Smoke` uruchomił się po pushu na `main`
 
 ## 4) Post-release (weryfikacja)
 - [ ] `npm run test:prod:smoke` nadal przechodzi po deployu
-- [ ] `POST /api/orders` zwraca poprawne błędy walidacji dla niepoprawnych danych
+- [ ] Walidacja API (`POST /api/orders`) zwraca poprawne błędy dla niepoprawnych danych:
+	- [ ] pusty `items` -> `400`
+	- [ ] niepoprawny `parcelLockerCode` -> `400`
+	- [ ] niepoprawny `phone` -> `400`
 - [ ] Legal pages i checkout działają poprawnie na produkcji
 - [ ] Brak błędów krytycznych w logach Render
 
