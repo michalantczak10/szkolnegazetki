@@ -21,7 +21,6 @@
     "dev:prodlike": "npm run build --prefix client && node server/server.mjs",
     "dev:prodlike:client": "npm run build --prefix client && npm run preview --prefix client",
     "build": "npm run build --prefix client",
-    "build:vercel": "npm run build --prefix client && node ./scripts/sync-vercel-dist.mjs",
     "start": "npm run build && node server/server.mjs",
     "prepare": "simple-git-hooks",
     "secrets:check:staged": "node ./scripts/secretlint-staged.mjs",
