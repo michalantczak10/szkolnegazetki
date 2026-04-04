@@ -1,47 +1,66 @@
 # ✅ Checklist produkcyjny Galaretkarnia
 
-## 1) Pre-release (na `develop`)
-- [ ] `git status` czysty (brak lokalnych zmian)
-- [ ] `develop` zsynchronizowany z `origin/develop`
-- [ ] `npm run test:e2e:smoke` przechodzi lokalnie
-- [ ] `npm run test:prod:smoke` przechodzi przeciwko produkcji
-- [ ] Backend health: `GET https://galaretkarnia.onrender.com/api/health` zwraca `status=ok` i `database.connected=true`
+## 0) Tryb release
+- [ ] Wybierz tryb `quick` (zmiany docs/config bez ryzyka runtime) albo `full` (zmiany kodu frontend/backend).
+- [ ] Jeśli to `full`, wykonaj wszystkie sekcje bez pomijania.
+
+## 1) Go/No-Go (na `develop`)
+- [ ] `git status` czysty (brak lokalnych zmian).
+- [ ] `develop` zsynchronizowany z `origin/develop`.
+- [ ] `npm run test:e2e:smoke` przechodzi lokalnie.
+- [ ] `npm run test:prod:smoke` przechodzi przeciwko produkcji.
+- [ ] `GET https://galaretkarnia.onrender.com/api/health` zwraca `status=ok` i `database.connected=true`.
+- [ ] Decyzja `GO` zapisana (kto i kiedy zatwierdził release).
 
 ## 2) Konfiguracja i bezpieczeństwo
-- [ ] Wszystkie zmienne środowiskowe poprawnie ustawione (Render, Vercel)
-- [ ] Klucze i sekrety nie występują w repozytorium
-- [ ] `MONGODB_URI`, `RESEND_API_KEY`, `ORDER_EMAIL`, `RESEND_FROM_EMAIL` ustawione dla produkcji
-- [ ] (Opcjonalnie dla testów live) `ORDER_EMAIL_TEST` ustawiony na osobny adres
-- [ ] Brak podatności o poziomie `high/critical`:
-	- [ ] root: `npm audit --audit-level=high`
-	- [ ] client: `npm audit --prefix client --audit-level=high`
-	- [ ] server: `npm audit --prefix server --audit-level=high`
+- [ ] Zmienne środowiskowe poprawnie ustawione w Render i Vercel.
+- [ ] `MONGODB_URI`, `RESEND_API_KEY`, `ORDER_EMAIL`, `RESEND_FROM_EMAIL` ustawione dla produkcji.
+- [ ] (Opcjonalnie dla testów live) `ORDER_EMAIL_TEST` ustawiony na osobny adres.
+- [ ] Sekrety nie występują w repozytorium (pre-commit `secretlint` działa).
+- [ ] Brak podatności `high/critical` w root: `npm audit --audit-level=high`.
+- [ ] Brak podatności `high/critical` w client: `npm audit --prefix client --audit-level=high`.
+- [ ] Brak podatności `high/critical` w server: `npm audit --prefix server --audit-level=high`.
 
 ## 3) Release (`main`)
-- [ ] Merge `develop -> main` wykonany (merge commit lub fast-forward zgodnie z polityką repo)
-- [ ] Push na `origin/main` wykonany
-- [ ] Render rozpoczął deployment backendu
-- [ ] Vercel ma poprawny build frontendu i zielony status deployu
-- [ ] Vercel używa aktualnej konfiguracji:
-	- [ ] `installCommand = npm install --prefix client`
-	- [ ] `buildCommand = npm run build --prefix client`
-	- [ ] `outputDirectory = client/dist`
-- [ ] Workflow `Production Smoke` uruchomił się po pushu na `main`
+- [ ] Merge `develop -> main` wykonany (merge commit albo fast-forward zgodnie z polityką repo).
+- [ ] Push na `origin/main` wykonany.
+- [ ] Render rozpoczął deployment backendu i zakończył go statusem `Live`.
+- [ ] Vercel zakończył deployment frontendu statusem `Ready`.
+- [ ] Vercel ma konfigurację: `installCommand = npm install --prefix client`.
+- [ ] Vercel ma konfigurację: `buildCommand = npm run build --prefix client`.
+- [ ] Vercel ma konfigurację: `outputDirectory = client/dist`.
+- [ ] Workflow `Production Smoke` uruchomił się po pushu na `main` i zakończył statusem `Success`.
 
-## 4) Post-release (weryfikacja)
-- [ ] `npm run test:prod:smoke` nadal przechodzi po deployu
-- [ ] Walidacja API (`POST /api/orders`) zwraca poprawne błędy dla niepoprawnych danych:
-	- [ ] pusty `items` -> `400`
-	- [ ] niepoprawny `parcelLockerCode` -> `400`
-	- [ ] niepoprawny `phone` -> `400`
-- [ ] Legal pages i checkout działają poprawnie na produkcji
-- [ ] Brak błędów krytycznych w logach Render
+## 4) Post-release (weryfikacja funkcjonalna)
+- [ ] `npm run test:prod:smoke` przechodzi po deployu.
+- [ ] `POST /api/orders` z pustym `items` zwraca `400`.
+- [ ] `POST /api/orders` z niepoprawnym `parcelLockerCode` zwraca `400`.
+- [ ] `POST /api/orders` z niepoprawnym `phone` zwraca `400`.
+- [ ] Legal pages i checkout działają poprawnie na produkcji.
+- [ ] Brak błędów krytycznych w logach Render po deployu.
 
 ## 5) Monitoring i operacje
-- [ ] Workflow `Production Health Monitor` działa cyklicznie (co 15 min)
-- [ ] Ostatnie uruchomienia monitoringu nie mają błędów
-- [ ] Lokalny housekeeping wykonany (`npm run ops:local:check`)
-- [ ] Niepotrzebne lokalne gałęzie usunięte (`npm run ops:local:cleanup`)
+- [ ] Workflow `Production Health Monitor` działa cyklicznie (co 15 min).
+- [ ] Ostatnie uruchomienia monitoringu nie mają błędów.
+- [ ] Lokalny housekeeping wykonany: `npm run ops:local:check`.
+- [ ] Niepotrzebne lokalne gałęzie usunięte: `npm run ops:local:cleanup`.
+
+## 6) Rollback (gdy release nie spełnia warunków)
+- [ ] Warunek rollback spełniony (np. smoke fail, health fail, błąd krytyczny checkout/API).
+- [ ] Cofnij `main` do ostatniego stabilnego commita.
+- [ ] Wypchnij rollback na `origin/main`.
+- [ ] Potwierdź nowy deploy na Vercel (`Ready`) i Render (`Live`).
+- [ ] Ponownie uruchom `npm run test:prod:smoke` i sprawdź `/api/health`.
+- [ ] Zapisz incydent: przyczyna, commit rollback, działania naprawcze.
+
+## 7) Log release (do uzupełnienia przy każdym wdrożeniu)
+- [ ] Data/godzina:
+- [ ] Osoba wdrażająca:
+- [ ] Commit release (`main`):
+- [ ] Wynik `Production Smoke`:
+- [ ] Wynik `/api/health`:
+- [ ] Czy wykonano rollback: tak/nie
+- [ ] Link do runu GitHub Actions:
 
 ---
 
