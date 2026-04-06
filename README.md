@@ -12,22 +12,22 @@ Galaretkarnia to prosta, responsywna strona e-commerce oferująca tradycyjną ga
 - **Checkout z walidacją** - walidacja telefonu, paczkomatu i uwag
 - **Animacje** - płynne animacje przy dodawaniu produktów
 - **Responsywny design** - działa na wszystkich urządzeniach
-- **Dostępność (a11y)** - ARIA labels, focus states dla czytników ekranu
+- **Dostępność (a11y)** - etykiety ARIA i stany focus dla czytników ekranu
 - **SEO** - zoptymalizowane metatagi
 - **MongoDB** - pełna archiwizacja zamówień
-- **Powiadomienia email** - automatyczne maile o nowych zamówieniach
+- **Powiadomienia e-mail** - automatyczne wiadomości o nowych zamówieniach
 
 ## 🌐 Quick Start - Deployment
 
 Chcesz od razu wdrożyć aplikację na produkcję?
 
-**📘 [Kompletny przewodnik deployment →](DEPLOYMENT-GUIDE.md)**
+**📘 [Kompletny przewodnik wdrożenia →](DEPLOYMENT-GUIDE.md)**
 
 - Backend → Render.com (darmowy)
 - Frontend → Vercel (darmowy)
-- Database → MongoDB Atlas (darmowy)
+- Baza danych → MongoDB Atlas (darmowy)
 
-Czas setup: **~15 minut**
+Czas konfiguracji: **~15 minut**
 
 ## 🌿 Workflow gałęzi
 
@@ -41,7 +41,7 @@ Zasady:
 1. Każdą zmianę przygotuj i zweryfikuj na `develop`.
 2. Na produkcję wypychaj tylko po merge do `main`.
 3. Każdy push na `main` uruchamia automatyczny smoke test produkcyjny.
-4. Monitoring health-check działa cyklicznie co 15 minut jako pasywna kontrola stanu API.
+4. Monitoring health check działa cyklicznie co 15 minut jako pasywna kontrola stanu API.
 
 ## 🛠️ Technologie
 
@@ -110,7 +110,7 @@ mongod
 MONGODB_URI=mongodb://localhost:27017/galaretkarnia
 ```
 
-#### Opcja 2: MongoDB Cloud (Atlas) - rekomendowane dla produkcji
+#### Opcja 2: MongoDB Atlas (chmura) - rekomendowane dla produkcji
 ```bash
 # Wejdź na https://www.mongodb.com/cloud/atlas
 # Utwórz darmowe konto
@@ -121,9 +121,9 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/galaretkarnia?re
 
 ### Email (Resend)
 
-Backend wysyła email z powiadomieniem o każdym nowym zamówieniu.
+Backend wysyła e-mail z powiadomieniem o każdym nowym zamówieniu.
 
-**📧 [Szczegółowa instrukcja konfiguracji email →](EMAIL-SETUP.md)**
+**📧 [Szczegółowa instrukcja konfiguracji e-mail →](EMAIL-SETUP.md)**
 
 Szybka konfiguracja:
 1. W `server/.env` ustaw klucz Resend i adres odbioru zamówień
@@ -152,8 +152,8 @@ Najczęściej używane skrypty w katalogu głównym:
 - `npm run test:e2e:all` - pełny profil domyślnych testów E2E (bez live checkout)
 - `npm run test:e2e:live` - realny checkout E2E (tworzy prawdziwe zamówienia)
 - `npm run test:prod:smoke` - smoke test przeciwko produkcji
-- `npm run ops:local:check` - przegląd lokalnego środowiska i branchy
-- `npm run ops:local:cleanup` - usuwanie lokalnych branchy już zmergowanych
+- `npm run ops:local:check` - przegląd lokalnego środowiska i gałęzi
+- `npm run ops:local:cleanup` - usuwanie lokalnych gałęzi już scalonych
 
 ## 🧪 Testy E2E
 
@@ -193,7 +193,7 @@ Jeśli używasz tylko jednego klastra MongoDB Free, testy live są odseparowane 
 
 1. `NODE_ENV=test` używa osobnej kolekcji (`orders_test` domyślnie).
 2. Możesz ustawić osobny adres odbioru maili testowych (`ORDER_EMAIL_TEST`).
-3. Testowe zamówienia mają automatyczny cleanup przez TTL (`TEST_ORDER_TTL_DAYS`).
+3. Testowe zamówienia mają automatyczne czyszczenie przez TTL (`TEST_ORDER_TTL_DAYS`).
 
 Konfiguracja znajduje się w:
 
@@ -222,7 +222,7 @@ galaretkarnia.pl/
     └── package.json        # Zależności backendu
 ```
 
-## 🔌 API Endpoints
+## 🔌 Endpointy API
 
 **GET `/api/payment-config`** - Konfiguracja płatności dla frontendu
 
@@ -325,7 +325,7 @@ Kolory i inne zmienne można łatwo dostosować w `:root` w pliku `style.css`:
 
 ## 📱 Responsywność
 
-Strona jest w pełni responsywna z breakpointami:
+Strona jest w pełni responsywna i korzysta z breakpointów:
 - Mobile: < 480px
 - Tablet: < 768px  
 - Desktop: > 768px
