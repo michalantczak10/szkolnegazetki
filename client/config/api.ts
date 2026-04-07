@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 /**
  * API Configuration with environment variable support
  */

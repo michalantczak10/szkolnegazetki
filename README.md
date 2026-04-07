@@ -113,7 +113,7 @@ Frontend komunikuje się z backendem przy użyciu zmiennych środowiskowych. Kon
 3. **Szablon konfiguracji**
    ```bash
    # Dostępny w:
-   cp client/.env.example client/.env.local
+  cp client/.env.local.example client/.env.local
    ```
 
 Jeśli `VITE_API_BASE_URL` nie jest ustawiony, frontend automatycznie:
