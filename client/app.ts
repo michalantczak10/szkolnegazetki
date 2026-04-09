@@ -9,6 +9,7 @@ import { renderCheckoutSummary } from "./modules/checkout-summary.js";
 import { showOrderConfirmationModal } from "./modules/order-confirmation.js";
 import { setupPaymentMethodHandler } from "./modules/payment.js";
 import { setupLegalPageNavigation } from "./modules/legal-pages.js";
+import { setupAccountPanel } from "./modules/accounts.js";
 import {
   validatePhone,
   formatPhoneInput,
@@ -33,6 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
   applyStoreConfiguration();
   applyProductConfiguration();
   setupLegalPageNavigation();
+  void setupAccountPanel();
   setupAddToCartButtons(cartManager);
   setupCartItemHandlers(cartManager);
   renderCheckoutSummary(cartManager);
@@ -46,7 +48,24 @@ window.addEventListener("DOMContentLoaded", () => {
     customerPhone,
     customerNotes,
     parcelLockerCode,
+    createOptionalAccount,
+    optionalAccountEmail,
+    optionalAccountPassword,
   } = getFormElements();
+
+  const optionalAccountFields = document.getElementById("optionalAccountFields");
+  const optionalAccountEmailError = document.getElementById("optionalAccountEmailError");
+  const optionalAccountPasswordError = document.getElementById("optionalAccountPasswordError");
+
+  const updateOptionalAccountVisibility = () => {
+    const enabled = Boolean(createOptionalAccount?.checked);
+    if (optionalAccountFields) {
+      optionalAccountFields.hidden = !enabled;
+    }
+  };
+
+  updateOptionalAccountVisibility();
+  createOptionalAccount?.addEventListener("change", updateOptionalAccountVisibility);
 
   // Payment method
   setupPaymentMethodHandler(paymentMethod, paymentInstructions);
@@ -107,12 +126,38 @@ window.addEventListener("DOMContentLoaded", () => {
     const phoneValid = validatePhone(customerPhone, true);
     const parcelValid = validateParcelLockerCode(parcelLockerCode, parcelLockers, true);
     const notesValid = !customerNotes || validateOrderNotes(customerNotes, true);
+    let optionalAccountValid = true;
 
-    if (!phoneValid || !parcelValid || !notesValid) {
+    if (optionalAccountEmailError) optionalAccountEmailError.textContent = "";
+    if (optionalAccountPasswordError) optionalAccountPasswordError.textContent = "";
+
+    if (createOptionalAccount?.checked) {
+      const emailValue = optionalAccountEmail?.value.trim() ?? "";
+      const passwordValue = optionalAccountPassword?.value ?? "";
+      const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+      const passwordIsValid = passwordValue.length >= 8 && passwordValue.length <= 72 && !/\s/.test(passwordValue);
+
+      if (!emailIsValid) {
+        optionalAccountValid = false;
+        if (optionalAccountEmailError) {
+          optionalAccountEmailError.textContent = "Podaj poprawny adres e-mail.";
+        }
+      }
+
+      if (!passwordIsValid) {
+        optionalAccountValid = false;
+        if (optionalAccountPasswordError) {
+          optionalAccountPasswordError.textContent = "Hasło: 8-72 znaków, bez spacji.";
+        }
+      }
+    }
+
+    if (!phoneValid || !parcelValid || !notesValid || !optionalAccountValid) {
       setCheckoutMessage(checkoutMessage, "Popraw zaznaczone pola formularza.");
       showToast("Popraw zaznaczone pola formularza.");
       if (!phoneValid) customerPhone.focus();
       else if (!parcelValid) parcelLockerCode.focus();
+      else if (!optionalAccountValid && createOptionalAccount?.checked) optionalAccountEmail?.focus();
       else customerNotes?.focus();
       return;
     }
@@ -126,7 +171,10 @@ window.addEventListener("DOMContentLoaded", () => {
         customerPhone.value.replace(/\D/g, ""),
         parcelLockerCode.value,
         paymentMethod?.value ?? "przelew",
-        customerNotes?.value.trim() ?? ""
+        customerNotes?.value.trim() ?? "",
+        Boolean(createOptionalAccount?.checked),
+        optionalAccountEmail?.value.trim() ?? "",
+        optionalAccountPassword?.value ?? ""
       )
     );
 
@@ -137,6 +185,12 @@ window.addEventListener("DOMContentLoaded", () => {
       showOrderConfirmationModal(response, cartManager);
       cartManager.clear();
       renderCheckoutSummary(cartManager);
+      if (createOptionalAccount?.checked) {
+        createOptionalAccount.checked = false;
+        optionalAccountEmail && (optionalAccountEmail.value = "");
+        optionalAccountPassword && (optionalAccountPassword.value = "");
+        updateOptionalAccountVisibility();
+      }
     } else {
       setCheckoutMessage(checkoutMessage, "Błąd podczas wysyłania zamówienia.");
     }

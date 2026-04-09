@@ -16,6 +16,7 @@ Galaretkarnia to prosta, responsywna strona e-commerce oferująca tradycyjną ga
 - **SEO** - zoptymalizowane metatagi
 - **MongoDB** - pełna archiwizacja zamówień
 - **Powiadomienia e-mail** - automatyczne wiadomości o nowych zamówieniach
+- **Konta użytkowników (MVP)** - rejestracja, logowanie i historia własnych zamówień
 
 ## 🌐 Quick Start - Deployment
 
@@ -72,6 +73,15 @@ copy server/.env.example server/.env
 ```
 
 4. Uzupełnij zmienne w `server/.env` (patrz sekcja konfiguracji niżej).
+
+Przy włączonych kontach użytkowników ustaw dodatkowo:
+```env
+AUTH_TOKEN_SECRET=dlugi-losowy-sekret
+AUTH_TOKEN_TTL_SECONDS=2592000
+PASSWORD_RESET_TOKEN_TTL_MS=3600000
+USERS_COLLECTION=users
+USERS_COLLECTION_TEST=users_test
+```
 
 ## 🏃 Uruchomienie
 
@@ -280,6 +290,43 @@ galaretkarnia.pl/
 }
 ```
 
+### Konta użytkowników
+
+**POST `/api/auth/register`** - Rejestracja konta
+```json
+{
+  "email": "uzytkownik@example.com",
+  "password": "silnehaslo123"
+}
+```
+
+**POST `/api/auth/login`** - Logowanie
+```json
+{
+  "email": "uzytkownik@example.com",
+  "password": "silnehaslo123"
+}
+```
+
+**GET `/api/auth/me`** - Profil zalogowanego użytkownika (Bearer token)
+
+**GET `/api/auth/orders`** - Historia zamówień przypisanych do zalogowanego konta (Bearer token)
+
+**POST `/api/auth/password-reset/request`** - Prośba o reset hasła
+```json
+{
+  "email": "uzytkownik@example.com"
+}
+```
+
+**POST `/api/auth/password-reset/confirm`** - Ustaw nowe hasło na podstawie tokenu
+```json
+{
+  "token": "token-z-linku-mailowego",
+  "newPassword": "noweSilneHaslo123"
+}
+```
+
 ### Health check
 
 **GET `/api/health`** - Status API i bazy danych
@@ -326,6 +373,8 @@ Każde zamówienie w MongoDB zawiera:
   "total": "number",
   "status": "oczekuje-na-platnosc|oplacone|w-realizacji|gotowe|anulowane",
   "paymentStatus": "oczekiwanie-na-wplate",
+  "userId": "string|null",
+  "userEmail": "string|null",
   "createdAt": "Date",
   "updatedAt": "Date"
 }

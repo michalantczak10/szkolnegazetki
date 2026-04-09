@@ -12,6 +12,9 @@ export interface FormElements {
   customerPhone: HTMLInputElement | null;
   parcelLockerCode: HTMLInputElement | null;
   customerNotes: HTMLTextAreaElement | null;
+  createOptionalAccount: HTMLInputElement | null;
+  optionalAccountEmail: HTMLInputElement | null;
+  optionalAccountPassword: HTMLInputElement | null;
 }
 
 /**
@@ -27,6 +30,9 @@ export function getFormElements(): FormElements {
     customerPhone: document.getElementById("customerPhone") as HTMLInputElement | null,
     parcelLockerCode: document.getElementById("parcelLockerCode") as HTMLInputElement | null,
     customerNotes: document.getElementById("customerNotes") as HTMLTextAreaElement | null,
+    createOptionalAccount: document.getElementById("createOptionalAccount") as HTMLInputElement | null,
+    optionalAccountEmail: document.getElementById("optionalAccountEmail") as HTMLInputElement | null,
+    optionalAccountPassword: document.getElementById("optionalAccountPassword") as HTMLInputElement | null,
   };
 }
 
@@ -38,7 +44,10 @@ export function buildOrderData(
   phone: string,
   parcelCode: string,
   paymentMethod: string,
-  notes: string
+  notes: string,
+  createOptionalAccount: boolean,
+  optionalAccountEmail: string,
+  optionalAccountPassword: string
 ): OrderData {
   return {
     items: cartManager.getAll().map((item) => ({
@@ -55,8 +64,9 @@ export function buildOrderData(
       cartManager.getTotalPrice() +
       cartManager.getDeliveryInfo().finalCost,
     notes,
-    createOptionalAccount: false,
-    optionalAccountEmail: "",
+    createOptionalAccount,
+    optionalAccountEmail,
+    optionalAccountPassword,
   };
 }
 
@@ -67,11 +77,15 @@ export async function submitOrder(
   orderData: OrderData
 ): Promise<OrderConfirmationData | null> {
   try {
+    const authToken = localStorage.getItem("galaretkarnia_auth_token");
     const result = await apiFetch<OrderConfirmationData>(
       "/api/orders",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        },
         body: JSON.stringify(orderData),
       },
       10000

@@ -19,14 +19,14 @@ export const STORE_CONFIG = {
       id: "drobiowa",
       name: "Galaretka drobiowa",
       description: "Z warzywami, tradycyjna receptura",
-      price: 18,
+      price: 16,
       image: PRODUCT_IMAGES.drobiowa,
     },
     {
       id: "wieprzowa",
       name: "Galaretka wieprzowa",
       description: "Z warzywami, tradycyjna receptura",
-      price: 19,
+      price: 15,
       image: PRODUCT_IMAGES.wieprzowa,
     },
   ] as StoreProduct[],
@@ -50,6 +50,6 @@ export const STORE_CONFIG = {
   },
 } as const;
 
-export function getProductConfig(productId: string): StoreProduct | undefined {
+export function getProductConfig(productId: ProductId): StoreProduct | undefined {
   return STORE_CONFIG.products.find((product) => product.id === productId);
 }

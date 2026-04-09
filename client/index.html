@@ -217,6 +217,67 @@
       </div>
     </section>
 
+    <section class="account-section fade-in" id="accountSection">
+      <h2>Moje konto</h2>
+      <p id="accountStatus" class="account-status" aria-live="polite">Sprawdzanie statusu logowania...</p>
+
+      <div id="accountGuestView" class="account-guest-view" hidden>
+        <div class="account-forms-grid">
+          <form id="loginForm" class="account-form" novalidate>
+            <h3>Logowanie</h3>
+            <label for="loginEmail">E-mail</label>
+            <input id="loginEmail" name="loginEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" />
+
+            <label for="loginPassword">Hasło</label>
+            <input id="loginPassword" name="loginPassword" type="password" autocomplete="current-password" required placeholder="Twoje hasło" />
+
+            <button type="submit" class="account-action-btn">Zaloguj</button>
+          </form>
+
+          <form id="registerForm" class="account-form" novalidate>
+            <h3>Rejestracja</h3>
+            <label for="registerEmail">E-mail</label>
+            <input id="registerEmail" name="registerEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" />
+
+            <label for="registerPassword">Hasło (8-72 znaki)</label>
+            <input id="registerPassword" name="registerPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Ustaw hasło" />
+
+            <button type="submit" class="account-action-btn">Utwórz konto</button>
+          </form>
+
+          <form id="requestResetForm" class="account-form" novalidate>
+            <h3>Reset hasła</h3>
+            <p class="account-form-note">Podaj e-mail, a wyślemy link do ustawienia nowego hasła.</p>
+            <label for="resetEmail">E-mail</label>
+            <input id="resetEmail" name="resetEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" />
+            <button type="submit" class="account-action-btn secondary">Wyślij link resetu</button>
+          </form>
+
+          <form id="confirmResetForm" class="account-form" novalidate>
+            <h3>Ustaw nowe hasło</h3>
+            <label for="resetToken">Token resetu</label>
+            <input id="resetToken" name="resetToken" type="text" autocomplete="off" required placeholder="Wklej token z linku" />
+
+            <label for="resetNewPassword">Nowe hasło (8-72 znaki)</label>
+            <input id="resetNewPassword" name="resetNewPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Nowe hasło" />
+
+            <button type="submit" class="account-action-btn secondary">Zmień hasło</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="accountLoggedInView" class="account-logged-in-view" hidden>
+        <p class="account-email-row">
+          Zalogowano jako: <strong id="accountEmail">-</strong>
+        </p>
+        <div class="account-actions-row">
+          <button id="refreshOrdersBtn" type="button" class="account-action-btn">Odśwież zamówienia</button>
+          <button id="logoutBtn" type="button" class="account-action-btn secondary">Wyloguj</button>
+        </div>
+        <div id="accountOrdersList" class="account-orders-list"></div>
+      </div>
+    </section>
+
     <section class="checkout fade-in" id="checkout">
   <h2>Zamówienie</h2>
   <div class="checkout-layout">
@@ -253,6 +314,20 @@
       <textarea id="customerNotes" name="customerNotes" rows="4" maxlength="300" autocomplete="off" placeholder="Np. kod paczkomatu, którego nie znalazłeś w naszej bazie" data-testid="input-customer-notes"></textarea>
       <div class="notes-counter" id="notesCounter" aria-live="polite" data-testid="msg-notes-counter">0 / 300</div>
       <div class="input-error" id="notesError" aria-live="polite" data-testid="msg-notes-error"></div>
+
+      <label class="optional-account-toggle" for="createOptionalAccount">
+        <input id="createOptionalAccount" name="createOptionalAccount" type="checkbox" />
+        Chcę założyć konto podczas składania zamówienia
+      </label>
+      <div id="optionalAccountFields" hidden>
+        <label for="optionalAccountEmail">E-mail do konta</label>
+        <input id="optionalAccountEmail" name="optionalAccountEmail" type="email" autocomplete="email" placeholder="twoj@email.pl" />
+        <div class="input-error" id="optionalAccountEmailError" aria-live="polite"></div>
+
+        <label for="optionalAccountPassword">Hasło do konta (8-72 znaki)</label>
+        <input id="optionalAccountPassword" name="optionalAccountPassword" type="password" autocomplete="new-password" minlength="8" maxlength="72" placeholder="Ustaw hasło" />
+        <div class="input-error" id="optionalAccountPasswordError" aria-live="polite"></div>
+      </div>
 
 
         <div class="checkout-actions-row">
