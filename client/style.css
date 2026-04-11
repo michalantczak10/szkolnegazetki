@@ -378,9 +378,7 @@
 .checkout-summary-empty .browse-products-btn {
   margin-top: 8px;
 }
-  background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%);
-  transform: scale(1.04);
-}
+
 .cart-checkout-btn:active {
   opacity: 0.92;
 }
