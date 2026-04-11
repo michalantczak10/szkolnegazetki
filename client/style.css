@@ -1,3 +1,195 @@
+/* === Empty state for checkout summary === */
+.checkout-summary-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 12px 28px 12px;
+  min-height: 180px;
+  color: #7a6a6a;
+  background: none;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.07);
+  margin-bottom: 18px;
+}
+.checkout-summary-empty .emoji {
+  font-size: 2.6em;
+  margin-bottom: 10px;
+}
+.checkout-summary-empty .message {
+  font-size: 1.18em;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #b30000;
+  text-align: center;
+}
+.checkout-summary-empty .submessage {
+  font-size: 1em;
+  color: #7a6a6a;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.checkout-summary-empty .browse-products-btn {
+  margin-top: 8px;
+}
+/* Animacja pojawiania się toastów */
+.toast-show {
+  animation: toastPopIn 0.38s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes toastPopIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(32px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-6px) scale(1.04);
+  }
+  80% {
+    transform: translateX(-50%) translateY(2px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+/* Animacja podskoku i pulsującej obwódki dla przycisku Dodaj do zamówienia */
+.addToCartBtn.animated {
+  animation: addToCartBounce 0.35s cubic-bezier(.34,1.56,.64,1), addToCartPulse 0.9s 0.1s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 0 0 4px #ffe066, 0 2px 8px rgba(255, 208, 0, 0.10);
+}
+
+@keyframes addToCartBounce {
+  0% { transform: scale(1) translateY(0); }
+  20% { transform: scale(1.08, 0.92) translateY(-4px); }
+  40% { transform: scale(0.96, 1.04) translateY(2px); }
+  60% { transform: scale(1.04, 0.98) translateY(-2px); }
+  80% { transform: scale(0.98, 1.02) translateY(1px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+@keyframes addToCartPulse {
+  0% { box-shadow: 0 0 0 4px #ffe066, 0 2px 8px rgba(255, 208, 0, 0.10); }
+  60% { box-shadow: 0 0 0 10px #ffe06644, 0 2px 8px rgba(255, 208, 0, 0.10); }
+  100% { box-shadow: 0 0 0 0 #ffe06600, 0 2px 8px rgba(255, 208, 0, 0.10); }
+}
+/* Usunięto niepotrzebne wrappery summary-bg i summary-card, całość w .order-confirm-modal */
+.order-confirm-modal-summary-row {
+  text-align: center;
+  font-size: 1.08em;
+  margin-bottom: 0;
+}
+
+/* Add to Cart Button Styling */
+.addToCartBtn,
+.product-card .addToCartBtn {
+  background: linear-gradient(90deg, #ffc131 0%, #fff12b 100%);
+  color: #b30000;
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 12px 32px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  outline: none;
+  position: relative;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
+  width: 100%;
+  min-width: 0;
+  max-width: 320px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.addToCartBtn:hover,
+.product-card .addToCartBtn:hover {
+  background: linear-gradient(90deg, #fff12b 0%, #ffc131 100%);
+  transform: scale(1.04);
+}
+
+.addToCartBtn:focus,
+.addToCartBtn:focus-visible,
+.product-card .addToCartBtn:focus,
+.product-card .addToCartBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #b30000;
+}
+
+.addToCartBtn:active,
+.product-card .addToCartBtn:active {
+  opacity: 0.92;
+  transform: scale(0.99);
+}
+
+/* Clear Cart Button Styling */
+.browse-products-btn.clear-cart-btn,
+.checkout-form .browse-products-btn.clear-cart-btn {
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 12px 32px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  outline: none;
+  position: relative;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
+  width: auto;
+  max-width: 320px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.browse-products-btn.clear-cart-btn:focus,
+.checkout-form .browse-products-btn.clear-cart-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffd600;
+}
+
+.browse-products-btn.clear-cart-btn:hover,
+.checkout-form .browse-products-btn.clear-cart-btn:hover {
+  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
+  transform: scale(1.04);
+}
+
+.browse-products-btn.clear-cart-btn:active,
+.checkout-form .browse-products-btn.clear-cart-btn:active {
+  opacity: 0.92;
+  transform: scale(0.99);
+}
+.cart-checkout-btn {
+  background: linear-gradient(90deg,#e74c3c 0%,#b30000 100%);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.125rem;
+  padding: 12px 32px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  outline: none;
+  position: relative;
+  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
+  width: auto;
+  max-width: 320px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cart-checkout-btn:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ffd600;
+}
 /* === Moje konto: styl spójny ze sklepem === */
 .account-section {
   background: none;
@@ -151,123 +343,41 @@
     padding-right: 10px;
   }
 }
-/* Usunięto niepotrzebne wrappery summary-bg i summary-card, całość w .order-confirm-modal */
-.order-confirm-modal-summary-row {
-  text-align: center;
-  font-size: 1.08em;
-  margin-bottom: 0;
-}
 
-/* Add to Cart Button Styling */
-.addToCartBtn,
-.product-card .addToCartBtn {
-  background: linear-gradient(90deg, #ffc131 0%, #fff12b 100%);
+/* === Empty state for checkout summary === */
+.checkout-summary-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 12px 28px 12px;
+  min-height: 180px;
+  color: #7a6a6a;
+  background: none;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.07);
+  margin-bottom: 18px;
+}
+.checkout-summary-empty .emoji {
+  font-size: 2.6em;
+  margin-bottom: 10px;
+}
+.checkout-summary-empty .message {
+  font-size: 1.18em;
+  font-weight: 600;
+  margin-bottom: 6px;
   color: #b30000;
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 12px 32px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
-  border-radius: 14px;
-  cursor: pointer;
+  text-align: center;
+}
+.checkout-summary-empty .submessage {
+  font-size: 1em;
+  color: #7a6a6a;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.checkout-summary-empty .browse-products-btn {
   margin-top: 8px;
-  outline: none;
-  position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
-  width: 100%;
-  min-width: 0;
-  max-width: 320px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
-
-.addToCartBtn:hover,
-.product-card .addToCartBtn:hover {
-  background: linear-gradient(90deg, #fff12b 0%, #ffc131 100%);
-  transform: scale(1.04);
-}
-
-.addToCartBtn:focus,
-.addToCartBtn:focus-visible,
-.product-card .addToCartBtn:focus,
-.product-card .addToCartBtn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px #b30000;
-}
-
-.addToCartBtn:active,
-.product-card .addToCartBtn:active {
-  opacity: 0.92;
-  transform: scale(0.99);
-}
-
-/* Clear Cart Button Styling */
-.browse-products-btn.clear-cart-btn,
-.checkout-form .browse-products-btn.clear-cart-btn {
-  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 12px 32px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
-  border-radius: 14px;
-  cursor: pointer;
-  margin-top: 8px;
-  outline: none;
-  position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
-  width: auto;
-  max-width: 320px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.browse-products-btn.clear-cart-btn:focus,
-.checkout-form .browse-products-btn.clear-cart-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #ffd600;
-}
-
-.browse-products-btn.clear-cart-btn:hover,
-.checkout-form .browse-products-btn.clear-cart-btn:hover {
-  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
-  transform: scale(1.04);
-}
-
-.browse-products-btn.clear-cart-btn:active,
-.checkout-form .browse-products-btn.clear-cart-btn:active {
-  opacity: 0.92;
-  transform: scale(0.99);
-}
-.cart-checkout-btn {
-  background: linear-gradient(90deg,#e74c3c 0%,#b30000 100%);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 12px 32px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
-  border-radius: 14px;
-  cursor: pointer;
-  margin-top: 8px;
-  outline: none;
-  position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
-  width: auto;
-  max-width: 320px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.cart-checkout-btn:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: #ffd600;
-}
-.cart-checkout-btn:hover {
   background: linear-gradient(90deg,#b30000 0%,#e74c3c 100%);
   transform: scale(1.04);
 }
