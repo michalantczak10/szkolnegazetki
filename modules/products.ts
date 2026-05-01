@@ -11,6 +11,7 @@ export function applyProductConfiguration(): void {
     if (!(cardNode instanceof HTMLElement)) return;
 
     const productId = cardNode.dataset.productId || "";
+    if (productId !== "poster" && productId !== "newsletter") return;
     const product = getProductConfig(productId);
     if (!product) return;
 

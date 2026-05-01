@@ -36,6 +36,8 @@
 /* Animacja pojawiania się toastów */
 .toast-show {
   animation: toastPopIn 0.38s cubic-bezier(.34,1.56,.64,1);
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
 }
 
 @keyframes toastPopIn {
@@ -188,46 +190,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-.cart-checkout-btn:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: #ffd600;
-}
 
-/* === Empty state for checkout summary === */
-.checkout-summary-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 36px 12px 28px;
-  min-height: 180px;
-  color: #7a6a6a;
-  background: none;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.07);
-  margin-bottom: 18px;
-}
-.checkout-summary-empty .emoji {
-  font-size: 2.6em;
-  margin-bottom: 10px;
-}
-.checkout-summary-empty .message {
-  font-size: 1.18em;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #b30000;
-  text-align: center;
-}
-.checkout-summary-empty .submessage {
-  font-size: 1em;
-  color: #7a6a6a;
-  margin-bottom: 18px;
-  text-align: center;
-}
-.checkout-summary-empty .browse-products-btn {
-  margin-top: 8px;
-}
 
 .cart-checkout-btn:active {
   opacity: 0.92;
@@ -250,26 +213,7 @@
   position: relative;
   transition: opacity 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
-.addToCartBtn:hover {
-  background: linear-gradient(90deg, #fffbe0 0%, #ffe066 100%);
-  transform: scale(1.04);
-}
 
-.cart-checkout-btn {
-  background: linear-gradient(90deg,#e74c3c 0%,#b30000 100%);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 12px 32px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(255, 208, 0, 0.10);
-  border-radius: 14px;
-  cursor: pointer;
-  margin-top: 8px;
-  outline: none;
-  position: relative;
-  transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
-}
 
 .addToCartBtn:focus, .cart-checkout-btn:focus {
   outline: none;
@@ -475,6 +419,19 @@
   background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
   transform: scale(1.04);
 }
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (max-width: 600px) {
   .order-confirm-modal {
     max-width: 99vw;
@@ -597,10 +554,6 @@
   font-weight: bold;
   font-size: 1.08em;
   margin: 10px 0 6px;
-}
-.checkout-summary-gratis {
-  color: #009900;
-  font-weight: bold;
 }
 .checkout-summary-final-line {
   font-size: 1.18em;
@@ -1088,10 +1041,6 @@ body {
   border-radius: var(--radius-lg);
   margin: 24px auto; /* match cart margins */
   padding: 18px 16px; /* match cart padding */
-}
-
-.checkout {
-  margin-bottom: 80px;
 }
 
 .checkout-summary-title {
@@ -2572,11 +2521,6 @@ button:active {
   overflow: hidden;
 }
 
-.toast-show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
 .toast-hide {
   transform: translateX(-50%) translateY(12px);
   opacity: 0;
@@ -2662,9 +2606,6 @@ button:active {
   gap: 10px;
   margin-top: 12px;
   flex-wrap: wrap;
-}
-
-.confirm-modal .confirm-actions {
   justify-content: center !important;
 }
 .confirm-modal .confirm-actions .browse-products-btn {
@@ -2679,6 +2620,9 @@ button:active {
   font-size: 1.1em;
   margin: 0 auto;
   display: block;
+  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
+  color: var(--color-white);
+  border: none;
 }
 
 .confirm-modal .btn {
@@ -2693,11 +2637,7 @@ button:active {
   border: none;
   border-radius: 14px;
 }
-.confirm-modal .btn-confirm {
-  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
-  color: var(--color-white);
-  border: none;
-}
+
 
 @media (max-width: 600px) {
   .confirm-modal {
@@ -3352,147 +3292,6 @@ button:active {
   }
 }
 
-/* --- MODAL ORDER CONFIRMATION STYLES --- */
-.order-confirm-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.order-confirm-modal {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  max-width: 420px;
-  width: 95vw;
-  padding: 32px 28px 18px;
-  position: relative;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  animation: fadeInModal 0.3s;
-}
-@keyframes fadeInModal {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.order-confirm-modal-close {
-  position: absolute;
-  top: 12px; right: 16px;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #b30000;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.order-confirm-modal-close:hover {
-  color: #333;
-}
-.order-confirm-modal-thankyou {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #1a7c1a;
-  margin-bottom: 6px;
-  text-align: center;
-}
-.order-confirm-modal-body {
-  margin-bottom: 10px;
-  text-align: center;
-}
-.order-confirm-modal-ref,
-.order-confirm-modal-status,
-.order-confirm-modal-total {
-  font-weight: 600;
-  color: #b30000;
-}
-.order-confirm-modal-summary {
-  background: #fafbfc;
-  border-radius: 10px;
-  padding: 16px 12px 10px;
-  margin: 18px 0 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-.checkout-summary-products-nodots {
-  margin-bottom: 10px;
-}
-.checkout-summary-product-row {
-  font-size: 1rem;
-  margin-bottom: 2px;
-  text-align: left;
-}
-.checkout-summary-total-line,
-.checkout-summary-delivery-cost-line,
-.checkout-summary-delivery-line {
-  font-size: 1rem;
-  margin-bottom: 2px;
-}
-.checkout-summary-final-line {
-  font-size: 1.18em;
-  font-weight: bold;
-  color: #b30000;
-  margin-bottom: 18px;
-}
-.order-confirm-modal-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 18px;
-}
-.order-confirm-modal-btn {
-  background: linear-gradient(90deg, #e74c3c 0%, #b30000 100%);
-  color: #fff;
-  border: none;
-  border-radius: 14px;
-  padding: 10px 32px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-.order-confirm-modal-btn:hover {
-  background: linear-gradient(90deg, #b30000 0%, #e74c3c 100%);
-  transform: scale(1.04);
-}
-.order-confirm-modal-info {
-  font-size: 0.98rem;
-  color: #444;
-  margin-top: 8px;
-  text-align: center;
-}
-.order-confirm-modal-payment {
-  font-size: 1.05rem;
-  color: #222;
-  font-weight: 500;
-}
-.order-confirm-modal-transfer {
-  color: #1a7c1a;
-  font-weight: 600;
-}
-
-.browse-products-btn.btn-cancel {
-  background: #f3f4f6;
-  color: #111827;
-  border: none;
-  border-radius: 14px;
-  box-shadow: none;
-  transition: transform 0.2s, opacity 0.2s;
-}
-.browse-products-btn.btn-cancel:hover {
-  transform: scale(1.03);
-  background: #e5e7eb;
-}
-.browse-products-btn.btn-cancel:active {
-  transform: scale(0.99);
-  opacity: 0.94;
-}
 
 #submitOrderBtn {
   margin-top: 18px;
