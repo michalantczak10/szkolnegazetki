@@ -34,7 +34,7 @@ async function run() {
       const summary = page.getByTestId('checkout-summary-list');
       await summary.waitFor();
       const text = await summary.textContent();
-      if (!text || !text.includes('Pakiet plakatów edukacyjnych')) {
+      if (!text || !text.includes('Plakaty szkolne PDF')) {
         throw new Error('Cart summary missing product text');
       }
     });
@@ -42,7 +42,7 @@ async function run() {
     await step('Cart persists after reload', async () => {
       await page.reload({ waitUntil: 'domcontentloaded' });
       const text = await page.getByTestId('checkout-summary-list').textContent();
-      if (!text || !text.includes('Pakiet plakatów edukacyjnych')) {
+      if (!text || !text.includes('Plakaty szkolne PDF')) {
         throw new Error('Cart did not persist after reload');
       }
     });

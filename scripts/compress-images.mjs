@@ -6,7 +6,7 @@ import sharp from 'sharp';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
-const imgDir = join(projectRoot, 'client', 'img');
+const imgDir = join(projectRoot, 'img');
 
 const dirs = ['products', 'team', 'hero', 'branding'];
 

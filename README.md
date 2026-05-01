@@ -16,7 +16,6 @@ Szkolne gazetki to prosta, responsywna strona e-commerce oferująca gotowe szabl
 - **SEO** - zoptymalizowane metatagi
 - **MongoDB** - pełna archiwizacja zamówień
 - **Powiadomienia e-mail** - automatyczne wiadomości o nowych zamówieniach
-- **Konta użytkowników (MVP)** - rejestracja, logowanie i historia własnych zamówień
 
 ## 🌐 Quick Start - Deployment
 

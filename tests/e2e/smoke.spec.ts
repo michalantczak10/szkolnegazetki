@@ -22,7 +22,7 @@ test.describe('Szkolne gazetki smoke', () => {
     const summary = page.getByTestId('checkout-summary-list');
 
     await expect(summary).toBeVisible();
-    await expect(summary).toContainText('Pakiet plakatów edukacyjnych');
+    await expect(summary).toContainText('Plakaty szkolne PDF');
     await expect(summary).toContainText('Wyczyść koszyk');
   });
 
@@ -48,10 +48,10 @@ test.describe('Szkolne gazetki smoke', () => {
 
   test('keeps cart items after page reload', async ({ page }) => {
     await page.getByTestId('btn-add-to-cart').first().click();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Pakiet plakatów edukacyjnych');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Plakaty szkolne PDF');
 
     await page.reload();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Pakiet plakatów edukacyjnych');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Plakaty szkolne PDF');
   });
 
   test('validates phone field', async ({ page }) => {
