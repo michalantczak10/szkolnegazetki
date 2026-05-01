@@ -9,7 +9,7 @@ const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME;
 const ORDERS_COLLECTION = process.env.ORDERS_COLLECTION || 'orders';
 const ORDER_EMAIL = process.env.ORDER_EMAIL;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@onresend.com';
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@szkolnegazetki.onresend.com';
 
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
@@ -31,14 +31,14 @@ function isPhoneValid(phone) {
 }
 
 function formatOrderRef(orderId) {
-  return `GRAF-${orderId.slice(-6).toUpperCase()}`;
+  return `SZG-${orderId.slice(-6).toUpperCase()}`;
 }
 
 function getPaymentTarget(paymentMethod) {
   if (paymentMethod === 'blik') {
     return 'BLIK na telefon: 794 535 366';
   }
-  return '60 1140 2004 0000 3102 4831 8846 (Grafiki do gazetek szkolnych)';
+  return '60 1140 2004 0000 3102 4831 8846 (Szkolne gazetki)';
 }
 
 function escapeHtml(value) {

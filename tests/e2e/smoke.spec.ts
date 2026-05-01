@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('Galaretkarnia smoke', () => {
+test.describe('Szkolne gazetki smoke', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
 
@@ -11,7 +11,7 @@ test.describe('Galaretkarnia smoke', () => {
   });
 
   test('home page loads with key sections', async ({ page }) => {
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Tradycyjna galaretka');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Gotowe grafiki PDF');
     await expect(page.getByTestId('section-products')).toBeVisible();
     await expect(page.getByTestId('order-form')).toBeVisible();
     await expect(page.getByTestId('select-payment-method')).toBeVisible();
@@ -22,7 +22,7 @@ test.describe('Galaretkarnia smoke', () => {
     const summary = page.getByTestId('checkout-summary-list');
 
     await expect(summary).toBeVisible();
-    await expect(summary).toContainText('Galaretka');
+    await expect(summary).toContainText('Pakiet plakatów edukacyjnych');
     await expect(summary).toContainText('Wyczyść koszyk');
   });
 
@@ -48,17 +48,15 @@ test.describe('Galaretkarnia smoke', () => {
 
   test('keeps cart items after page reload', async ({ page }) => {
     await page.getByTestId('btn-add-to-cart').first().click();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Galaretka drobiowa');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Pakiet plakatów edukacyjnych');
 
     await page.reload();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Galaretka drobiowa');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Pakiet plakatów edukacyjnych');
   });
 
-  test('validates phone and parcel locker fields', async ({ page }) => {
+  test('validates phone field', async ({ page }) => {
     const phoneInput = page.getByTestId('input-customer-phone');
     const phoneError = page.getByTestId('msg-phone-error');
-    const lockerInput = page.getByTestId('input-parcel-locker-code');
-    const lockerError = page.getByTestId('msg-locker-error');
 
     await phoneInput.fill('123');
     await phoneInput.blur();
@@ -67,10 +65,6 @@ test.describe('Galaretkarnia smoke', () => {
     await phoneInput.fill('123456789');
     await phoneInput.blur();
     await expect(phoneError).toContainText('Numer powinien zaczynać się od 5, 6, 7 lub 8.');
-
-    await lockerInput.fill('A1');
-    await lockerInput.blur();
-    await expect(lockerError).toContainText('Kod paczkomatu musi mieć min. 6 znaków');
   });
 
   test('formats phone input and limits to 9 digits', async ({ page }) => {
@@ -78,13 +72,6 @@ test.describe('Galaretkarnia smoke', () => {
 
     await phoneInput.fill('5a1 2-3x4_56789');
     await expect(phoneInput).toHaveValue('512 345 678');
-  });
-
-  test('normalizes parcel locker code to uppercase without spaces', async ({ page }) => {
-    const lockerInput = page.getByTestId('input-parcel-locker-code');
-
-    await lockerInput.fill(' waw 01a ');
-    await expect(lockerInput).toHaveValue('WAW01A');
   });
 
   test('validates notes restrictions and counter', async ({ page }) => {

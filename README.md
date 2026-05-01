@@ -9,7 +9,7 @@ Szkolne gazetki to prosta, responsywna strona e-commerce oferująca gotowe szabl
 ## 🚀 Funkcjonalności
 
 - **Dynamiczny koszyk zakupowy** - dodawanie produktów z automatycznym przeliczaniem
-- **Checkout z walidacją** - walidacja telefonu, paczkomatu i uwag
+- **Checkout z walidacją** - walidacja telefonu i uwag
 - **Animacje** - płynne animacje przy dodawaniu produktów
 - **Responsywny design** - działa na wszystkich urządzeniach
 - **Dostępność (a11y)** - etykiety ARIA i stany focus dla czytników ekranu
@@ -47,8 +47,8 @@ Zasady:
 ## 🛠️ Technologie
 
 - **Frontend**: Vite, TypeScript, CSS3, HTML5
-- **Backend**: Node.js + Express
-- **Baza danych**: MongoDB (archiwizacja zamówień)
+- **Backend**: Vercel Serverless Function (`api/orders.js`, `api/health.js`)
+- **Baza danych**: MongoDB Atlas lub lokalne MongoDB
 - **Email**: Resend API
 - **Testy E2E**: Playwright
 
@@ -56,140 +56,84 @@ Zasady:
 
 1. Sklonuj repozytorium:
 ```bash
-git clone https://github.com/michalantczak10/galaretkarnia.git
-cd galaretkarnia
+git clone https://github.com/michalantczak10/szkolnegazetki.git
+cd szkolnegazetki
 ```
 
-2. Zainstaluj zależności dla wszystkich części projektu:
+2. Zainstaluj zależności:
 ```bash
 npm install
-npm install --prefix client
-npm install --prefix server
 ```
 
-3. Skonfiguruj plik środowiskowy backendu:
-```bash
-copy server/.env.example server/.env
-```
-
-4. Uzupełnij zmienne w `server/.env` (patrz sekcja konfiguracji niżej).
-
-Przy włączonych kontach użytkowników ustaw dodatkowo:
-```env
-AUTH_TOKEN_SECRET=dlugi-losowy-sekret
-AUTH_TOKEN_TTL_SECONDS=2592000
-PASSWORD_RESET_TOKEN_TTL_MS=3600000
-USERS_COLLECTION=users
-USERS_COLLECTION_TEST=users_test
-```
+3. (Opcjonalnie) Jeżeli chcesz uruchomić lokalny backend Vercel, zainstaluj `vercel` CLI i skonfiguruj zmienne środowiskowe w Vercel.
 
 ## 🏃 Uruchomienie
 
-### Development (frontend + backend)
+### Development frontend
 ```bash
 npm run dev
 ```
-Otwórz `http://localhost:5173` w przeglądarce.
+Otwórz `http://localhost:5173`.
 
 ### Produkcyjny build frontendu
 ```bash
 npm run build
-# Wynikowe pliki: client/dist
 ```
+Wynikowe pliki zostaną zbudowane do `dist`.
 
-### Uruchomienie backendu lokalnie
-```bash
-npm run start --prefix server
-```
+### Lokalny backend (opcjonalny)
+Jeżeli chcesz emulować funkcje Vercel lokalnie, użyj `vercel dev` z poziomu katalogu głównego.
 
 ## ⚙️ Konfiguracja
 
 ### Frontend - API Configuration
 
-Frontend komunikuje się z backendem przy użyciu zmiennych środowiskowych. Konfiguracja API:
+Frontend komunikuje się z backendem za pomocą `VITE_API_BASE_URL`.
 
-1. **Development (localhost)**
-   ```bash
-   # Automatycznie proxy do http://localhost:3000 przez Vite
-   # (skonfigurowane w client/vite.config.ts)
-   ```
+- W produkcji: jeśli nie ustawisz wartości, frontend użyje `/api/orders` na tej samej domenie, na której działa aplikacja.
+- W dewelopmencie: możesz ustawić lokalny adres backendu, np. `http://localhost:3000`.
 
-2. **Production**
-   ```bash
-   # Stwórz plik client/.env.local
-   VITE_API_BASE_URL=https://twoj-backend.com
-   ```
-
-3. **Szablon konfiguracji**
-   ```bash
-   # Dostępny w:
-  cp client/.env.local.example client/.env.local
-   ```
-
-Jeśli `VITE_API_BASE_URL` nie jest ustawiony, frontend automatycznie:
-- Na produkcji: będzie używać ścieżki API z tej samej domeny Vercel, np. `/api/orders`
-- W dev: będzie używać Local API (proxy Vite)
+Przykład:
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
 
 ### MongoDB
 
-Backend wymaga MongoDB. Masz dwie opcje:
+Aby backend mógł zapisywać zamówienia, wymagany jest `MONGODB_URI`.
 
-#### Opcja 1: Lokalne (localhost)
+#### Lokalne MongoDB
 ```bash
-# Zainstaluj MongoDB Community Edition
-# https://www.mongodb.com/docs/manual/installation/
-
-# Uruchom MongoDB
+# Uruchom MongoDB lokalnie
 mongod
-
-# W .env ustaw:
-MONGODB_URI=mongodb://localhost:27017/galaretkarnia
 ```
 
-#### Opcja 2: MongoDB Atlas (chmura) - rekomendowane dla produkcji
-```bash
-# Wejdź na https://www.mongodb.com/cloud/atlas
-# Utwórz darmowe konto
-# Skopiuj connection string
-# W .env ustaw:
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/galaretkarnia?retryWrites=true&w=majority
+W `Vercel` ustaw:
+```env
+MONGODB_URI=mongodb://localhost:27017/szkolnegazetki
+```
+
+#### MongoDB Atlas
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/szkolnegazetki?retryWrites=true&w=majority
 ```
 
 ### Email (Resend)
 
-Backend wysyła e-mail z powiadomieniem o każdym nowym zamówieniu.
+Backend wysyła powiadomienia o nowych zamówieniach na adres ustawiony w `ORDER_EMAIL`.
 
-**📧 [Szczegółowa instrukcja konfiguracji e-mail →](EMAIL-SETUP.md)**
-
-Szybka konfiguracja:
-1. W `server/.env` ustaw klucz Resend i adres odbioru zamówień
-```env
-RESEND_API_KEY=re_twoj_klucz_api
-ORDER_EMAIL=kontakt@galaretkarnia.pl
-RESEND_FROM_EMAIL=noreply@twoja-domena.pl
-```
-
-2. Opcjonalnie dla testów live ustaw oddzielny adres:
-```env
-ORDER_EMAIL_TEST=testy@twoja-domena.pl
-```
-
-**Uwaga**: Zamówienia są zapisywane w MongoDB niezależnie od konfiguracji email!
+**📧 [Szczegóły konfiguracji email →](EMAIL-SETUP.md)**
 
 ## 🧩 Skrypty npm (root)
 
-Najczęściej używane skrypty w katalogu głównym:
-
-- `npm run dev` - frontend + backend lokalnie
-- `npm run dev:test` - frontend + backend w trybie testowym (`NODE_ENV=test` po stronie backendu)
-- `npm run build` - build frontendu (`client/dist`)
-- `npm run start` - build frontendu + start backendu
-- `npm run test:e2e:smoke` - szybkie testy bez efektów ubocznych
-- `npm run test:e2e:all` - pełny profil domyślnych testów E2E (bez live checkout)
-- `npm run test:e2e:live` - realny checkout E2E (tworzy prawdziwe zamówienia)
-- `npm run test:prod:smoke` - smoke test przeciwko produkcji
-- `npm run ops:local:check` - przegląd lokalnego środowiska i gałęzi
-- `npm run ops:local:cleanup` - usuwanie lokalnych gałęzi już scalonych
+- `npm run dev` - uruchamia frontend w trybie developerskim
+- `npm run build` - buduje frontend do `dist`
+- `npm run test:e2e:smoke` - szybkie testy E2E
+- `npm run test:e2e:all` - pełny zestaw testów E2E
+- `npm run test:e2e:live` - checkout live testy E2E
+- `npm run test:prod:smoke` - smoke test produkcji
+- `npm run ops:local:check` - lokalny przegląd repozytorium
+- `npm run ops:local:cleanup` - usuwanie lokalnie scalonych gałęzi
 
 ## 🧪 Testy E2E
 
@@ -233,97 +177,51 @@ Jeśli używasz tylko jednego klastra MongoDB Free, testy live są odseparowane 
 
 Konfiguracja znajduje się w:
 
-1. `server/.env.example`
-2. `server/server.mjs`
+1. `api/orders.js`
+2. `api/health.js`
 3. `playwright.live.config.ts`
 
 ## 📂 Struktura projektu
 
 ```
-galaretkarnia.pl/
-├── client/                 # Frontend (Vite + TypeScript)
-│   ├── index.html
-│   ├── app.ts
-│   ├── style.css
-│   ├── terms.html
-│   ├── privacy.html
-│   └── ...
-├── package.json            # Konfiguracja npm
+szkolnegazetki.pl/
+├── api/                    # Vercel Serverless functions
+│   ├── orders.js           # Obsługa zamówień
+│   └── health.js           # Health check API
+├── index.html
+├── app.ts
+├── style.css
+├── terms.html
+├── privacy.html
+├── favicon/
+├── img/
+├── modules/
+├── config/
+├── public/
+├── types.ts
+├── utils.css
+├── vite.config.ts
+├── vite-env.d.ts
+├── package.json            # Rootowa konfiguracja npm
 ├── tsconfig.json           # Konfiguracja TypeScript
-└── server/                 # Backend (Node.js + Express)
-    ├── server.mjs          # API serwera
-    ├── test-server.mjs     # Start backendu w trybie testowym
-    ├── .env                # Zmienne środowiska (lokalne)
-    ├── .env.example        # Szablon .env
-    └── package.json        # Zależności backendu
+└── vercel.json             # Ustawienia Vercel
 ```
 
 ## 🔌 Endpointy API
-
-**GET `/api/payment-config`** - Konfiguracja płatności dla frontendu
 
 ### Zamówienia
 
 **POST `/api/orders`** - Złóż nowe zamówienie
 ```json
 {
-  "phone": "512345678",
-  "parcelLockerCode": "WAW01A",
+  "customerName": "Szkoła Podstawowa nr 10",
+  "customerEmail": "kontakt@szkolnegazetki.pl",
+  "customerPhone": "512345678",
   "paymentMethod": "bank_transfer",
-  "notes": "Proszę dostarczyć po 18:00",
+  "notes": "Proszę o szybką realizację",
   "items": [
-    {"name": "Galaretka drobiowa", "qty": 2}
+    {"name": "Pakiet plakatów edukacyjnych", "price": 45, "qty": 2}
   ]
-}
-```
-
-`productsTotal`, `deliveryCost` i `total` są wyliczane po stronie backendu na podstawie `items`.
-
-**GET `/api/orders`** - Pobierz wszystkie zamówienia (admin)
-
-**GET `/api/orders/id/:orderId`** - Pobierz szczegóły zamówienia
-
-**PUT `/api/orders/id/:orderId`** - Zmień status zamówienia
-```json
-{
-  "status": "w-realizacji"
-}
-```
-
-### Konta użytkowników
-
-**POST `/api/auth/register`** - Rejestracja konta
-```json
-{
-  "email": "uzytkownik@example.com",
-  "password": "silnehaslo123"
-}
-```
-
-**POST `/api/auth/login`** - Logowanie
-```json
-{
-  "email": "uzytkownik@example.com",
-  "password": "silnehaslo123"
-}
-```
-
-**GET `/api/auth/me`** - Profil zalogowanego użytkownika (Bearer token)
-
-**GET `/api/auth/orders`** - Historia zamówień przypisanych do zalogowanego konta (Bearer token)
-
-**POST `/api/auth/password-reset/request`** - Prośba o reset hasła
-```json
-{
-  "email": "uzytkownik@example.com"
-}
-```
-
-**POST `/api/auth/password-reset/confirm`** - Ustaw nowe hasło na podstawie tokenu
-```json
-{
-  "token": "token-z-linku-mailowego",
-  "newPassword": "noweSilneHaslo123"
 }
 ```
 
@@ -333,13 +231,11 @@ galaretkarnia.pl/
 ```
 {
   "status": "ok",
-  "service": "galaretkarnia-api",
+  "service": "szkolnegazetki-api",
   "environment": "production",
   "timestamp": "2026-01-01T00:00:00.000Z",
-  "uptimeSeconds": 123,
   "database": {
-    "connected": true,
-    "collection": "orders"
+    "connected": true
   }
 }
 ```
@@ -365,7 +261,6 @@ Każde zamówienie w MongoDB zawiera:
 {
   "_id": "ObjectId",
   "phone": "string",
-  "parcelLockerCode": "string",
   "notes": "string",
   "items": [
     {"name": "string", "price": "number", "qty": "number"}
@@ -382,8 +277,8 @@ Każde zamówienie w MongoDB zawiera:
 
 ## 🎨 Produkty
 
-1. **Galaretka drobiowa** - tradycyjna receptura z warzywami (18 zł)
-2. **Galaretka wieprzowa** - tradycyjna receptura z warzywami (19 zł)
+1. **Pakiet plakatów edukacyjnych** - gotowe materiały do gazetki szkolnej (45 zł)
+2. **Szablony gazetki szkolnej** - profesjonalne layouty w formacie PDF (52 zł)
 
 ## 🔧 Konfiguracja
 
@@ -419,4 +314,4 @@ MIT
 
 ## 👨‍💻 Autor
 
-Galaretkarnia.pl © 2026
+Szkolne gazetki © 2026

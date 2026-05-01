@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const baseUrl = process.env.PROD_BASE_URL || 'https://galaretkarnia.pl';
+const baseUrl = process.env.PROD_BASE_URL || 'https://szkolnegazetki.pl';
 
 async function run() {
   const browser = await chromium.launch({ headless: true });
@@ -24,7 +24,7 @@ async function run() {
       if (await rejectCookiesBtn.isVisible().catch(() => false)) {
         await rejectCookiesBtn.click();
       }
-      await page.getByRole('heading', { level: 1, name: /Tradycyjna galaretka/i }).waitFor();
+      await page.getByRole('heading', { level: 1, name: /Gotowe grafiki PDF/i }).waitFor();
       await page.getByTestId('section-products').waitFor();
       await page.getByTestId('order-form').waitFor();
     });
@@ -34,7 +34,7 @@ async function run() {
       const summary = page.getByTestId('checkout-summary-list');
       await summary.waitFor();
       const text = await summary.textContent();
-      if (!text || !text.includes('Galaretka')) {
+      if (!text || !text.includes('Pakiet plakatów edukacyjnych')) {
         throw new Error('Cart summary missing product text');
       }
     });
@@ -42,7 +42,7 @@ async function run() {
     await step('Cart persists after reload', async () => {
       await page.reload({ waitUntil: 'domcontentloaded' });
       const text = await page.getByTestId('checkout-summary-list').textContent();
-      if (!text || !text.includes('Galaretka drobiowa')) {
+      if (!text || !text.includes('Pakiet plakatów edukacyjnych')) {
         throw new Error('Cart did not persist after reload');
       }
     });
@@ -65,21 +65,12 @@ async function run() {
     await step('Field validation works', async () => {
       const phoneInput = page.getByTestId('input-customer-phone');
       const phoneError = page.getByTestId('msg-phone-error');
-      const lockerInput = page.getByTestId('input-parcel-locker-code');
-      const lockerError = page.getByTestId('msg-locker-error');
 
       await phoneInput.fill('123');
       await phoneInput.blur();
       const phoneText = await phoneError.textContent();
       if (!phoneText || !phoneText.includes('9 cyfr')) {
         throw new Error('Phone length validation missing');
-      }
-
-      await lockerInput.fill('A1');
-      await lockerInput.blur();
-      const lockerText = await lockerError.textContent();
-      if (!lockerText || !lockerText.includes('min. 6 znaków')) {
-        throw new Error('Locker validation missing');
       }
     });
 

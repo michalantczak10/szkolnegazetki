@@ -1,63 +1,58 @@
 # Deployment Guide
 
-Ten dokument opisuje aktualny, uproszczony deployment:
+Ten dokument opisuje aktualny model wdrożenia dla projektu:
 
 - frontend: Vercel
-- backend: Render
-- baza: MongoDB Atlas
+- backend: Vercel Serverless Functions
+- baza: MongoDB Atlas lub lokalne MongoDB
 
 ## 1. Wymagane sekrety
 
-### Render (backend)
+### Vercel
 
 Obowiązkowe:
-- **MONGODB_URI** - connection string do MongoDB Atlas
-- **RESEND_API_KEY** - API key do Resend (email service)
+- **MONGODB_URI** - connection string do MongoDB Atlas lub lokalnego MongoDB
 - **ORDER_EMAIL** - adres e-mail na który wysyłać powiadomienia o zamówieniach
-- **RESEND_FROM_EMAIL** - adres e-mail nadawcy (musi być zweryfikowany w Resend)
-- **FRONTEND_URL** - https://galaretkarnia.pl (używane do CORS i linków w mailach)
+- **RESEND_API_KEY** - API key do Resend (email service)
+- **RESEND_FROM_EMAIL** - adres e-mail nadawcy w Resend
 - **NODE_ENV** - production
 
-### Vercel (frontend)
-
-- Brak wymaganych sekretów dla frontendu
+Frontend nie wymaga dodatkowych sekretów do działania w Vercel, jeśli wykorzystuje te same funkcje.
 
 ## 2. Aktualny pipeline
 
 Repo pracuje w modelu:
 
-- develop: codzienna praca
+- develop: praca deweloperska
 - main: produkcja
 
 Publikacja produkcji:
 
 1. push zmian na develop
-2. push develop na main
-3. Vercel i Render robia automatyczny deployment
+2. merge develop do main
+3. Vercel automatycznie deployuje frontend i funkcje serverless
 
 W tym repo jest skonfigurowane:
 
-- Vercel buduje frontend bezposrednio komenda `npm run build --prefix client`
-- Output frontendu to folder `client/dist`
-- **Ważne**: Rootowy folder `dist` został usunięty (backend obsługuje serwowanie statycznych plików z `client/dist`)
+- Vercel buduje frontend komendą `npm run build`
+- Output frontendu to folder `dist`
+- Funkcje backendowe są wdrażane z katalogu `api/` (Vercel Serverless Functions)
 
 ## 3. Szybka weryfikacja po deployu
 
 1. API health
 
-GET https://galaretkarnia.onrender.com/api/health
+GET https://szkolnegazetki.pl/api/health
 
-Oczekiwany ksztalt odpowiedzi:
+Oczekiwany kształt odpowiedzi:
 
 {
   "status": "ok",
-  "service": "galaretkarnia-api",
+  "service": "szkolnegazetki-api",
   "environment": "production",
   "timestamp": "...",
-  "uptimeSeconds": 123,
   "database": {
-    "connected": true,
-    "collection": "orders"
+    "connected": true
   }
 }
 
@@ -66,72 +61,62 @@ Oczekiwany ksztalt odpowiedzi:
 ```bash
 npm run test:prod:smoke
 ```
-Uruchamia testy Playwright przeciwko wdrożonej aplikacji na https://galaretkarnia.pl
 
 3. Smoke testy lokalnie
 
 ```bash
 npm run test:e2e:smoke
 ```
-Uruchamia testy Playwright na localhost (wymaga uruchomionego dev servera)
 
 ## 4. Merge strategy
 
 ### Aby dodać zmiany do produkcji:
 
-1. Pracuj na `develop` (daily changes)
-2. Po testach i veryfikacji na develop, stwórz PR `develop` → `main`
-3. Review i merge do `main`
-4. Automatycznie Vercel i Render robia deployment z gałęzi `main`
+1. Pracuj na `develop`
+2. Po testach na develop, stwórz PR `develop` → `main`
+3. Zmerguj do `main`
+4. Vercel automatycznie deployuje aplikację z `main`
 
-**Ważne**: Nigdy nie pushuj bezpośrednio na `main`, zawsze przez PR.
+**Ważne**: Nigdy nie pushuj bezpośrednio na `main`, jeśli można użyć PR.
 
-## 5. Najczestsze problemy
+## 5. Najczęstsze problemy
 
-1. Vercel: vite command not found
+1. Vercel: `vite` command not found
 
-Przyczyna: brak instalacji zaleznosci client.
-Aktualna konfiguracja vercel.json rozwiazuje ten problem.
+- Upewnij się, że Vercel instaluje zależności w katalogu głównym repozytorium.
+- `vercel.json` powinien zawierać poprawny `installCommand`.
 
-2. Backend health ma status degraded
+2. API health ma status degraded
 
-Najczesciej brak polaczenia z MongoDB. Sprawdz MONGODB_URI na Render.
+- Sprawdź `MONGODB_URI` w Vercel.
+- Upewnij się, że baza jest dostępna.
 
-3. Brak maili o zamowieniach
+3. Brak maili o zamówieniach
 
-Sprawdz RESEND_API_KEY, RESEND_FROM_EMAIL i ORDER_EMAIL oraz logi backendu na Render.
+- Sprawdź `RESEND_API_KEY`, `RESEND_FROM_EMAIL` i `ORDER_EMAIL` w Vercel.
+- Sprawdź logi funkcji serverless w Vercel.
 
 ## 6. Troubleshooting w trakcie development
 
 ### Frontend nie buduje się lokalnie
 
 ```bash
-cd client && npm install && npm run build
+npm install && npm run build
 ```
-Upewnij się że zainstalowałeś zależności.
 
-### Backend nie działa lokalnie
+### Lokalne testy frontendowe
 
 ```bash
-cd server && npm install
-```
-Jeśli używasz lokalnego MongoDB, ustaw w `.env`:
-```
-MONGODB_URI=mongodb://localhost:27017/galaretkarnia
-NODE_ENV=development
+npm run test:e2e:smoke
 ```
 
-### Vite dev server się sypie
+### Zmiana konfiguracji Vercel
 
-Cleaning cache:
-```bash
-rm -rf client/node_modules client/.vite
-npm run dev
-```
+W Vercel ustaw te same zmienne środowiskowe, co w produkcji.
 
 ## 7. Operacyjna checklista
 
-Do release i kontroli produkcji uzywaj:
+Do release i kontroli produkcji używaj:
 
 - README.md
 - PRODUCTION-CHECKLIST.md

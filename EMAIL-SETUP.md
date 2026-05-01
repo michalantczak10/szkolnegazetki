@@ -2,84 +2,77 @@
 
 ## Co robi backend
 
-Po zlozeniu zamowienia backend:
+Funkcja serverless `api/orders.js`:
 
-1. zapisuje zamowienie do MongoDB
-2. zwraca klientowi numer zamowienia
-3. probuje wyslac email z detalami zamowienia
+1. zapisuje zamówienie do MongoDB
+2. zwraca klientowi numer zamówienia
+3. próbuje wysłać email z powiadomieniem o zamówieniu
 
-Wysylka email nie blokuje zapisu zamowienia. Jezeli Resend ma blad, zamowienie nadal jest w bazie.
+Wysyłka email nie blokuje zapisu zamówienia. Jeśli Resend zgłosi błąd, zamówienie i tak zostanie zapisane.
 
-## Wymagane zmienne srodowiskowe
+## Wymagane zmienne środowiskowe
 
-W Render ustaw:
+W Vercel ustaw:
 
-- RESEND_API_KEY
-- RESEND_FROM_EMAIL
-- ORDER_EMAIL
+- `MONGODB_URI`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `ORDER_EMAIL`
 
-Opcjonalnie dla testow live:
+Opcjonalnie dla testów live:
 
-- ORDER_EMAIL_TEST
+- `ORDER_EMAIL_TEST`
 
-Przyklad:
+Przykład:
 
+```env
 RESEND_API_KEY=re_twoj_klucz_api
-RESEND_FROM_EMAIL=noreply@galaretkarnia.onresend.com
-ORDER_EMAIL=kontakt@galaretkarnia.pl
+RESEND_FROM_EMAIL=noreply@szkolnegazetki.onresend.com
+ORDER_EMAIL=kontakt@szkolnegazetki.pl
+```
 
 Uwagi:
 
-- konfiguracja email dotyczy backendu, wiec te zmienne ustawiasz w Render, nie w Vercel
-- jezeli ORDER_EMAIL nie jest ustawiony, backend uzyje fallbacku `kontakt@galaretkarnia.pl`
-- jezeli RESEND_FROM_EMAIL nie jest ustawiony, backend uzyje fallbacku `noreply@galaretkarnia.onresend.com`
+- konfiguracja email dotyczy backendu w Vercel
+- jeśli `ORDER_EMAIL` nie jest ustawiony, powiadomienie może zostać pominięte
+- jeśli `RESEND_FROM_EMAIL` nie jest ustawiony, backend użyje domyślnego `noreply@szkolnegazetki.onresend.com`
 
-Brak konfiguracji Resend:
+## Brak konfiguracji Resend
 
-- jezeli RESEND_API_KEY nie jest ustawiony, backend pominie wysylke maila
-- zamowienie nadal zapisze sie do MongoDB
-- w logach pojawi sie ostrzezenie, ze Resend nie jest skonfigurowany
+- jeśli `RESEND_API_KEY` nie jest ustawiony, backend pominie wysyłkę maila
+- zamówienie nadal zapisze się do MongoDB
+- w logach pojawi się informacja, że Resend nie jest skonfigurowany
 
-## Jak przetestowac
+## Jak przetestować
 
-1. sprawdz logi backendu na Render
-2. wykonaj testowe zamowienie przez frontend albo przez `POST /api/orders`
-3. potwierdz, ze email dotarl na ORDER_EMAIL
-4. jezeli uzywasz testow live, sprawdz czy testowe wiadomosci trafiaja na ORDER_EMAIL_TEST
+1. sprawdź logi funkcji serverless w Vercel
+2. wykonaj testowe zamówienie przez frontend lub `POST /api/orders`
+3. potwierdź, że email dotarł na `ORDER_EMAIL`
+4. jeśli używasz testów live, sprawdź `ORDER_EMAIL_TEST`
 
-W logach backendu szukaj komunikatow:
+W logach szukaj:
 
-- EMAIL accepted by Resend
-- EMAIL rejected by Resend
-- EMAIL send request failed
-- Pominięto wysyłkę maila — Resend nie jest skonfigurowany
+- `EMAIL accepted by Resend`
+- `EMAIL rejected by Resend`
+- `EMAIL send request failed`
+- `Pominięto wysyłkę maila — Resend nie jest skonfigurowany`
 
-Minimalny scenariusz kontrolny:
-
-1. ustaw `RESEND_API_KEY`, `RESEND_FROM_EMAIL` i `ORDER_EMAIL` w Render
-2. wyslij jedno poprawne zamowienie testowe
-3. sprawdz, czy zamowienie zapisalo sie w MongoDB
-4. sprawdz, czy w logach jest `EMAIL accepted by Resend`
-5. sprawdz, czy email dotarl na skrzynke odbiorcza
-
-## Najczestsze problemy
+## Najczęstsze problemy
 
 1. Brak maili
 
-- zly RESEND_API_KEY
-- niepoprawny RESEND_FROM_EMAIL
-- wiadomosci trafiaja do spam
+- zły `RESEND_API_KEY`
+- niepoprawny `RESEND_FROM_EMAIL`
+- wiadomości trafiają do spamu
 
-2. Mail nie wychodzi, ale zamowienie jest zapisane
+2. Mail nie wychodzi, ale zamówienie jest zapisane
 
-To oczekiwane zachowanie. System nie traci zamowienia przez problem z email.
+To wciąż oczekiwane zachowanie. System nie traci zamówienia przez problem z email.
 
-Jesli w logach widzisz komunikat o pominieciu wysylki, to znaczy, ze Resend nie jest skonfigurowany, a nie ze wysylka zostala odrzucona.
+3. Rozdzielenie produkcji i testów
 
-3. Rozdzielenie produkcji i testow
+Jeśli używasz live testów, ustaw `ORDER_EMAIL_TEST`, aby testowe zamówienia nie trafiały na główną skrzynkę.
 
-Jesli uzywasz testow live, ustaw ORDER_EMAIL_TEST, aby testowe zamowienia nie trafialy na glowna skrzynke.
+## Bezpieczeństwo
 
-## Bezpieczenstwo
-
-Nie commituj plikow env do repo. Sekrety trzymaj w zmiennych srodowiskowych backendu w Render.
+Nie commituj plików `.env` do repo. Sekrety trzymaj w zmiennych środowiskowych Vercel.

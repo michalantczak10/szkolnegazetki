@@ -19,15 +19,13 @@
     "skipLibCheck": true,
   },
   "include": [
-    "client/**/*.ts",
-    "client/**/*.d.ts",
+    "**/*.ts",
     "tests/**/*.ts",
     "playwright.config.ts",
     "playwright.live.config.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "client/dist"
+    "dist"
   ]
 }

@@ -106,7 +106,7 @@ function checkMergedBranches(deleteMerged) {
 function main() {
   const deleteMerged = process.argv.includes('--delete-merged');
 
-  console.log('Local housekeeping for Galaretkarnia');
+  console.log('Local housekeeping for Szkolne gazetki');
   checkGitStatus();
   checkNodeProcesses();
   checkMergedBranches(deleteMerged);

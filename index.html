@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Nowe favicony: pełna kartka A4 z grafiką -->
+    <link rel="icon" type="image/svg+xml" href="/favicon/newspaper-a4-filled.svg?v=2" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-16x16.png?v=2" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-32x32.png?v=2" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-48x48.png?v=2" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png?v=2" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-192x192.png?v=2" sizes="192x192" />
+    <link rel="icon" type="image/png" href="/favicon/favicon-512x512.png?v=2" sizes="512x512" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico?v=2" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon-180x180.png?v=2" />
+    <link rel="manifest" href="/favicon/site.webmanifest?v=2" />
+    <title>Szkolne gazetki – Grafiki PDF do gazetki szkolnej</title>
+    <meta
+      name="description"
+      content="Szkolne gazetki – gotowe plakaty szkolne PDF i szablony gazetki PDF dla nauczycieli i redakcji szkolnych. Pobierz i drukuj od razu."
+    />
+    <meta
+      name="keywords"
+      content="szkolne gazetki, gazetka szkolna, plakaty szkolne PDF, szablony gazetki PDF, grafiki dla nauczycieli, plakaty edukacyjne"
+    />
+    <meta name="theme-color" content="#1d4ed8" />
+    <meta name="author" content="Szkolne gazetki" />
+    <link rel="stylesheet" href="style.css?v=4" />
+  </head>
+  <body>
+    <div id="checkoutMessage"></div>
+
+    <header class="hero">
+      <div class="hero-content">
+        <div class="hero-copy">
+          <a href="/" class="hero-brand" aria-label="Przejdź do strony głównej Szkolne gazetki">
+            <img
+              src="/favicon/newspaper-a4-filled.svg?v=2"
+              alt="Logo Szkolne gazetki"
+              class="hero-logo"
+            />
+            <span class="hero-brand-text">Szkolne gazetki</span>
+          </a>
+          <h1>Gotowe grafiki PDF do gazetki szkolnej</h1>
+          <p>
+            Pomagamy nauczycielom i redakcjom tworzyć profesjonalne gazetki szkolne w postaci gotowych plików PDF.
+          </p>
+          <ul class="hero-tagline" aria-label="Najważniejsze cechy produktu">
+            <li>Gotowe pliki PDF do druku</li>
+            <li>Praktyczne szablony szkolne</li>
+            <li>Szybki dostęp do pobrania po płatności</li>
+          </ul>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <picture>
+            <source srcset="img/branding/logo-szkolne-gazetki-z-napisem-bialy.webp" type="image/webp" />
+            <img
+              src="img/branding/logo-szkolne-gazetki-z-napisem-bialy.png"
+              alt="Logo Szkolne gazetki"
+              class="hero-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+      </div>
+    </header>
+    <!-- Usunięto mini-koszyk. Cała zawartość koszyka znajduje się teraz w podsumowaniu zamówienia. -->
+    <section class="about fade-in">
+      <h2>O nas</h2>
+      <div class="about-content">
+        <div class="about-story">
+          <p>
+            Jesteśmy małżeństwem, które tworzy Szkolne gazetki z pasji do szkolnych projektów i estetyki. Pochodzimy z rodzin nauczycielskich, a własne wykształcenie pedagogiczne pomaga nam lepiej rozumieć, co sprawdza się w klasie. Justynka jako praktykująca nauczycielka doskonale zna potrzeby redakcji, a razem przygotowujemy ofertę tak, by gotowe zestawy PDF były estetyczne, łatwe do pobrania i gotowe do użycia w szkolnej gazetce.
+          </p>
+        </div>
+
+        <div class="about-photos" aria-label="Przykładowe projekty gazetki szkolnej">
+          <figure class="about-photo-card">
+            <picture>
+              <source srcset="img/team/zespol-michal.webp" type="image/webp" />
+              <img
+                src="img/team/zespol-michal.jpg"
+                alt="Przykładowa grafika szkolna"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <figcaption>Michał</figcaption>
+          </figure>
+          <figure class="about-photo-card">
+            <picture>
+              <source srcset="img/team/zespol-justyna.webp" type="image/webp" />
+              <img
+                src="img/team/zespol-justyna.jpg"
+                alt="Przykładowa strona gazetki szkolnej"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            <figcaption>Justynka</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="product fade-in" id="products" data-testid="section-products">
+      <h2>O ofercie</h2>
+      <div class="product-grid">
+        <div class="product-card" data-product-id="poster">
+          <picture>
+            <source srcset="img/products/produkt-plakaty-edukacyjne.webp" type="image/webp" />
+            <img
+              src="img/products/produkt-plakaty-edukacyjne.png"
+              alt="Plakaty szkolne PDF"
+              loading="lazy"
+              decoding="async"
+              data-product-image
+            />
+          </picture>
+          <h3 data-product-name>Plakaty szkolne PDF</h3>
+          <p data-product-description>Zestaw plakatow edukacyjnych PDF do gazetki szkolnej.</p>
+          <p class="price" data-product-price>45 zł</p>
+          <button
+            class="addToCartBtn"
+            data-product-id="poster"
+            data-product="Plakaty szkolne PDF"
+            data-price="45"
+            data-image="img/products/produkt-plakaty-edukacyjne.png"
+            aria-label="Dodaj plakaty szkolne PDF do zamowienia"
+            data-testid="btn-add-to-cart"
+          >
+            Dodaj do zamówienia
+          </button>
+        </div>
+
+        <div class="product-card" data-product-id="newsletter">
+          <picture>
+            <source srcset="img/products/produkt-szablony-gazetki.webp" type="image/webp" />
+            <img
+              src="img/products/produkt-szablony-gazetki.png"
+              alt="Szablony gazetki PDF"
+              loading="lazy"
+              decoding="async"
+              data-product-image
+            />
+          </picture>
+          <h3 data-product-name>Szablony gazetki PDF</h3>
+          <p data-product-description>Gotowe szablony gazetki szkolnej PDF do szybkiego druku.</p>
+          <p class="price" data-product-price>52 zł</p>
+          <button
+            class="addToCartBtn"
+            data-product-id="newsletter"
+            data-product="Szablony gazetki PDF"
+            data-price="52"
+            data-image="img/products/produkt-szablony-gazetki.png"
+            aria-label="Dodaj szablony gazetki PDF do zamowienia"
+            data-testid="btn-add-to-cart"
+          >
+            Dodaj do zamówienia
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits fade-in">
+      <h2>Dlaczego my?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">🏡</div>
+          <h3>Gotowe do druku</h3>
+          <p>
+            Oferujemy starannie przygotowane pliki PDF, które możesz od razu
+            wydrukować lub udostępnić szkolnej redakcji.
+          </p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">⭐</div>
+          <h3>Profesjonalny design</h3>
+          <p>
+            Każdy projekt ma czytelny layout i estetyczne ilustracje dostosowane do
+            szkolnych gazetek i materiałów edukacyjnych.
+          </p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">⚡</div>
+          <h3>Szybka obsługa</h3>
+          <p>
+            Po zaksięgowaniu płatności wysyłamy link do pobrania plików ręcznie i
+            potwierdzamy realizację w krótkim czasie.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="checkout fade-in" id="checkout">
+      <h2>Zamówienie</h2>
+      <div class="checkout-layout">
+        <form id="checkoutForm" class="checkout-form" novalidate data-testid="order-form">
+          <p class="checkout-note">Zamawiasz cyfrowe produkty PDF. Po zaksięgowaniu płatności wyślemy Ci ręcznie link do pobrania.</p>
+
+          <label for="customerName">Imię lub nazwa organizacji</label>
+          <input id="customerName" name="customerName" type="text" autocomplete="name" required placeholder="Np. Szkoła Podstawowa nr 10" data-testid="input-customer-name" />
+          <div class="input-error" id="nameError" aria-live="polite"></div>
+
+          <label for="customerEmail">E-mail</label>
+          <input id="customerEmail" name="customerEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" data-testid="input-customer-email" />
+          <div class="input-error" id="emailError" aria-live="polite"></div>
+
+          <label for="customerPhone">Numer telefonu (opcjonalnie)</label>
+          <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" placeholder="Np. 500 600 700" data-testid="input-customer-phone" />
+          <div class="input-error" id="phoneError" aria-live="polite"></div>
+
+          <label for="customerNotes">Uwagi do zamówienia (opcjonalnie)</label>
+          <textarea id="customerNotes" name="customerNotes" rows="4" maxlength="300" autocomplete="off" placeholder="Np. dodatkowe informacje do zamówienia" data-testid="input-customer-notes"></textarea>
+          <div class="notes-counter" id="notesCounter" aria-live="polite" data-testid="msg-notes-counter">0 / 300</div>
+          <div class="input-error" id="notesError" aria-live="polite"></div>
+
+          <div class="checkout-actions-row">
+            <button type="submit" id="submitOrderBtn" class="browse-products-btn clear-cart-btn" data-testid="btn-submit-order">Zamawiam teraz</button>
+          </div>
+        </form>
+
+        <aside class="checkout-summary" aria-label="Podsumowanie zamówienia">
+          <div class="checkout-summary-box">
+            <h3 style="margin-top:0; text-align:center; color:#1d4ed8; letter-spacing:0.5px; font-size:1.25em;">Podsumowanie zamówienia</h3>
+            <div id="checkoutSummary" data-testid="checkout-summary-list"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="trust fade-in">
+      <h2>Kontakt i obsługa</h2>
+      <div class="trust-grid">
+        <div class="trust-contact-card">
+          <p class="trust-hanging trust-contact-item">📞 Telefon: <a href="tel:+48794535366" data-store-phone>794 535 366</a></p>
+          <p class="trust-hanging trust-contact-item">✉️ E-mail: <a href="mailto:kontakt@szkolnegazetki.pl" data-store-general-email>kontakt@szkolnegazetki.pl</a></p>
+        </div>
+        <p class="trust-hanging">🕒 Obsługa zamówień: pon.-pt. 09:00-18:00.</p>
+        <p class="trust-hanging">✅ Link do pobrania wyślemy ręcznie po zaksięgowaniu płatności.</p>
+      </div>
+    </section>
+
+    <section class="legal fade-in">
+      <h2>Regulamin i polityka prywatności</h2>
+      <div class="legal-grid legal-home-grid">
+        <article class="legal-home-card">
+          <h3>📄 Regulamin</h3>
+          <p>Zasady składania zamówień, płatności, dostawy i reklamacji.</p>
+          <a href="terms.html" class="legal-home-link">Regulamin</a>
+        </article>
+
+        <article class="legal-home-card">
+          <h3>🔒 Polityka prywatności (RODO)</h3>
+          <p>Jakie dane zbieramy, w jakim celu je przetwarzamy i jak długo je przechowujemy.</p>
+          <a href="/privacy.html" class="legal-home-link">Polityka prywatności</a>
+        </article>
+
+        <div class="legal-home-contacts">
+          <p><strong>Kontakt ogólny i RODO:</strong> <a href="mailto:kontakt@szkolnegazetki.pl" data-store-general-email>kontakt@szkolnegazetki.pl</a></p>
+          <p><strong>Reklamacje:</strong> <a href="mailto:reklamacje@szkolnegazetki.pl" data-store-complaints-email>reklamacje@szkolnegazetki.pl</a></p>
+          <p><strong>Cookies:</strong> szczegóły znajdziesz w <a href="/privacy.html">Polityce prywatności</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="./app.ts"></script>
+  </body>
+</html>
