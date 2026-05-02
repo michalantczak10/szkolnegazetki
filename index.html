@@ -26,9 +26,13 @@
     <meta name="theme-color" content="#b30000" />
     <meta name="author" content="Szkolne gazetki" />
     <link rel="stylesheet" href="style.css?v=4" />
+    <!-- Preload krytycznych zasobów -->
+    <link rel="preload" href="img/hero/hero-gazetka.svg" as="image" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   </head>
   <body>
-    <div id="checkoutMessage"></div>
+    <div id="checkoutMessage" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <header class="hero">
       <div class="hero-content">
@@ -64,8 +68,8 @@
       </div>
     </header>
     <!-- Usunięto mini-koszyk. Cała zawartość koszyka znajduje się teraz w podsumowaniu zamówienia. -->
-    <section class="about fade-in">
-      <h2>O nas</h2>
+    <section class="about fade-in" aria-labelledby="about-heading">
+      <h2 id="about-heading">O nas</h2>
       <div class="about-content">
         <div class="about-story">
           <p>
@@ -102,8 +106,8 @@
       </div>
     </section>
 
-    <section class="product fade-in" id="products" data-testid="section-products">
-      <h2>O ofercie</h2>
+    <section class="product fade-in" id="products" data-testid="section-products" aria-labelledby="products-heading">
+      <h2 id="products-heading">O ofercie</h2>
       <div class="product-grid">
         <div class="product-card" data-product-id="poster">
           <picture>
@@ -161,8 +165,8 @@
       </div>
     </section>
 
-    <section class="benefits fade-in">
-      <h2>Dlaczego my?</h2>
+    <section class="benefits fade-in" aria-labelledby="benefits-heading">
+      <h2 id="benefits-heading">Dlaczego my?</h2>
       <div class="benefits-grid">
         <div class="benefit-card">
           <div class="benefit-icon">🏡</div>
@@ -192,8 +196,8 @@
     </section>
 
 
-    <section class="checkout fade-in" id="checkout">
-      <h2>Zamówienie</h2>
+    <section class="checkout fade-in" id="checkout" aria-labelledby="checkout-heading">
+      <h2 id="checkout-heading">Zamówienie</h2>
       <div class="checkout-layout">
         <form id="checkoutForm" class="checkout-form" novalidate data-testid="order-form">
           <p class="checkout-note">Zamawiasz cyfrowe produkty PDF. Po zaksięgowaniu płatności wyślemy Ci ręcznie link do pobrania.</p>
@@ -229,8 +233,8 @@
       </div>
     </section>
 
-    <section class="trust fade-in">
-      <h2>Kontakt i obsługa</h2>
+    <section class="trust fade-in" aria-labelledby="trust-heading">
+      <h2 id="trust-heading">Kontakt i obsługa</h2>
       <div class="trust-grid">
         <div class="trust-contact-card">
           <p class="trust-hanging trust-contact-item">📞 Telefon: <a href="tel:+48794535366" data-store-phone>794 535 366</a></p>
@@ -241,8 +245,8 @@
       </div>
     </section>
 
-    <section class="legal fade-in">
-      <h2>Regulamin i polityka prywatności</h2>
+    <section class="legal fade-in" aria-labelledby="legal-heading">
+      <h2 id="legal-heading">Regulamin i polityka prywatności</h2>
       <div class="legal-grid legal-home-grid">
         <article class="legal-home-card">
           <h3>📄 Regulamin</h3>

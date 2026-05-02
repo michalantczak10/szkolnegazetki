@@ -13,6 +13,25 @@ const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@szkolnegazet
 
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
+/** Simple in-memory rate limiter: max 5 requests per IP per 60 seconds */
+const rateLimitMap = new Map();
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.start > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, { start: now, count: 1 });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) {
+    return true;
+  }
+  entry.count++;
+  return false;
+}
+
 /** @type {import('mongodb').MongoClient | null} */
 let cachedClient = globalThis.__mongoClient || null;
 
@@ -106,6 +125,15 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const clientIp =
+    req.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    'unknown';
+
+  if (isRateLimited(clientIp)) {
+    return res.status(429).json({ error: 'Zbyt wiele żądań. Spróbuj ponownie za chwilę.' });
   }
 
   if (!MONGODB_URI) {
