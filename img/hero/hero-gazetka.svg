@@ -118,10 +118,4 @@
   <circle cx="533" cy="58" r="7" fill="#1a2f8b"/>
   <circle cx="533" cy="58" r="3.5" fill="#4a7ed4" opacity="0.7"/>
 
-  <!-- ══ PDF BADGE ══ -->
-  <circle cx="541" cy="344" r="23" fill="rgba(0,0,0,0.2)"/>
-  <circle cx="538" cy="341" r="23" fill="#ffffff" opacity="0.96"/>
-  <text x="538" y="337" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="800" fill="#b30000" text-anchor="middle" letter-spacing="0.5">PDF</text>
-  <text x="538" y="350" font-family="Arial,Helvetica,sans-serif" font-size="6" fill="#888" text-anchor="middle">gotowe</text>
-
 </svg>

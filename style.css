@@ -972,7 +972,7 @@ body {
   font-size: 1.15rem;
   font-weight: 800;
   line-height: 1.1;
-  white-space: normal;
+  white-space: nowrap;
   overflow-wrap: anywhere;
   letter-spacing: 0.3px;
   text-shadow: 0 1px 2px rgb(0 0 0 / 18%);
@@ -2714,11 +2714,13 @@ button:active {
 
   .hero-visual {
     justify-self: center;
-    max-width: 680px;
+    justify-content: center;
+    max-width: 100%;
   }
 
   .hero-image {
-    width: min(560px, 100%);
+    width: 100%;
+    max-width: 560px;
     height: auto;
     margin-inline: auto;
   }
@@ -2841,7 +2843,8 @@ button:active {
   }
 
   .hero-image {
-    width: min(460px, 100%);
+    width: 100%;
+    max-width: 460px;
     height: auto;
   }
   
@@ -3146,6 +3149,8 @@ button:active {
 
   .hero-brand-text {
     font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hero-visual {
@@ -3153,7 +3158,7 @@ button:active {
   }
 
   .hero-image {
-    width: min(360px, 100%);
+    width: 100%;
     height: auto;
     border-radius: 14px;
   }
@@ -3169,6 +3174,39 @@ button:active {
 @media (max-width: 360px) {
   .hero {
     padding: 50px 14px;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.35rem;
+  }
+
+  .hero-brand {
+    width: 100%;
+    min-height: 64px;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .hero-logo {
+    width: 52px;
+    flex-shrink: 0;
+  }
+
+  .hero-brand-text {
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
   }
 
   .legal-page .hero {
