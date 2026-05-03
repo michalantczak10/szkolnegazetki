@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: CI
 
 on:
@@ -12,7 +13,6 @@ jobs:
   build-and-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment: Production
 
     steps:
       - name: Checkout
