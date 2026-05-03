@@ -32,9 +32,11 @@
     "test:e2e:live": "playwright test -c playwright.live.config.ts",
     "test:prod:smoke": "node ./scripts/prod-smoke.mjs",
     "ops:local:check": "node ./scripts/local-housekeeping.mjs",
-    "ops:local:cleanup": "node ./scripts/local-housekeeping.mjs --delete-merged"
+    "ops:local:cleanup": "node ./scripts/local-housekeeping.mjs --delete-merged",
+    "test:coverage": "node ./scripts/check-test-coverage.mjs"
   },
   "simple-git-hooks": {
-    "pre-commit": "npm run secrets:check:staged"
+    "pre-commit": "npm run secrets:check:staged",
+    "pre-push": "npm run test:coverage"
   }
 }

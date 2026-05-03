@@ -148,4 +148,72 @@ test.describe('Szkolne gazetki smoke', () => {
     const nameError = page.locator('#nameError');
     await expect(nameError).not.toHaveText('');
   });
+
+  test('empty cart shows browse offer button', async ({ page }) => {
+    // Cart is empty on fresh page — browse button should be visible
+    const browseBtn = page.getByTestId('btn-browse-offer');
+    await expect(browseBtn).toBeVisible();
+    await expect(browseBtn).toContainText('Przeglądaj ofertę');
+  });
+
+  test('cart quantity buttons change product count', async ({ page }) => {
+    await page.getByTestId('btn-add-to-cart').first().click();
+    const summary = page.getByTestId('checkout-summary-list');
+
+    // Default qty is 1
+    await expect(summary.locator('.checkout-summary-product-qty').first()).toHaveText('1');
+
+    // Click increase (+)
+    await summary.locator('.cart-btn-increase').first().click();
+    await expect(summary.locator('.checkout-summary-product-qty').first()).toHaveText('2');
+
+    // Click decrease (-)
+    await summary.locator('.cart-btn-decrease').first().click();
+    await expect(summary.locator('.checkout-summary-product-qty').first()).toHaveText('1');
+  });
+
+  test('cart total updates when adding products', async ({ page }) => {
+    await page.getByTestId('btn-add-to-cart').first().click();
+    const summary = page.getByTestId('checkout-summary-list');
+
+    // First product costs 45 zł — total should reflect it
+    await expect(summary).toContainText('45 zł');
+
+    // Add second product (52 zł)
+    await page.getByTestId('btn-add-to-cart').nth(1).click();
+    await expect(summary).toContainText('97 zł');
+  });
+
+  test('hero image is visible and loaded', async ({ page }) => {
+    const heroImg = page.locator('.hero-image');
+    await expect(heroImg).toBeVisible();
+
+    const naturalWidth = await heroImg.evaluate((img: HTMLImageElement) => img.naturalWidth);
+    expect(naturalWidth).toBeGreaterThan(0);
+  });
+
+  test('cookie banner appears and can be rejected', async ({ page }) => {
+    // Open a fresh page without clearing cookies first
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => localStorage.removeItem('cookieConsent_v1'));
+    await page.reload();
+
+    const banner = page.locator('.cookie-consent');
+    await expect(banner).toBeVisible({ timeout: 5000 });
+
+    await page.getByRole('button', { name: 'Odrzuć opcjonalne' }).click();
+    await expect(banner).not.toBeVisible();
+  });
+
+  test('cookie banner can be accepted', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => localStorage.removeItem('cookieConsent_v1'));
+    await page.reload();
+
+    const banner = page.locator('.cookie-consent');
+    await expect(banner).toBeVisible({ timeout: 5000 });
+
+    await page.getByRole('button', { name: 'Akceptuj wszystkie' }).click();
+    await expect(banner).not.toBeVisible();
+  });
 });
