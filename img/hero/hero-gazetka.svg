@@ -1,167 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 25 555 335" role="img" aria-label="Ilustracja gazetki szkolnej w formacie PDF">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 25 555 335" role="img" aria-label="Ilustracja gazetki ściennej szkolnej w formacie PDF">
 
-  <!-- ══ BACK PAGE (rotated +9°) ══ -->
-  <g transform="rotate(9, 300, 198)">
-    <!-- shadow -->
-    <rect x="193" y="62" width="192" height="272" rx="4" fill="rgba(0,0,0,0.22)"/>
-    <!-- page -->
-    <rect x="190" y="58" width="192" height="272" rx="4" fill="#fff" opacity="0.55"/>
-    <!-- header -->
-    <rect x="190" y="58" width="192" height="44" rx="4" fill="rgba(120,0,0,0.55)"/>
-    <rect x="190" y="82" width="192" height="20" fill="rgba(120,0,0,0.55)"/>
-    <!-- content stubs -->
-    <rect x="206" y="114" width="124" height="7" rx="2" fill="rgba(180,180,180,0.55)"/>
-    <rect x="206" y="126" width="100" height="6" rx="2" fill="rgba(180,180,180,0.4)"/>
-    <rect x="206" y="148" width="160" height="5" rx="1.5" fill="rgba(180,180,180,0.4)"/>
-    <rect x="206" y="158" width="140" height="5" rx="1.5" fill="rgba(180,180,180,0.3)"/>
-    <rect x="206" y="168" width="152" height="5" rx="1.5" fill="rgba(180,180,180,0.4)"/>
-    <rect x="206" y="188" width="80" height="66" rx="2" fill="rgba(180,180,180,0.3)"/>
-    <rect x="296" y="188" width="86" height="5" rx="1.5" fill="rgba(180,180,180,0.4)"/>
-    <rect x="296" y="198" width="70" height="5" rx="1.5" fill="rgba(180,180,180,0.3)"/>
-    <rect x="296" y="208" width="80" height="5" rx="1.5" fill="rgba(180,180,180,0.4)"/>
-    <rect x="296" y="218" width="58" height="5" rx="1.5" fill="rgba(180,180,180,0.3)"/>
-  </g>
+  <!-- ══ TABLICA KORKOWA ══ -->
+  <rect x="15" y="25" width="555" height="335" rx="10" fill="#6b3f1f"/>
+  <rect x="24" y="33" width="537" height="319" rx="7" fill="#c9935a"/>
+  <!-- tekstura korka -->
+  <line x1="24"  y1="80"  x2="561" y2="80"  stroke="#d4a06a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="24"  y1="130" x2="561" y2="130" stroke="#d4a06a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="24"  y1="180" x2="561" y2="180" stroke="#d4a06a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="24"  y1="230" x2="561" y2="230" stroke="#d4a06a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="24"  y1="280" x2="561" y2="280" stroke="#d4a06a" stroke-width="0.8" opacity="0.4"/>
+  <line x1="100" y1="33"  x2="100" y2="352" stroke="#d4a06a" stroke-width="0.8" opacity="0.35"/>
+  <line x1="200" y1="33"  x2="200" y2="352" stroke="#d4a06a" stroke-width="0.8" opacity="0.35"/>
+  <line x1="300" y1="33"  x2="300" y2="352" stroke="#d4a06a" stroke-width="0.8" opacity="0.35"/>
+  <line x1="400" y1="33"  x2="400" y2="352" stroke="#d4a06a" stroke-width="0.8" opacity="0.35"/>
+  <line x1="500" y1="33"  x2="500" y2="352" stroke="#d4a06a" stroke-width="0.8" opacity="0.35"/>
 
-  <!-- ══ MAIN PAGE (rotated –4°) ══ -->
-  <g transform="rotate(-4, 418, 195)">
-    <!-- drop shadow -->
-    <rect x="308" y="38" width="220" height="314" rx="5" fill="rgba(0,0,0,0.3)"/>
-    <!-- white page -->
-    <rect x="304" y="34" width="220" height="314" rx="5" fill="#ffffff"/>
+  <!-- ══ PLANSZA 1 (lewa) ══ -->
+  <rect x="52" y="57" width="152" height="256" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="48" y="53" width="152" height="256" rx="4" fill="#ffffff"/>
+  <rect x="48" y="53" width="152" height="34" rx="4" fill="#8b0000"/>
+  <rect x="48" y="70" width="152" height="17" fill="#8b0000"/>
+  <text x="124" y="68" font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">GAZETKA SZKOLNA</text>
+  <!-- duże zdjęcie -->
+  <rect x="58" y="97" width="132" height="78" rx="2" fill="#efefef" stroke="#e0e0e0" stroke-width="1"/>
+  <polygon points="78,167 100,135 122,167" fill="#d0d0d0"/>
+  <polygon points="112,167 134,142 156,167" fill="#c4c4c4"/>
+  <circle cx="168" cy="145" r="10" fill="#d8d8d8"/>
+  <!-- nagłówek artykułu -->
+  <rect x="58" y="186" width="132" height="9" rx="2" fill="#1a1a1a"/>
+  <rect x="58" y="200" width="112" height="7" rx="2" fill="#333"/>
+  <!-- linie tekstu -->
+  <rect x="58" y="216" width="132" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="58" y="225" width="116" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="58" y="234" width="124" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="58" y="243" width="100" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="58" y="252" width="118" height="5" rx="1.5" fill="#c8c8c8"/>
+  <!-- badge sekcji -->
+  <line x1="58" y1="271" x2="190" y2="271" stroke="#e8e8e8" stroke-width="1"/>
+  <rect x="58" y="264" width="68" height="13" rx="2.5" fill="#b30000"/>
+  <text x="92" y="274" font-family="Arial,Helvetica,sans-serif" font-size="6" fill="#ffffff" font-weight="700" text-anchor="middle">AKTUALNOŚCI</text>
+  <!-- szpilki -->
+  <circle cx="55"  cy="58" r="7" fill="#aa1100"/>
+  <circle cx="55"  cy="58" r="3.5" fill="#ff3322" opacity="0.7"/>
+  <circle cx="193" cy="58" r="7" fill="#aa1100"/>
+  <circle cx="193" cy="58" r="3.5" fill="#ff3322" opacity="0.7"/>
 
-    <!-- ── RED HEADER ── -->
-    <rect x="304" y="34" width="220" height="52" rx="5" fill="#8b0000"/>
-    <rect x="304" y="60" width="220" height="26" fill="#8b0000"/>
-    <!-- top highlight stripe -->
-    <rect x="304" y="34" width="220" height="5" rx="5" fill="#c02020" opacity="0.6"/>
-    <!-- title -->
-    <text x="414" y="60"
-      font-family="Georgia,'Times New Roman',serif"
-      font-size="13.5" font-weight="700" fill="#ffffff"
-      text-anchor="middle" letter-spacing="3">GAZETKA SZKOLNA</text>
-    <text x="414" y="75"
-      font-family="Arial,Helvetica,sans-serif"
-      font-size="7" fill="rgba(255,255,255,0.68)"
-      text-anchor="middle" letter-spacing="1.4">NR 1 · MAJ 2026 · WYDANIE SPECJALNE</text>
+  <!-- ══ PLANSZA 2 (środkowa) ══ -->
+  <rect x="222" y="52" width="152" height="256" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="218" y="48" width="152" height="256" rx="4" fill="#ffffff"/>
+  <rect x="218" y="48" width="152" height="34" rx="4" fill="#8b0000"/>
+  <rect x="218" y="65" width="152" height="17" fill="#8b0000"/>
+  <text x="294" y="63" font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">GAZETKA SZKOLNA</text>
+  <!-- układ 2-kolumnowy -->
+  <line x1="294" y1="92" x2="294" y2="279" stroke="#efefef" stroke-width="1"/>
+  <!-- kolumna lewa -->
+  <rect x="228" y="92" width="58" height="52" rx="2" fill="#efefef" stroke="#e0e0e0" stroke-width="1"/>
+  <polygon points="238,136 252,112 266,136" fill="#d0d0d0"/>
+  <circle cx="274" cy="114" r="8" fill="#d8d8d8"/>
+  <rect x="228" y="150" width="58" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="228" y="160" width="50" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="228" y="170" width="54" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="228" y="185" width="58" height="44" rx="2" fill="#efefef" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="228" y="236" width="52" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="228" y="245" width="44" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="228" y="254" width="50" height="5" rx="1.5" fill="#c8c8c8"/>
+  <!-- kolumna prawa -->
+  <rect x="302" y="92" width="60" height="8" rx="2" fill="#1a1a1a"/>
+  <rect x="302" y="106" width="52" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="302" y="115" width="56" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="302" y="124" width="46" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="302" y="133" width="54" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="302" y="148" width="60" height="38" rx="2" fill="#efefef" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="302" y="193" width="55" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="302" y="202" width="46" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="302" y="211" width="52" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="302" y="220" width="42" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="302" y="229" width="50" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="302" y="238" width="44" height="5" rx="1.5" fill="#d8d8d8"/>
+  <!-- badge -->
+  <line x1="228" y1="272" x2="360" y2="272" stroke="#e8e8e8" stroke-width="1"/>
+  <rect x="228" y="265" width="48" height="13" rx="2.5" fill="#b30000"/>
+  <text x="252" y="275" font-family="Arial,Helvetica,sans-serif" font-size="6" fill="#ffffff" font-weight="700" text-anchor="middle">SPORT</text>
+  <!-- szpilki -->
+  <circle cx="225" cy="55" r="7" fill="#145214"/>
+  <circle cx="225" cy="55" r="3.5" fill="#2db32d" opacity="0.7"/>
+  <circle cx="363" cy="55" r="7" fill="#145214"/>
+  <circle cx="363" cy="55" r="3.5" fill="#2db32d" opacity="0.7"/>
 
-    <!-- accent line below header -->
-    <rect x="304" y="86" width="220" height="2" fill="rgba(220,80,80,0.45)"/>
+  <!-- ══ PLANSZA 3 (prawa) ══ -->
+  <rect x="392" y="55" width="152" height="256" rx="4" fill="rgba(0,0,0,0.18)"/>
+  <rect x="388" y="51" width="152" height="256" rx="4" fill="#ffffff"/>
+  <rect x="388" y="51" width="152" height="34" rx="4" fill="#8b0000"/>
+  <rect x="388" y="68" width="152" height="17" fill="#8b0000"/>
+  <text x="464" y="66" font-family="Georgia,'Times New Roman',serif" font-size="8.5" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">GAZETKA SZKOLNA</text>
+  <!-- duże zdjęcie na górze -->
+  <rect x="398" y="95" width="132" height="82" rx="2" fill="#efefef" stroke="#e0e0e0" stroke-width="1"/>
+  <polygon points="415,169 442,130 469,169" fill="#d0d0d0"/>
+  <polygon points="455,169 478,142 501,169" fill="#c4c4c4"/>
+  <circle cx="516" cy="138" r="12" fill="#d8d8d8"/>
+  <!-- nagłówek -->
+  <rect x="398" y="187" width="132" height="9" rx="2" fill="#1a1a1a"/>
+  <rect x="398" y="201" width="110" height="7" rx="2" fill="#333"/>
+  <!-- tekst -->
+  <rect x="398" y="216" width="132" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="398" y="225" width="115" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="398" y="234" width="126" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="398" y="243" width="102" height="5" rx="1.5" fill="#d8d8d8"/>
+  <rect x="398" y="252" width="120" height="5" rx="1.5" fill="#c8c8c8"/>
+  <rect x="398" y="261" width="108" height="5" rx="1.5" fill="#d8d8d8"/>
+  <!-- badge -->
+  <line x1="398" y1="279" x2="530" y2="279" stroke="#e8e8e8" stroke-width="1"/>
+  <rect x="398" y="272" width="58" height="13" rx="2.5" fill="#b30000"/>
+  <text x="427" y="282" font-family="Arial,Helvetica,sans-serif" font-size="6" fill="#ffffff" font-weight="700" text-anchor="middle">KULTURA</text>
+  <!-- szpilki -->
+  <circle cx="395" cy="58" r="7" fill="#1a2f8b"/>
+  <circle cx="395" cy="58" r="3.5" fill="#4a7ed4" opacity="0.7"/>
+  <circle cx="533" cy="58" r="7" fill="#1a2f8b"/>
+  <circle cx="533" cy="58" r="3.5" fill="#4a7ed4" opacity="0.7"/>
 
-    <!-- metadata row -->
-    <rect x="320" y="97" width="56" height="4.5" rx="2" fill="#e0e0e0"/>
-    <rect x="384" y="97" width="40" height="4.5" rx="2" fill="#e0e0e0"/>
-    <rect x="432" y="97" width="52" height="4.5" rx="2" fill="#e0e0e0"/>
-
-    <!-- ── MAIN HEADLINE ── -->
-    <rect x="320" y="112" width="188" height="10" rx="2" fill="#1a1a1a"/>
-    <rect x="320" y="127" width="152" height="8.5" rx="2" fill="#333"/>
-
-    <!-- lead text -->
-    <rect x="320" y="146" width="188" height="5" rx="1.5" fill="#aaa"/>
-    <rect x="320" y="155" width="168" height="5" rx="1.5" fill="#bbb"/>
-
-    <!-- divider -->
-    <line x1="320" y1="170" x2="504" y2="170" stroke="#ebebeb" stroke-width="1.5"/>
-
-    <!-- ── PHOTO PLACEHOLDER ── -->
-    <rect x="320" y="178" width="90" height="68" rx="3" fill="#f0f0f0" stroke="#e2e2e2" stroke-width="1"/>
-    <!-- mountains icon inside photo -->
-    <polygon points="340,238 358,210 376,238" fill="#d4d4d4"/>
-    <polygon points="358,238 376,216 394,238" fill="#c8c8c8"/>
-    <circle cx="386" cy="222" r="7" fill="#dcdcdc"/>
-    <!-- photo caption bar -->
-    <rect x="320" y="240" width="90" height="6" rx="0" fill="#ebebeb"/>
-
-    <!-- text lines right of photo -->
-    <rect x="420" y="178" width="104" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="420" y="188" width="88" height="5" rx="1.5" fill="#d2d2d2"/>
-    <rect x="420" y="198" width="100" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="420" y="208" width="76" height="5" rx="1.5" fill="#d2d2d2"/>
-    <rect x="420" y="218" width="96" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="420" y="228" width="82" height="5" rx="1.5" fill="#d2d2d2"/>
-    <rect x="420" y="238" width="90" height="5" rx="1.5" fill="#c4c4c4"/>
-
-    <!-- text below photo -->
-    <rect x="320" y="256" width="104" height="5" rx="1.5" fill="#c8c8c8"/>
-    <rect x="320" y="266" width="88" height="5" rx="1.5" fill="#d4d4d4"/>
-    <rect x="320" y="276" width="96" height="5" rx="1.5" fill="#c8c8c8"/>
-    <rect x="320" y="286" width="76" height="5" rx="1.5" fill="#d4d4d4"/>
-
-    <!-- ── SECTION DIVIDER + BADGE ── -->
-    <line x1="320" y1="302" x2="504" y2="302" stroke="#e8e8e8" stroke-width="1.5"/>
-    <rect x="320" y="294" width="72" height="14" rx="2.5" fill="#b30000"/>
-    <text x="356" y="304"
-      font-family="Arial,Helvetica,sans-serif"
-      font-size="6.5" fill="#ffffff" font-weight="700"
-      text-anchor="middle" letter-spacing="0.8">AKTUALNOŚCI</text>
-
-    <!-- ── 3-COLUMN BLOCK ── -->
-    <line x1="392" y1="311" x2="392" y2="338" stroke="#ececec" stroke-width="1"/>
-    <line x1="448" y1="311" x2="448" y2="338" stroke="#ececec" stroke-width="1"/>
-
-    <rect x="320" y="312" width="62" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="320" y="321" width="54" height="4.5" rx="1.5" fill="#d4d4d4"/>
-    <rect x="320" y="330" width="60" height="4.5" rx="1.5" fill="#c4c4c4"/>
-
-    <rect x="400" y="312" width="38" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="400" y="321" width="34" height="4.5" rx="1.5" fill="#d4d4d4"/>
-    <rect x="400" y="330" width="36" height="4.5" rx="1.5" fill="#c4c4c4"/>
-
-    <rect x="456" y="312" width="46" height="5" rx="1.5" fill="#c4c4c4"/>
-    <rect x="456" y="321" width="40" height="4.5" rx="1.5" fill="#d4d4d4"/>
-    <rect x="456" y="330" width="44" height="4.5" rx="1.5" fill="#c4c4c4"/>
-  </g>
-
-  <!-- ══ PDF BADGE (floating, no rotation) ══ -->
-  <g transform="translate(535, 68)">
-    <circle cx="0" cy="0" r="30" fill="rgba(0,0,0,0.18)"/>
-    <circle cx="0" cy="0" r="26" fill="#ffffff" opacity="0.95"/>
-    <text x="0" y="-4"
-      font-family="Arial,Helvetica,sans-serif"
-      font-size="10" font-weight="800" fill="#b30000"
-      text-anchor="middle" letter-spacing="0.5">PDF</text>
-    <text x="0" y="8"
-      font-family="Arial,Helvetica,sans-serif"
-      font-size="6" fill="#888"
-      text-anchor="middle">gotowe</text>
-  </g>
-
-  <!-- ══ LEFT SIDE — floating snippets ══ -->
-
-  <!-- Snippet card 1 -->
-  <g transform="rotate(-2, 110, 120)">
-    <rect x="30" y="90" width="160" height="60" rx="6" fill="rgba(255,255,255,0.12)"/>
-    <rect x="30" y="90" width="160" height="60" rx="6" stroke="rgba(255,255,255,0.2)" stroke-width="1" fill="none"/>
-    <rect x="42" y="104" width="90" height="6" rx="2" fill="rgba(255,255,255,0.55)"/>
-    <rect x="42" y="115" width="120" height="4.5" rx="1.5" fill="rgba(255,255,255,0.35)"/>
-    <rect x="42" y="124" width="104" height="4.5" rx="1.5" fill="rgba(255,255,255,0.3)"/>
-    <rect x="42" y="133" width="80" height="4.5" rx="1.5" fill="rgba(255,255,255,0.25)"/>
-  </g>
-
-  <!-- Snippet card 2 -->
-  <g transform="rotate(3, 100, 260)">
-    <rect x="22" y="220" width="156" height="72" rx="6" fill="rgba(255,255,255,0.09)"/>
-    <rect x="22" y="220" width="156" height="72" rx="6" stroke="rgba(255,255,255,0.16)" stroke-width="1" fill="none"/>
-    <!-- red label -->
-    <rect x="34" y="232" width="50" height="11" rx="2" fill="rgba(179,0,0,0.7)"/>
-    <text x="59" y="241"
-      font-family="Arial,Helvetica,sans-serif"
-      font-size="6" fill="#fff" text-anchor="middle" font-weight="700">SZABLONY</text>
-    <rect x="34" y="250" width="116" height="4.5" rx="1.5" fill="rgba(255,255,255,0.4)"/>
-    <rect x="34" y="259" width="96" height="4.5" rx="1.5" fill="rgba(255,255,255,0.3)"/>
-    <rect x="34" y="268" width="108" height="4.5" rx="1.5" fill="rgba(255,255,255,0.35)"/>
-    <rect x="34" y="277" width="80" height="4.5" rx="1.5" fill="rgba(255,255,255,0.25)"/>
-  </g>
-
-  <!-- Decorative dots -->
-  <circle cx="188" cy="58"  r="5"   fill="rgba(255,255,255,0.13)"/>
-  <circle cx="168" cy="74"  r="3"   fill="rgba(255,255,255,0.09)"/>
-  <circle cx="200" cy="78"  r="2.5" fill="rgba(255,255,255,0.11)"/>
-  <circle cx="60"  cy="180" r="4"   fill="rgba(255,255,255,0.1)"/>
-  <circle cx="45"  cy="200" r="2.5" fill="rgba(255,255,255,0.08)"/>
-  <circle cx="74"  cy="196" r="2"   fill="rgba(255,255,255,0.1)"/>
-  <circle cx="580" cy="340" r="5"   fill="rgba(255,255,255,0.08)"/>
-  <circle cx="598" cy="318" r="3"   fill="rgba(255,255,255,0.06)"/>
-  <circle cx="615" cy="355" r="2.5" fill="rgba(255,255,255,0.07)"/>
+  <!-- ══ PDF BADGE ══ -->
+  <circle cx="541" cy="344" r="23" fill="rgba(0,0,0,0.2)"/>
+  <circle cx="538" cy="341" r="23" fill="#ffffff" opacity="0.96"/>
+  <text x="538" y="337" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="800" fill="#b30000" text-anchor="middle" letter-spacing="0.5">PDF</text>
+  <text x="538" y="350" font-family="Arial,Helvetica,sans-serif" font-size="6" fill="#888" text-anchor="middle">gotowe</text>
 
 </svg>

@@ -836,12 +836,13 @@ body {
 }
 
 .hero-content {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: 1fr 3fr;
   gap: 28px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .hero-copy {
@@ -978,7 +979,9 @@ body {
 }
 
 .hero-visual {
-  justify-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -987,15 +990,11 @@ body {
 }
 
 .hero-image {
-  width: min(720px, 100%);
-  aspect-ratio: 16 / 10;
+  width: 100%;
   height: auto;
   display: block;
-  margin-inline: 0;
   border-radius: 16px;
-  object-fit: cover;
-  background: transparent;
-  box-shadow: 0 14px 30px rgb(0 0 0 / 20%);
+  object-fit: contain;
 }
 
 .hero button {
