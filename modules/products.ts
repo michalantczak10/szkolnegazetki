@@ -174,7 +174,7 @@ function createCategoryCard(category: StoreCategory): HTMLElement {
 
   card.innerHTML = `
     <picture>
-      <source srcset="${category.imageWebp}" type="image/webp" />
+      ${category.imageWebp !== category.image ? `<source srcset="${category.imageWebp}" type="image/webp" />` : ""}
       <img src="${category.image}" alt="${category.imageAlt}" loading="lazy" decoding="async" data-category-image />
     </picture>
     <div class="product-card-body">
