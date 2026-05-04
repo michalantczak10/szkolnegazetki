@@ -1169,7 +1169,6 @@ button:active {
   text-align: center;
   box-shadow: var(--shadow-md);
   transition: transform var(--transition), box-shadow var(--transition);
-  border-top: 4px solid var(--color-primary);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1177,8 +1176,7 @@ button:active {
 }
 
 .product-card--featured {
-  border-top-color: var(--color-accent);
-  box-shadow: 0 8px 36px rgba(179, 0, 0, 0.18);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.18);
   transform: scale(1.02);
 }
 
