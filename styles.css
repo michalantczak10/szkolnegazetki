@@ -1092,53 +1092,19 @@ body {
   font-size: 1.25em;
 }
 
-/* ===== SPÓJNE NAGŁÓWKI SEKCJI ===== */
+/* ===== NAGOŁÓWKI SEKCJI ===== */
 .about h2,
 .benefits h2,
 .checkout h2,
-.trust h2 {
-  text-align: center;
-  font-size: 2em;
-  color: var(--color-primary);
-  margin: 0 0 8px;
-  position: relative;
-  display: inline-block;
-}
-
-.about h2::after,
-.benefits h2::after,
-.trust h2::after {
-  content: "";
-  display: block;
-  width: 56px;
-  height: 4px;
-  background: var(--color-primary);
-  border-radius: 2px;
-  margin: 10px auto 0;
-}
-
-/* Extra bottom margin for benefits heading (above grid) */
-.benefits h2 {
-  margin-bottom: 40px;
-}
-
+.trust h2,
 .product h2 {
   text-align: center;
-  font-size: 2em;
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
   color: var(--color-primary);
-  margin: 0 0 8px;
-  position: relative;
-  display: inline-block;
-}
-
-.product h2::after {
-  content: "";
-  display: block;
-  width: 56px;
-  height: 4px;
-  background: var(--color-primary);
-  border-radius: 2px;
-  margin: 10px auto 0;
+  margin: 0 0 32px;
+  line-height: 1.15;
 }
 
 .product {
@@ -1852,7 +1818,7 @@ button:active {
 }
 
 .benefit-card {
-  background: #f6f4f1;
+  background: var(--color-accent);
   padding: 32px;
   border-radius: var(--radius-lg);
   box-shadow: none;
@@ -2104,7 +2070,7 @@ button:active {
 
 .about-story,
 .about-photos {
-  background: #f6f4f1;
+  background: var(--color-accent);
   border-radius: var(--radius-lg);
   box-shadow: none;
   border: 1px solid rgba(0,0,0,0.06);
@@ -2358,7 +2324,7 @@ button:active {
 }
 
 .trust-grid > p {
-  background: #f6f4f1;
+  background: var(--color-accent);
   border-radius: var(--radius-lg);
   box-shadow: none;
   border: 1px solid rgba(0,0,0,0.06);
@@ -2368,7 +2334,7 @@ button:active {
 }
 
 .trust .trust-contact-card {
-  background: #f6f4f1;
+  background: var(--color-accent);
   border-radius: var(--radius-lg);
   box-shadow: none;
   border: 1px solid rgba(0,0,0,0.06);
@@ -3063,7 +3029,7 @@ button:active {
   }
 
   .benefits h2 {
-    font-size: 1.6em;
+    font-size: 1.8rem;
     margin-bottom: 25px;
     margin-left: 20px;
     margin-right: 20px;
@@ -3073,7 +3039,7 @@ button:active {
   .product h2,
   .checkout h2,
   .trust h2 {
-    font-size: 1.6em;
+    font-size: 1.8rem;
     margin-bottom: 22px;
     margin-left: 20px;
     margin-right: 20px;
@@ -3207,7 +3173,7 @@ button:active {
   }
 
   .benefits h2 {
-    font-size: 1.4em;
+    font-size: 1.6rem;
     margin-bottom: 25px;
     margin-left: 20px;
     margin-right: 20px;
@@ -3217,7 +3183,7 @@ button:active {
   .product h2,
   .checkout h2,
   .trust h2 {
-    font-size: 1.4em;
+    font-size: 1.6rem;
     margin-bottom: 22px;
     margin-left: 20px;
     margin-right: 20px;
