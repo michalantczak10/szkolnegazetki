@@ -178,77 +178,80 @@
       <h2 id="products-heading">Nasze produkty</h2>
       <p class="product-section-subtitle">Wybierz zestaw idealny dla Twojej szkolnej redakcji</p>
       <div class="product-grid">
-        <div class="product-card" data-product-id="poster">
+        <div class="product-card" data-category-id="plakaty">
           <picture>
             <source srcset="img/products/product-posters.webp" type="image/webp" />
             <img
               src="img/products/product-posters.png"
-              alt="Plakaty szkolne PDF"
+              alt="Plakaty szkolne"
               loading="lazy"
               decoding="async"
-              data-product-image
+              data-category-image
             />
           </picture>
           <div class="product-card-body">
-            <h3 data-product-name>Plakaty szkolne PDF</h3>
-            <p class="product-card-desc" data-product-description>Gotowe plakaty edukacyjne PDF do wydruku i dekoracji gazetki szkolnej.</p>
-            <ul class="product-features" aria-label="Co zawiera produkt">
-              <li>Zestaw gotowych plakatów A3 i A4</li>
+            <h3 data-category-name>Plakaty szkolne</h3>
+            <p class="product-card-desc" data-category-description>Gotowe plakaty edukacyjne do wydruku i dekoracji szkolnej gazetki.</p>
+            <ul class="product-features" aria-label="Co zawiera kategorię" data-category-features>
+              <li>Formaty A3 i A4</li>
               <li>Wysoka rozdzielczość do druku (300 DPI)</li>
               <li>Estetyczne ilustracje szkolne</li>
               <li>Gotowy plik PDF – bez edycji</li>
             </ul>
             <div class="product-card-footer">
-              <p class="price" data-product-price>45 zł</p>
               <button
-                class="addToCartBtn"
-                data-product-id="poster"
-                data-product="Plakaty szkolne PDF"
-                data-price="45"
-                data-image="img/products/product-posters.png"
-                aria-label="Dodaj plakaty szkolne PDF do zamówienia"
-                data-testid="btn-add-to-cart"
+                class="category-expand-btn"
+                aria-expanded="false"
+                aria-controls="category-panel-plakaty"
+                data-testid="btn-expand-category"
               >
-                Dodaj do zamówienia
+                Wybierz produkt
+                <svg class="expand-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
+            </div>
+          </div>
+          <div class="category-products-panel" id="category-panel-plakaty" aria-hidden="true">
+            <div class="category-products-panel-inner">
+              <!-- populated by JS -->
             </div>
           </div>
         </div>
 
-        <div class="product-card product-card--featured" data-product-id="newsletter">
-          <span class="product-badge">Bestseller</span>
+        <div class="product-card" data-category-id="szablony">
           <picture>
             <source srcset="img/products/product-templates.webp" type="image/webp" />
             <img
               src="img/products/product-templates.png"
-              alt="Szablony gazetki PDF"
+              alt="Szablony gazetki"
               loading="lazy"
               decoding="async"
-              data-product-image
+              data-category-image
             />
           </picture>
           <div class="product-card-body">
-            <h3 data-product-name>Szablony gazetki PDF</h3>
-            <p class="product-card-desc" data-product-description>Profesjonalne szablony gotowe do druku – idealne dla każdej szkolnej redakcji.</p>
-            <ul class="product-features" aria-label="Co zawiera produkt">
+            <h3 data-category-name>Szablony gazetki</h3>
+            <p class="product-card-desc" data-category-description>Profesjonalne szablony gotowe do druku – idealne dla każdej szkolnej redakcji.</p>
+            <ul class="product-features" aria-label="Co zawiera kategorię" data-category-features>
               <li>Wiele układów stron do wyboru</li>
               <li>Formaty A3 i A4</li>
               <li>Profesjonalna typografia i kolory</li>
               <li>Gotowy plik PDF – bez edycji</li>
             </ul>
             <div class="product-card-footer">
-              <p class="price" data-product-price>52 zł</p>
               <button
-                class="addToCartBtn"
-                data-product-id="newsletter"
-                data-product="Szablony gazetki PDF"
-                data-price="52"
-                data-image="img/products/product-templates.png"
-                aria-label="Dodaj szablony gazetki PDF do zamówienia"
-                data-testid="btn-add-to-cart"
+                class="category-expand-btn"
+                aria-expanded="false"
+                aria-controls="category-panel-szablony"
+                data-testid="btn-expand-category"
               >
-                Dodaj do zamówienia
+                Wybierz produkt
+                <svg class="expand-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>
               </button>
+            </div>
+          </div>
+          <div class="category-products-panel" id="category-panel-szablony" aria-hidden="true">
+            <div class="category-products-panel-inner">
+              <!-- populated by JS -->
             </div>
           </div>
         </div>

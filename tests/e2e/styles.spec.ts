@@ -6,7 +6,8 @@ test.describe('CSS Styles and Layout', () => {
   });
 
   test('checkout summary product image has correct dimensions', async ({ page }) => {
-    // Add a product to cart
+    // Open category and add a product to cart
+    await page.getByTestId('btn-expand-category').first().click();
     const addBtn = page.locator('[data-testid="btn-add-to-cart"]').first();
     await addBtn.click();
 
@@ -28,6 +29,7 @@ test.describe('CSS Styles and Layout', () => {
   });
 
   test('checkout summary actions buttons are visible and aligned', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     const addBtn = page.locator('[data-testid="btn-add-to-cart"]').first();
     await addBtn.click();
 
@@ -51,6 +53,7 @@ test.describe('CSS Styles and Layout', () => {
   });
 
   test('product card button has correct styling', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     const addBtn = page.locator('[data-testid="btn-add-to-cart"]').first();
     
     // Check button color (yellow gradient background)
@@ -95,6 +98,7 @@ test.describe('CSS Styles and Layout', () => {
   test('checkout summary is visible and properly sized on desktop', async ({ page }) => {
     await page.setViewportSize({ width: 1200, height: 800 });
     
+    await page.getByTestId('btn-expand-category').first().click();
     const addBtn = page.locator('[data-testid="btn-add-to-cart"]').first();
     await addBtn.click();
 
@@ -122,6 +126,7 @@ test.describe('CSS Styles and Layout', () => {
   });
 
   test('input fields have proper focus states', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     const addBtn = page.locator('[data-testid="btn-add-to-cart"]').first();
     await addBtn.click();
 
@@ -195,12 +200,6 @@ test.describe('CSS Styles and Layout', () => {
     }
   });
 
-  test('featured product card has bestseller badge', async ({ page }) => {
-    const badge = page.locator('.product-badge');
-    await expect(badge).toBeVisible();
-    await expect(badge).toContainText('Bestseller');
-  });
-
   test('hero CTA button links to products section', async ({ page }) => {
     const cta = page.locator('a.hero-cta');
     await expect(cta).toBeVisible();
@@ -208,7 +207,7 @@ test.describe('CSS Styles and Layout', () => {
     await expect(cta).toContainText('Sprawdź ofertę');
   });
 
-  test('product cards have price and add to cart button in footer', async ({ page }) => {
+  test('product cards have expand button in footer', async ({ page }) => {
     const cards = page.locator('.product-card');
     const count = await cards.count();
     expect(count).toBe(2);
@@ -216,8 +215,7 @@ test.describe('CSS Styles and Layout', () => {
     for (let i = 0; i < count; i++) {
       const footer = cards.nth(i).locator('.product-card-footer');
       await expect(footer).toBeVisible();
-      await expect(footer.locator('.price')).toBeVisible();
-      await expect(footer.locator('.addToCartBtn')).toBeVisible();
+      await expect(footer.locator('.category-expand-btn')).toBeVisible();
     }
   });
 });

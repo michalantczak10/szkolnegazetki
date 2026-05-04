@@ -1,5 +1,5 @@
 // Cart and Product Types
-export type ProductId = "poster" | "newsletter";
+export type ProductId = "poster" | "poster-a4" | "newsletter" | "newsletter-classic";
 
 export interface CartItem {
   name: string;

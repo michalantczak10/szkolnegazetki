@@ -1,88 +1,157 @@
 import { CartManager } from "./cart-manager.js";
 import { renderCheckoutSummary } from "./checkout-summary.js";
 import { showToast } from "./utils.js";
-import { STORE_CONFIG, getProductConfig } from "../config/store.js";
+import { STORE_CONFIG, getCategoryConfig, type CategoryId, type StoreProduct } from "../config/store.js";
 
 /**
- * Apply product configuration to product cards in DOM
+ * Apply category configuration to category cards in DOM
  */
-export function applyProductConfiguration(): void {
-  document.querySelectorAll(".product-card[data-product-id]").forEach((cardNode) => {
+export function applyCategoryConfiguration(): void {
+  document.querySelectorAll(".product-card[data-category-id]").forEach((cardNode) => {
     if (!(cardNode instanceof HTMLElement)) return;
 
-    const productId = cardNode.dataset.productId || "";
-    if (productId !== "poster" && productId !== "newsletter") return;
-    const product = getProductConfig(productId);
-    if (!product) return;
+    const categoryId = cardNode.dataset.categoryId as CategoryId;
+    const category = getCategoryConfig(categoryId);
+    if (!category) return;
 
-    const imageEl = cardNode.querySelector("[data-product-image]") as HTMLImageElement | null;
-    const nameEl = cardNode.querySelector("[data-product-name]") as HTMLElement | null;
-    const descriptionEl = cardNode.querySelector("[data-product-description]") as HTMLElement | null;
-    const priceEl = cardNode.querySelector("[data-product-price]") as HTMLElement | null;
-    const buttonEl = cardNode.querySelector(".addToCartBtn") as HTMLButtonElement | null;
+    const imageEl = cardNode.querySelector("[data-category-image]") as HTMLImageElement | null;
+    const nameEl = cardNode.querySelector("[data-category-name]") as HTMLElement | null;
+    const descriptionEl = cardNode.querySelector("[data-category-description]") as HTMLElement | null;
 
     if (imageEl) {
-      imageEl.src = product.image;
-      imageEl.alt = product.name;
+      imageEl.src = category.image;
+      imageEl.alt = category.imageAlt;
     }
-    if (nameEl) nameEl.textContent = product.name;
-    if (descriptionEl) descriptionEl.textContent = product.description;
-    if (priceEl) priceEl.textContent = `${product.price} zł`;
-    if (buttonEl) {
-      buttonEl.dataset.productId = product.id;
-      buttonEl.dataset.product = product.name;
-      buttonEl.dataset.price = String(product.price);
-      buttonEl.dataset.image = product.image;
-      buttonEl.setAttribute("aria-label", `Dodaj ${product.name} do zamówienia`);
-    }
+    if (nameEl) nameEl.textContent = category.name;
+    if (descriptionEl) descriptionEl.textContent = category.description;
   });
 }
 
 /**
- * Setup add to cart button handlers
+ * Render product items inside a category panel
  */
-export function setupAddToCartButtons(cartManager: CartManager): void {
-  const addButtons = document.querySelectorAll(".addToCartBtn") as NodeListOf<HTMLButtonElement>;
+function renderCategoryProducts(
+  container: Element,
+  products: readonly StoreProduct[],
+  cartManager: CartManager
+): void {
+  container.innerHTML = "";
+  const list = document.createElement("ul");
+  list.className = "category-products-list";
 
-  addButtons.forEach((btn) => {
+  products.forEach((product) => {
+    const li = document.createElement("li");
+    li.className = "category-product-item";
+
+    const info = document.createElement("div");
+    info.className = "category-product-info";
+
+    const name = document.createElement("span");
+    name.className = "category-product-name";
+    name.textContent = product.name;
+
+    const desc = document.createElement("span");
+    desc.className = "category-product-desc";
+    desc.textContent = product.description;
+
+    info.appendChild(name);
+    info.appendChild(desc);
+
+    const action = document.createElement("div");
+    action.className = "category-product-action";
+
+    const priceEl = document.createElement("span");
+    priceEl.className = "category-product-price";
+    priceEl.textContent = `${product.price} zł`;
+
+    const btn = document.createElement("button");
+    btn.className = "addToCartBtn";
+    btn.dataset.productId = product.id;
+    btn.dataset.product = product.name;
+    btn.dataset.price = String(product.price);
+    btn.dataset.image = product.image;
+    btn.setAttribute("aria-label", `Dodaj ${product.name} do zamówienia`);
+    btn.setAttribute("data-testid", "btn-add-to-cart");
+    btn.textContent = "Dodaj do zamówienia";
+
     btn.addEventListener("click", () => {
-      const name = btn.dataset.product;
-      const priceStr = btn.dataset.price;
-      const image = btn.dataset.image;
-
-      if (!name || !priceStr || !image) {
-        console.error("Missing product data on button:", btn);
-        return;
-      }
-
-      const price = Number(priceStr);
-      if (isNaN(price) || price <= 0) {
-        console.error("Invalid product price:", priceStr);
-        return;
-      }
-
-      // Add to cart
-      cartManager.add(name, price, image);
+      cartManager.add(product.name, product.price, product.image);
       renderCheckoutSummary(cartManager);
 
-      // Scroll to summary
       const checkoutSummary = document.getElementById("checkoutSummary");
       if (checkoutSummary) {
         checkoutSummary.scrollIntoView({ behavior: "smooth", block: "center" });
       }
 
-      // Animacja podskoku i pulsującej obwódki
       btn.classList.remove("animated");
-      // Trigger reflow to restart animation if clicked rapidly
       void btn.offsetWidth;
       btn.classList.add("animated");
-      btn.addEventListener(
-        "animationend",
-        () => btn.classList.remove("animated"),
-        { once: true }
-      );
+      btn.addEventListener("animationend", () => btn.classList.remove("animated"), { once: true });
 
-      showToast(`Dodano 1 szt. produktu ${name}.`);
+      showToast(`Dodano 1 szt. produktu ${product.name}.`);
+    });
+
+    action.appendChild(priceEl);
+    action.appendChild(btn);
+    li.appendChild(info);
+    li.appendChild(action);
+    list.appendChild(li);
+  });
+
+  container.appendChild(list);
+}
+
+/**
+ * Setup category card expand/collapse toggles
+ */
+export function setupCategoryCardToggles(cartManager: CartManager): void {
+  const allCards = document.querySelectorAll(".product-card[data-category-id]");
+
+  allCards.forEach((cardNode) => {
+    if (!(cardNode instanceof HTMLElement)) return;
+
+    const expandBtn = cardNode.querySelector(".category-expand-btn") as HTMLButtonElement | null;
+    const panelId = expandBtn?.getAttribute("aria-controls");
+    const panel = panelId ? document.getElementById(panelId) : null;
+    const categoryId = cardNode.dataset.categoryId as CategoryId;
+    const category = getCategoryConfig(categoryId);
+
+    if (!expandBtn || !panel || !category) return;
+
+    expandBtn.addEventListener("click", () => {
+      const isOpen = expandBtn.getAttribute("aria-expanded") === "true";
+
+      // Close all other panels
+      allCards.forEach((otherCard) => {
+        if (otherCard === cardNode || !(otherCard instanceof HTMLElement)) return;
+        const otherBtn = otherCard.querySelector(".category-expand-btn") as HTMLButtonElement | null;
+        const otherPanelId = otherBtn?.getAttribute("aria-controls");
+        const otherPanel = otherPanelId ? document.getElementById(otherPanelId) : null;
+        if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
+        if (otherPanel) {
+          otherPanel.setAttribute("aria-hidden", "true");
+          otherPanel.classList.remove("open");
+          const otherInner = otherPanel.querySelector(".category-products-panel-inner");
+          if (otherInner) otherInner.innerHTML = "";
+        }
+        otherCard.classList.remove("expanded");
+      });
+
+      if (isOpen) {
+        expandBtn.setAttribute("aria-expanded", "false");
+        panel.setAttribute("aria-hidden", "true");
+        panel.classList.remove("open");
+        const inner = panel.querySelector(".category-products-panel-inner");
+        if (inner) inner.innerHTML = "";
+        cardNode.classList.remove("expanded");
+      } else {
+        const inner = panel.querySelector(".category-products-panel-inner");
+        if (inner) renderCategoryProducts(inner, category.products, cartManager);
+        expandBtn.setAttribute("aria-expanded", "true");
+        panel.setAttribute("aria-hidden", "false");
+        panel.classList.add("open");
+        cardNode.classList.add("expanded");
+      }
     });
   });
 }

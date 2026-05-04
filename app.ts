@@ -4,7 +4,7 @@ import { CartManager } from "./modules/cart-manager.js";
 import { showToast, showConfirmModal } from "./modules/utils.js";
 
 // Feature modules
-import { applyProductConfiguration, setupAddToCartButtons, setupCartItemHandlers, applyStoreConfiguration } from "./modules/products.js";
+import { applyCategoryConfiguration, setupCategoryCardToggles, setupCartItemHandlers, applyStoreConfiguration } from "./modules/products.js";
 import { renderCheckoutSummary } from "./modules/checkout-summary.js";
 import { showOrderConfirmationModal } from "./modules/order-confirmation.js";
 import { setupPaymentMethodHandler } from "./modules/payment.js";
@@ -30,9 +30,9 @@ const cartManager = new CartManager();
 window.addEventListener("DOMContentLoaded", () => {
   initCookieConsentBanner();
   applyStoreConfiguration();
-  applyProductConfiguration();
+  applyCategoryConfiguration();
   setupLegalPageNavigation();
-  setupAddToCartButtons(cartManager);
+  setupCategoryCardToggles(cartManager);
   setupCartItemHandlers(cartManager);
   renderCheckoutSummary(cartManager);
 

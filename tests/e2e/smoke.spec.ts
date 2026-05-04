@@ -17,6 +17,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('can add product to cart summary', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
 
@@ -35,6 +36,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('keeps cart items after page reload', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     await expect(page.getByTestId('checkout-summary-list')).toContainText('Plakaty szkolne PDF');
 
@@ -84,9 +86,10 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('can add both products to cart', async ({ page }) => {
-    const btns = page.getByTestId('btn-add-to-cart');
-    await btns.nth(0).click();
-    await btns.nth(1).click();
+    await page.getByTestId('btn-expand-category').nth(0).click();
+    await page.getByTestId('btn-add-to-cart').first().click();
+    await page.getByTestId('btn-expand-category').nth(1).click();
+    await page.getByTestId('btn-add-to-cart').first().click();
 
     const summary = page.getByTestId('checkout-summary-list');
     await expect(summary).toContainText('Plakaty szkolne PDF');
@@ -94,6 +97,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('can remove product from cart', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
     await expect(summary).toContainText('Plakaty szkolne PDF');
@@ -103,6 +107,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('can clear cart', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
     await expect(summary).toContainText('Plakaty szkolne PDF');
@@ -141,6 +146,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('submit with empty fields shows validation errors', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     await page.getByTestId('btn-submit-order').click();
 
@@ -157,6 +163,7 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('cart quantity buttons change product count', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
 
@@ -173,14 +180,16 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('cart total updates when adding products', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').nth(0).click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
 
     // First product costs 45 zł — total should reflect it
     await expect(summary).toContainText('45 zł');
 
-    // Add second product (52 zł)
-    await page.getByTestId('btn-add-to-cart').nth(1).click();
+    // Open second category and add its first product (52 zł)
+    await page.getByTestId('btn-expand-category').nth(1).click();
+    await page.getByTestId('btn-add-to-cart').first().click();
     await expect(summary).toContainText('97 zł');
   });
 
