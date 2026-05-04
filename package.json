@@ -34,6 +34,7 @@
     "test:prod:smoke": "node ./scripts/prod-smoke.mjs",
     "ops:local:check": "node ./scripts/local-housekeeping.mjs",
     "ops:local:cleanup": "node ./scripts/local-housekeeping.mjs --delete-merged",
+    "assets:previews": "node ./scripts/generate-product-previews.mjs",
     "test:coverage": "node ./scripts/check-test-coverage.mjs"
   },
   "simple-git-hooks": {

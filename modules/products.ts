@@ -5,6 +5,101 @@ import { STORE_CONFIG, CATEGORY_GROUPS, getCategoryConfig, type CategoryId, type
 
 const CHEVRON_SVG = `<svg class="expand-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>`;
 
+type ProductPreview = {
+  id: string;
+  title: string;
+  caption: string;
+  imageWebp: string;
+  imageJpg: string;
+};
+
+const PREVIEW_MANIFEST_BASE = "/img/previews";
+
+function buildEnhancedDescription(product: StoreProduct): string {
+  const base = product.description.replace(/\.$/, "");
+  const isTemplate = product.name.toLowerCase().includes("szablon");
+  const formatHint = isTemplate ? "Gotowy układ redakcyjny" : "Gotowy materiał do wydruku";
+  return `${base}. ${formatHint}, 3 wersje podglądu do wyboru przed zakupem.`;
+}
+
+function createProductPreviews(product: StoreProduct): ProductPreview[] {
+  return [0, 1, 2].map((variantIndex) => ({
+    id: `${product.id}-v${variantIndex + 1}`,
+    title: `${product.name} - Wersja ${variantIndex + 1}`,
+    caption: `Wariant ${variantIndex + 1} podgladu`,
+    imageWebp: `${PREVIEW_MANIFEST_BASE}/${product.id}-v${variantIndex + 1}.webp`,
+    imageJpg: `${PREVIEW_MANIFEST_BASE}/${product.id}-v${variantIndex + 1}.jpg`,
+  }));
+}
+
+function ensurePreviewModal(): HTMLElement {
+  const existing = document.getElementById("preview-modal");
+  if (existing) return existing;
+
+  const modal = document.createElement("div");
+  modal.id = "preview-modal";
+  modal.className = "preview-modal";
+  modal.setAttribute("aria-hidden", "true");
+  modal.innerHTML = `
+    <div class="preview-modal-backdrop" data-preview-close="true"></div>
+    <div class="preview-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
+      <button class="preview-modal-close" type="button" aria-label="Zamknij podglad" data-preview-close="true">Zamknij</button>
+      <h4 id="preview-modal-title" class="preview-modal-title"></h4>
+      <p class="preview-modal-note">Podglad o obnizonej jakosci z watermarkiem. Pelna wersja po oplaceniu.</p>
+      <img class="preview-modal-image" alt="Powiekszony podglad produktu" />
+    </div>
+  `;
+
+  const closeModal = (): void => {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("preview-modal-open");
+  };
+
+  modal.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    if (target.closest("[data-preview-close='true']")) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal.classList.contains("open")) {
+      closeModal();
+    }
+  });
+
+  const image = modal.querySelector(".preview-modal-image") as HTMLImageElement | null;
+  if (image) {
+    image.draggable = false;
+    image.addEventListener("contextmenu", (event) => event.preventDefault());
+    image.addEventListener("error", () => {
+      const fallback = image.dataset.fallback;
+      if (fallback && image.src !== fallback) {
+        image.src = fallback;
+      }
+    });
+  }
+
+  document.body.appendChild(modal);
+  return modal;
+}
+
+function openPreviewModal(preview: ProductPreview): void {
+  const modal = ensurePreviewModal();
+  const title = modal.querySelector(".preview-modal-title") as HTMLElement | null;
+  const image = modal.querySelector(".preview-modal-image") as HTMLImageElement | null;
+  if (!title || !image) return;
+
+  title.textContent = preview.title;
+  image.dataset.fallback = preview.imageJpg;
+  image.src = preview.imageWebp;
+  image.alt = preview.title;
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("preview-modal-open");
+}
+
 /**
  * Create a category card element from config
  */
@@ -89,6 +184,7 @@ function renderCategoryProducts(
   list.className = "category-products-list";
 
   products.forEach((product) => {
+    const previews = createProductPreviews(product);
     const li = document.createElement("li");
     li.className = "category-product-item";
 
@@ -101,10 +197,45 @@ function renderCategoryProducts(
 
     const desc = document.createElement("span");
     desc.className = "category-product-desc";
-    desc.textContent = product.description;
+    desc.textContent = buildEnhancedDescription(product);
 
     info.appendChild(name);
     info.appendChild(desc);
+
+    const previewGallery = document.createElement("div");
+    previewGallery.className = "category-preview-gallery";
+    previewGallery.setAttribute("aria-label", `Wersje podgladu dla ${product.name}`);
+
+    previews.forEach((preview) => {
+      const thumbButton = document.createElement("button");
+      thumbButton.className = "category-preview-thumb";
+      thumbButton.type = "button";
+      thumbButton.setAttribute("aria-label", `Powieksz ${preview.title}`);
+
+      const thumbImage = document.createElement("img");
+      thumbImage.src = preview.imageWebp;
+      thumbImage.alt = preview.title;
+      thumbImage.loading = "lazy";
+      thumbImage.decoding = "async";
+      thumbImage.dataset.fallback = preview.imageJpg;
+      thumbImage.draggable = false;
+      thumbImage.addEventListener("contextmenu", (event) => event.preventDefault());
+      thumbImage.addEventListener("error", () => {
+        const fallback = thumbImage.dataset.fallback;
+        if (fallback && thumbImage.src !== fallback) {
+          thumbImage.src = fallback;
+        }
+      });
+
+      const thumbLabel = document.createElement("span");
+      thumbLabel.className = "category-preview-label";
+      thumbLabel.textContent = preview.caption;
+
+      thumbButton.appendChild(thumbImage);
+      thumbButton.appendChild(thumbLabel);
+      thumbButton.addEventListener("click", () => openPreviewModal(preview));
+      previewGallery.appendChild(thumbButton);
+    });
 
     const action = document.createElement("div");
     action.className = "category-product-action";
@@ -143,6 +274,7 @@ function renderCategoryProducts(
     action.appendChild(priceEl);
     action.appendChild(btn);
     li.appendChild(info);
+    li.appendChild(previewGallery);
     li.appendChild(action);
     list.appendChild(li);
   });

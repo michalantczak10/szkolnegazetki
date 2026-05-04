@@ -1351,6 +1351,7 @@ button:active {
 .category-product-item {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
@@ -1416,6 +1417,115 @@ button:active {
   flex-shrink: 0;
 }
 
+.category-preview-gallery {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.category-preview-thumb {
+  border: 1px solid #ead9bc;
+  border-radius: 10px;
+  padding: 6px;
+  background: #fffdf7;
+  cursor: zoom-in;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.category-preview-thumb:hover,
+.category-preview-thumb:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-accent);
+}
+
+.category-preview-thumb img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 7px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.category-preview-label {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #7c4f12;
+  text-align: center;
+}
+
+.preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: none;
+}
+
+.preview-modal.open {
+  display: grid;
+  place-items: center;
+}
+
+.preview-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.68);
+}
+
+.preview-modal-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 760px);
+  max-height: 90vh;
+  overflow: auto;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+}
+
+.preview-modal-close {
+  border: 0;
+  background: #f6f6f6;
+  color: #222;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.preview-modal-title {
+  margin: 10px 0 6px;
+  color: var(--color-primary);
+  font-size: 1.18rem;
+}
+
+.preview-modal-note {
+  margin: 0 0 10px;
+  color: #555;
+  font-size: 0.92rem;
+}
+
+.preview-modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body.preview-modal-open {
+  overflow: hidden;
+}
+
 .category-product-price {
   font-size: 1.15rem;
   font-weight: 900;
@@ -1456,6 +1566,15 @@ button:active {
 
   .category-product-action .addToCartBtn {
     flex: 1 1 auto;
+  }
+
+  .category-preview-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .preview-modal-dialog {
+    width: min(94vw, 560px);
+    padding: 14px;
   }
 }
 
