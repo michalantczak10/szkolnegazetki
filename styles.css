@@ -1852,19 +1852,22 @@ button:active {
 }
 
 .benefit-card {
-  background: var(--color-white);
-  padding: 30px;
+  background: #f6f4f1;
+  padding: 32px;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.06);
   margin-top: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .benefit-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border-color: transparent;
 }
 
 .benefit-icon {
@@ -2101,17 +2104,19 @@ button:active {
 
 .about-story,
 .about-photos {
-  background: var(--color-white);
+  background: #f6f4f1;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 24px;
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 28px;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .about-story:hover,
 .about-photos:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border-color: transparent;
 }
 
 .about-story {
@@ -2353,19 +2358,21 @@ button:active {
 }
 
 .trust-grid > p {
-  background: var(--color-white);
+  background: #f6f4f1;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: 16px;
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 18px 20px;
   margin: 0;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .trust .trust-contact-card {
-  background: var(--color-white);
+  background: #f6f4f1;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: 16px;
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 18px 20px;
   margin: 0;
   transition: transform var(--transition), box-shadow var(--transition);
 }
@@ -2405,12 +2412,14 @@ button:active {
 
 .trust-grid > p:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border-color: transparent;
 }
 
 .trust .trust-contact-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  border-color: transparent;
 }
 
 /* Privacy contact card styling */
