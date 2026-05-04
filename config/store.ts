@@ -394,6 +394,45 @@ export const STORE_CONFIG = {
   },
 } as const;
 
+export type CategoryGroup = {
+  id: string;
+  label: string;
+  categoryIds: CategoryId[];
+};
+
+export const CATEGORY_GROUPS: CategoryGroup[] = [
+  {
+    id: "caloroczne",
+    label: "Całoroczne",
+    categoryIds: ["plakaty", "szablony"],
+  },
+  {
+    id: "jesien",
+    label: "Jesień",
+    categoryIds: ["poczatek-roku", "jesien", "dzien-nauczyciela", "halloween", "andrzejki", "niepodleglosc"],
+  },
+  {
+    id: "zima",
+    label: "Zima",
+    categoryIds: ["mikolajki", "boze-narodzenie", "zima"],
+  },
+  {
+    id: "wiosna",
+    label: "Wiosna",
+    categoryIds: [
+      "walentynki", "dzien-babci-dziadka", "dzien-kobiet",
+      "pierwszy-dzien-wiosny", "wielkanoc", "dzien-ziemi",
+      "wiosna", "konstytucja-3-maja", "dzien-matki",
+      "dzien-dziecka", "dzien-ojca",
+    ],
+  },
+  {
+    id: "lato",
+    label: "Lato",
+    categoryIds: ["lato", "zakonczenie-roku"],
+  },
+];
+
 export function getProductConfig(productId: ProductId): StoreProduct | undefined {
   for (const category of STORE_CONFIG.categories) {
     const found = category.products.find((p) => p.id === productId);

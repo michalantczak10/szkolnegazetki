@@ -1,7 +1,7 @@
 import { CartManager } from "./cart-manager.js";
 import { renderCheckoutSummary } from "./checkout-summary.js";
 import { showToast } from "./utils.js";
-import { STORE_CONFIG, getCategoryConfig, type CategoryId, type StoreProduct, type StoreCategory } from "../config/store.js";
+import { STORE_CONFIG, CATEGORY_GROUPS, getCategoryConfig, type CategoryId, type StoreProduct, type StoreCategory } from "../config/store.js";
 
 const CHEVRON_SVG = `<svg class="expand-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><polyline points="6 9 12 15 18 9"/></svg>`;
 
@@ -45,15 +45,34 @@ function createCategoryCard(category: StoreCategory): HTMLElement {
 }
 
 /**
- * Generate and insert all category cards into #product-grid
+ * Generate and insert all category cards grouped by season into #product-grid
  */
 export function applyCategoryConfiguration(): void {
-  const grid = document.getElementById("product-grid");
-  if (!grid) return;
+  const container = document.getElementById("product-grid");
+  if (!container) return;
 
-  grid.innerHTML = "";
-  for (const category of STORE_CONFIG.categories) {
-    grid.appendChild(createCategoryCard(category));
+  container.innerHTML = "";
+
+  for (const group of CATEGORY_GROUPS) {
+    const section = document.createElement("section");
+    section.className = "category-group";
+    section.dataset.groupId = group.id;
+
+    const heading = document.createElement("h3");
+    heading.className = "category-group-heading";
+    heading.textContent = group.label;
+
+    const grid = document.createElement("div");
+    grid.className = "product-grid";
+
+    for (const categoryId of group.categoryIds) {
+      const category = getCategoryConfig(categoryId);
+      if (category) grid.appendChild(createCategoryCard(category));
+    }
+
+    section.appendChild(heading);
+    section.appendChild(grid);
+    container.appendChild(section);
   }
 }
 
