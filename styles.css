@@ -1045,28 +1045,36 @@ body {
 
 /* ===== SEKCJE ===== */
 .about,
+.benefits,
+.checkout,
+.trust {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+.about {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 48px 40px;
+}
+
+.checkout {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 48px 40px;
+}
+
+.trust {
+  max-width: 1200px;
+  margin: 24px auto 40px;
+  padding: 48px 40px;
+}
+
 .cart {
   padding: 18px 16px;
   max-width: 1200px;
   margin: 24px auto 16px;
-}
-
-.product {
-  max-width: 1200px;
-}
-
-.checkout,
-.trust {
-  padding: 40px 30px;
-}
-
-.about,
-.checkout,
-.trust {
-  background: var(--color-accent);
-  border-radius: var(--radius-lg);
-  margin: 24px auto;
-  padding: 18px 16px;
 }
 
 .product {
@@ -1084,13 +1092,34 @@ body {
   font-size: 1.25em;
 }
 
+/* ===== SPÓJNE NAGŁÓWKI SEKCJI ===== */
 .about h2,
+.benefits h2,
 .checkout h2,
 .trust h2 {
   text-align: center;
   font-size: 2em;
   color: var(--color-primary);
-  margin: 0 0 30px;
+  margin: 0 0 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.about h2::after,
+.benefits h2::after,
+.trust h2::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  margin: 10px auto 0;
+}
+
+/* Extra bottom margin for benefits heading (above grid) */
+.benefits h2 {
+  margin-bottom: 40px;
 }
 
 .product h2 {
@@ -1798,11 +1827,9 @@ button:active {
 .benefits {
   max-width: 1200px;
   margin: 24px auto;
-  background: var(--color-accent);
   color: var(--color-text);
-  padding: 18px 16px;
+  padding: 56px 40px;
   text-align: center;
-  border-radius: var(--radius-lg);
 }
 
 .about,
@@ -1813,12 +1840,6 @@ button:active {
   width: min(1200px, calc(100% - 24px));
   margin-left: auto;
   margin-right: auto;
-}
-
-.benefits h2 {
-  font-size: 2em;
-  margin-bottom: 40px;
-  color: var(--color-primary);
 }
 
 .benefits-grid {
@@ -2101,8 +2122,9 @@ button:active {
 .about-story p {
   margin: 0;
   line-height: 1.75;
-  font-weight: 600;
+  font-weight: 400;
   color: #3a2e2e;
+  font-size: 1rem;
 }
 
 .about-photos {
