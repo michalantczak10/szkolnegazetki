@@ -11,6 +11,7 @@ type ProductPreview = {
   caption: string;
   fileWebp: string;
   fileJpg: string;
+  svgThumb: string;
 };
 
 type PreviewToken = { token: string; exp: number };
@@ -42,13 +43,18 @@ function buildEnhancedDescription(product: StoreProduct): string {
   return `${base}. ${formatHint}, 3 wersje podglądu do wyboru przed zakupem.`;
 }
 
+function variantSvgUrl(productId: string, v: number): string {
+  return new URL(`../img/products/prod-${productId}-v${v}.svg`, import.meta.url).href;
+}
+
 function createProductPreviews(product: StoreProduct): ProductPreview[] {
-  return [0, 1, 2].map((variantIndex) => ({
+  return [0, 1, 2, 3, 4, 5].map((variantIndex) => ({
     id: `${product.id}-v${variantIndex + 1}`,
-    title: `${product.name} – Wersja ${variantIndex + 1}`,
-    caption: `Wariant ${variantIndex + 1} podglądu`,
+    title: `${product.name} – Strona ${variantIndex + 1}`,
+    caption: `Podgląd strony ${variantIndex + 1}`,
     fileWebp: `${product.id}-v${variantIndex + 1}.webp`,
     fileJpg: `${product.id}-v${variantIndex + 1}.jpg`,
+    svgThumb: variantSvgUrl(product.id, variantIndex + 1),
   }));
 }
 
@@ -251,6 +257,14 @@ async function renderCategoryProducts(
     const li = document.createElement("li");
     li.className = "category-product-item";
 
+    const productImg = document.createElement("img");
+    productImg.src = product.image;
+    productImg.alt = product.name;
+    productImg.className = "category-product-image";
+    productImg.loading = "lazy";
+    productImg.decoding = "async";
+    productImg.draggable = false;
+
     const info = document.createElement("div");
     info.className = "category-product-info";
 
@@ -277,7 +291,7 @@ async function renderCategoryProducts(
       thumbButton.setAttribute("data-testid", "btn-preview-thumb");
 
       const thumbImage = document.createElement("img");
-      thumbImage.src = previewApiUrl(preview.fileWebp, tok);
+      thumbImage.src = preview.svgThumb;
       thumbImage.alt = preview.title;
       thumbImage.loading = "lazy";
       thumbImage.decoding = "async";
@@ -330,6 +344,7 @@ async function renderCategoryProducts(
 
     action.appendChild(priceEl);
     action.appendChild(btn);
+    li.appendChild(productImg);
     li.appendChild(info);
     li.appendChild(previewGallery);
     li.appendChild(action);

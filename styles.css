@@ -1388,6 +1388,14 @@ button:active {
   transform: translateY(-1px);
 }
 
+.category-product-image {
+  width: 80px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
 .category-product-info {
   display: flex;
   flex-direction: column;

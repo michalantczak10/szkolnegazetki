@@ -132,8 +132,30 @@ const PROD_IMAGES: Record<string, string> = {
   "dzien-babci-plakaty":            new URL("../img/products/prod-dzien-babci-plakaty.svg", import.meta.url).href,
   "dzien-babci-szablony":           new URL("../img/products/prod-dzien-babci-szablony.svg", import.meta.url).href,
   "niepodleglosc-plakaty":          new URL("../img/products/prod-niepodleglosc-plakaty.svg", import.meta.url).href,
-  "niepodleglosc-szablony":         new URL("../img/products/prod-niepodleglosc-szablony.svg", import.meta.url).href,
-};
+  "niepodleglosc-szablony":         new URL("../img/products/prod-niepodleglosc-szablony.svg", import.meta.url).href,  "poster-wariant3":                  new URL("../img/products/prod-poster-wariant3-v1.svg", import.meta.url).href,
+  "newsletter-wariant3":              new URL("../img/products/prod-newsletter-wariant3-v1.svg", import.meta.url).href,
+  "boze-narodzenie-wariant3":         new URL("../img/products/prod-boze-narodzenie-wariant3-v1.svg", import.meta.url).href,
+  "zima-wariant3":                    new URL("../img/products/prod-zima-wariant3-v1.svg", import.meta.url).href,
+  "mikolajki-wariant3":               new URL("../img/products/prod-mikolajki-wariant3-v1.svg", import.meta.url).href,
+  "walentynki-wariant3":              new URL("../img/products/prod-walentynki-wariant3-v1.svg", import.meta.url).href,
+  "dzien-babci-wariant3":             new URL("../img/products/prod-dzien-babci-wariant3-v1.svg", import.meta.url).href,
+  "dzien-kobiet-wariant3":            new URL("../img/products/prod-dzien-kobiet-wariant3-v1.svg", import.meta.url).href,
+  "dzien-ziemi-wariant3":             new URL("../img/products/prod-dzien-ziemi-wariant3-v1.svg", import.meta.url).href,
+  "wielkanoc-wariant3":               new URL("../img/products/prod-wielkanoc-wariant3-v1.svg", import.meta.url).href,
+  "pierwszy-dzien-wiosny-wariant3":   new URL("../img/products/prod-pierwszy-dzien-wiosny-wariant3-v1.svg", import.meta.url).href,
+  "wiosna-wariant3":                  new URL("../img/products/prod-wiosna-wariant3-v1.svg", import.meta.url).href,
+  "dzien-matki-wariant3":             new URL("../img/products/prod-dzien-matki-wariant3-v1.svg", import.meta.url).href,
+  "konstytucja-wariant3":             new URL("../img/products/prod-konstytucja-wariant3-v1.svg", import.meta.url).href,
+  "dzien-dziecka-wariant3":           new URL("../img/products/prod-dzien-dziecka-wariant3-v1.svg", import.meta.url).href,
+  "dzien-ojca-wariant3":              new URL("../img/products/prod-dzien-ojca-wariant3-v1.svg", import.meta.url).href,
+  "lato-wariant3":                    new URL("../img/products/prod-lato-wariant3-v1.svg", import.meta.url).href,
+  "zakonczenie-roku-wariant3":        new URL("../img/products/prod-zakonczenie-roku-wariant3-v1.svg", import.meta.url).href,
+  "poczatek-roku-wariant3":           new URL("../img/products/prod-poczatek-roku-wariant3-v1.svg", import.meta.url).href,
+  "jesien-wariant3":                  new URL("../img/products/prod-jesien-wariant3-v1.svg", import.meta.url).href,
+  "dzien-nauczyciela-wariant3":       new URL("../img/products/prod-dzien-nauczyciela-wariant3-v1.svg", import.meta.url).href,
+  "halloween-wariant3":               new URL("../img/products/prod-halloween-wariant3-v1.svg", import.meta.url).href,
+  "andrzejki-wariant3":               new URL("../img/products/prod-andrzejki-wariant3-v1.svg", import.meta.url).href,
+  "niepodleglosc-wariant3":           new URL("../img/products/prod-niepodleglosc-wariant3-v1.svg", import.meta.url).href,};
 
 export const STORE_CONFIG = {
   categories: [
@@ -146,8 +168,9 @@ export const STORE_CONFIG = {
       imageAlt: "Plakaty szkolne PDF",
       features: ["Formaty A3 i A4", "Wysoka rozdzielczość (300 DPI)", "Estetyczne ilustracje", "Gotowy plik PDF"],
       products: [
-        { id: "poster", name: "Plakaty szkolne PDF (A3)", description: "12 plakatów w formacie A3 – idealne do gazetki szkolnej i korytarza. Drukuj i wieszaj od razu.", price: 45, image: PROD_IMAGES["poster"] },
-        { id: "poster-a4", name: "Plakaty szkolne PDF (A4)", description: "12 plakatów w formacie A4 – pasują do tablic ogłoszeń, zeszytów i gazetki klasowej.", price: 35, image: PROD_IMAGES["poster-a4"] },
+        { id: "poster",          name: "Wariant 1", description: "12 plakatów A3 w żywych kolorach – gotowe do druku i natychmiastowego wywieszenia.", price: 45, image: PROD_IMAGES["poster"] },
+        { id: "poster-a4",       name: "Wariant 2", description: "12 plakatów A4 – wygodny format do tablic, zeszytów i gazetki klasowej.", price: 35, image: PROD_IMAGES["poster-a4"] },
+        { id: "poster-wariant3", name: "Wariant 3", description: "Zestaw premium: 12 plakatów A3 i A4 łącznie z dodatkowymi stronami tytułowymi.", price: 55, image: PROD_IMAGES["poster-wariant3"] },
       ],
     },
     {
@@ -159,8 +182,9 @@ export const STORE_CONFIG = {
       imageAlt: "Szablony gazetki PDF",
       features: ["Wiele układów stron", "Formaty A3 i A4", "Profesjonalna typografia", "Gotowy plik PDF"],
       products: [
-        { id: "newsletter", name: "Szablony gazetki PDF", description: "Nowoczesne szablony z wieloma wariantami układu – wystarczy wkleić tekst i drukować.", price: 52, image: PROD_IMAGES["newsletter"] },
-        { id: "newsletter-classic", name: "Szablon klasyczny PDF", description: "Klasyczny dwukolumnowy układ gazetki – czytelny, elegancki i sprawdzony przez setki szkół.", price: 45, image: PROD_IMAGES["newsletter-classic"] },
+        { id: "newsletter",          name: "Wariant 1", description: "Nowoczesny układ gazetki z dynamicznymi ramkami i miejscem na zdjęcia.", price: 52, image: PROD_IMAGES["newsletter"] },
+        { id: "newsletter-classic",  name: "Wariant 2", description: "Klasyczny dwukolumnowy układ – czytelny, elegancki i sprawdzony w każdej szkole.", price: 45, image: PROD_IMAGES["newsletter-classic"] },
+        { id: "newsletter-wariant3", name: "Wariant 3", description: "Układ premium z bogatą stroną tytułową, stopką redakcji i 6 różnymi layoutami.", price: 58, image: PROD_IMAGES["newsletter-wariant3"] },
       ],
     },
     {
@@ -172,8 +196,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Boże Narodzenie PDF",
       features: ["Świąteczne ilustracje", "Motywy zimowe i choinkowe", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "boze-narodzenie-zestaw", name: "Zestaw świąteczny PDF", description: "Kompletny pakiet: plakaty A3 + szablony gazetki z choinką, śniegiem i gwiazdami – wszystko na jeden grudzień.", price: 55, image: PROD_IMAGES["boze-narodzenie-zestaw"] },
-        { id: "boze-narodzenie-plakaty", name: "Plakaty bożonarodzeniowe PDF", description: "8 plakatów A3/A4 z ciepłymi ilustracjami świątecznymi – idealne na korytarz szkolny i salę.", price: 40, image: PROD_IMAGES["boze-narodzenie-plakaty"] },
+        { id: "boze-narodzenie-zestaw",   name: "Wariant 1", description: "Kompletny zestaw świąteczny: plakaty A3 + szablony gazetki z choinką i śniegiem.", price: 55, image: PROD_IMAGES["boze-narodzenie-zestaw"] },
+        { id: "boze-narodzenie-plakaty",  name: "Wariant 2", description: "8 plakatów A3/A4 z ciepłymi ilustracjami bożonarodzeniowymi – na korytarz i salę.", price: 40, image: PROD_IMAGES["boze-narodzenie-plakaty"] },
+        { id: "boze-narodzenie-wariant3", name: "Wariant 3", description: "Rozbudowany szablon gazetki świątecznej z 6 layoutami i stroną życzeń dla całej szkoły.", price: 48, image: PROD_IMAGES["boze-narodzenie-wariant3"] },
       ],
     },
     {
@@ -185,8 +210,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Zima PDF",
       features: ["Zimowe ilustracje", "Motywy śniegu i mrozu", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "zima-plakaty", name: "Plakaty zimowe PDF", description: "8 plakatów z mrozem, śniegiem i bałwanem – dekoracja szkolnego korytarza na zimę i ferie.", price: 38, image: PROD_IMAGES["zima-plakaty"] },
-        { id: "zima-szablony", name: "Szablony zimowe PDF", description: "Układ gazetki z zimowym klimatem – gotowe ramki, nagłówki i tła dla redakcji szkolnej.", price: 45, image: PROD_IMAGES["zima-szablony"] },
+        { id: "zima-plakaty",  name: "Wariant 1", description: "8 plakatów z mrozem, śniegiem i bałwanem – dekoracja korytarza na zimę i ferie.", price: 38, image: PROD_IMAGES["zima-plakaty"] },
+        { id: "zima-szablony", name: "Wariant 2", description: "Zimowy układ gazetki z gotowymi ramkami, nagłówkami i tłami dla redakcji.", price: 45, image: PROD_IMAGES["zima-szablony"] },
+        { id: "zima-wariant3", name: "Wariant 3", description: "Komplet zimowy: plakaty + szablony gazetki z feriami i zimowymi aktywnościami.", price: 50, image: PROD_IMAGES["zima-wariant3"] },
       ],
     },
     {
@@ -198,8 +224,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Mikołajki PDF",
       features: ["Motywy mikołajkowe", "Wesołe ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "mikolajki-plakaty", name: "Plakaty mikołajkowe PDF", description: "8 radosnych plakatów z Mikołajem i prezentami – świetna dekoracja na szkolny korytarz 6 grudnia.", price: 38, image: PROD_IMAGES["mikolajki-plakaty"] },
-        { id: "mikolajki-szablony", name: "Szablony mikołajkowe PDF", description: "Gotowy układ gazetki z mikołajkowym klimatem – nagłówki, obramowania i tła w zimowych kolorach.", price: 42, image: PROD_IMAGES["mikolajki-szablony"] },
+        { id: "mikolajki-plakaty",  name: "Wariant 1", description: "8 radosnych plakatów z Mikołajem i prezentami – dekoracja szkoły na 6 grudnia.", price: 38, image: PROD_IMAGES["mikolajki-plakaty"] },
+        { id: "mikolajki-szablony", name: "Wariant 2", description: "Układ gazetki z mikołajkowym klimatem – nagłówki i tła w zimowych kolorach.", price: 42, image: PROD_IMAGES["mikolajki-szablony"] },
+        { id: "mikolajki-wariant3", name: "Wariant 3", description: "Komplet mikołajkowy: plakaty dekoracyjne + szablon gazetki z miejscem na listy do Mikołaja.", price: 48, image: PROD_IMAGES["mikolajki-wariant3"] },
       ],
     },
     {
@@ -211,8 +238,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Walentynki PDF",
       features: ["Serca i miłosne motywy", "Przyjazny styl", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "walentynki-plakaty", name: "Plakaty walentynkowe PDF", description: "8 plakatów z sercami i różowymi akcentami – dla klasy i korytarza na 14 lutego.", price: 38, image: PROD_IMAGES["walentynki-plakaty"] },
-        { id: "walentynki-szablony", name: "Szablony walentynkowe PDF", description: "Romantyczny układ gazetki szkolnej na Walentynki – gotowe obramowania, wzory tła i kształty.", price: 42, image: PROD_IMAGES["walentynki-szablony"] },
+        { id: "walentynki-plakaty",  name: "Wariant 1", description: "8 plakatów z sercami i różowymi akcentami – dla klasy i korytarza na 14 lutego.", price: 38, image: PROD_IMAGES["walentynki-plakaty"] },
+        { id: "walentynki-szablony", name: "Wariant 2", description: "Romantyczny układ gazetki z gotowymi obramowaniami i wzorami tła.", price: 42, image: PROD_IMAGES["walentynki-szablony"] },
+        { id: "walentynki-wariant3", name: "Wariant 3", description: "Zestaw walentynkowy: plakaty serduszka + szablon gazetki z miejscem na uczniowskie wyznania.", price: 48, image: PROD_IMAGES["walentynki-wariant3"] },
       ],
     },
     {
@@ -224,8 +252,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Babci i Dziadka PDF",
       features: ["Ciepłe ilustracje rodzinne", "Serdeczny styl", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-babci-plakaty", name: "Plakaty – Dzień Babci i Dziadka PDF", description: "8 ciepłych plakatów z różami i sercami – idealne do wydruku na 21 i 22 stycznia.", price: 38, image: PROD_IMAGES["dzien-babci-plakaty"] },
-        { id: "dzien-babci-szablony", name: "Szablony – Dzień Babci i Dziadka PDF", description: "Serdeczny układ gazetki z dekoracjami kwiatowymi – gotowe do wypełnienia życzeniami.", price: 42, image: PROD_IMAGES["dzien-babci-szablony"] },
+        { id: "dzien-babci-plakaty",  name: "Wariant 1", description: "8 ciepłych plakatów z różami i sercami – idealne do wydruku na 21 i 22 stycznia.", price: 38, image: PROD_IMAGES["dzien-babci-plakaty"] },
+        { id: "dzien-babci-szablony", name: "Wariant 2", description: "Serdeczny układ gazetki z dekoracjami kwiatowymi – gotowy do wypełnienia życzeniami.", price: 42, image: PROD_IMAGES["dzien-babci-szablony"] },
+        { id: "dzien-babci-wariant3", name: "Wariant 3", description: "Komplet: plakaty dekoracyjne + szablon gazetki z przepisem, wywiadem i galerią rysunków.", price: 48, image: PROD_IMAGES["dzien-babci-wariant3"] },
       ],
     },
     {
@@ -237,8 +266,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Kobiet PDF",
       features: ["Kwiaty i eleganckie motywy", "Kolorowe ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-kobiet-plakaty", name: "Plakaty – Dzień Kobiet PDF", description: "8 kwiatowych plakatów z tulipanami i różami – piękna dekoracja szkoły na 8 marca.", price: 38, image: PROD_IMAGES["dzien-kobiet-plakaty"] },
-        { id: "dzien-kobiet-szablony", name: "Szablony – Dzień Kobiet PDF", description: "Elegancki układ gazetki z kwiatowymi obramowaniami i pastelowym tłem na Dzień Kobiet.", price: 42, image: PROD_IMAGES["dzien-kobiet-szablony"] },
+        { id: "dzien-kobiet-plakaty",  name: "Wariant 1", description: "8 kwiatowych plakatów z tulipanami i różami – piękna dekoracja szkoły na 8 marca.", price: 38, image: PROD_IMAGES["dzien-kobiet-plakaty"] },
+        { id: "dzien-kobiet-szablony", name: "Wariant 2", description: "Elegancki układ gazetki z kwiatowymi obramowaniami i pastelowym tłem na Dzień Kobiet.", price: 42, image: PROD_IMAGES["dzien-kobiet-szablony"] },
+        { id: "dzien-kobiet-wariant3", name: "Wariant 3", description: "Komplet: plakaty kwiatowe + szablon gazetki z wywiadem, galerią i stroną poświęconą kobietom.", price: 48, image: PROD_IMAGES["dzien-kobiet-wariant3"] },
       ],
     },
     {
@@ -250,8 +280,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Pierwszy Dzień Wiosny PDF",
       features: ["Wiosenne ilustracje", "Kwiaty i motyle", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "pierwszy-dzien-wiosny-plakaty", name: "Plakaty – Pierwszy Dzień Wiosny PDF", description: "8 świeżych plakatów z kwiatami i motylami – kolorowa dekoracja klasy na powitanie wiosny.", price: 38, image: PROD_IMAGES["pierwszy-dzien-wiosny-plakaty"] },
-        { id: "pierwszy-dzien-wiosny-szablony", name: "Szablony – Pierwszy Dzień Wiosny PDF", description: "Wiosenny układ gazetki z zielonymi akcentami i kwiatowymi ramkami na 21 marca.", price: 42, image: PROD_IMAGES["pierwszy-dzien-wiosny-szablony"] },
+        { id: "pierwszy-dzien-wiosny-plakaty",  name: "Wariant 1", description: "8 świeżych plakatów z kwiatami i motylami – kolorowa dekoracja klasy na powitanie wiosny.", price: 38, image: PROD_IMAGES["pierwszy-dzien-wiosny-plakaty"] },
+        { id: "pierwszy-dzien-wiosny-szablony", name: "Wariant 2", description: "Wiosenny układ gazetki z zielonymi akcentami i kwiatowymi ramkami na 21 marca.", price: 42, image: PROD_IMAGES["pierwszy-dzien-wiosny-szablony"] },
+        { id: "pierwszy-dzien-wiosny-wariant3", name: "Wariant 3", description: "Komplet wiosenny: plakaty + szablon gazetki z quizem przyrodniczym i galerią.", price: 48, image: PROD_IMAGES["pierwszy-dzien-wiosny-wariant3"] },
       ],
     },
     {
@@ -263,8 +294,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Wielkanoc PDF",
       features: ["Pisanki i baranki", "Wiosenne motywy", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "wielkanoc-plakaty", name: "Plakaty wielkanocne PDF", description: "8 wielkanocnych plakatów z pisankami i kurczakami – radosna dekoracja szkoły przed Wielkanocą.", price: 38, image: PROD_IMAGES["wielkanoc-plakaty"] },
-        { id: "wielkanoc-szablony", name: "Szablony wielkanocne PDF", description: "Wielkanocny układ gazetki z kolorowymi pisankami w tle – gotowy do druku i wypełnienia.", price: 42, image: PROD_IMAGES["wielkanoc-szablony"] },
+        { id: "wielkanoc-plakaty",  name: "Wariant 1", description: "8 wielkanocnych plakatów z pisankami i kurczakami – radosna dekoracja szkoły przed Wielkanocą.", price: 38, image: PROD_IMAGES["wielkanoc-plakaty"] },
+        { id: "wielkanoc-szablony", name: "Wariant 2", description: "Wielkanocny układ gazetki z kolorowymi pisankami w tle – gotowy do druku i wypełnienia.", price: 42, image: PROD_IMAGES["wielkanoc-szablony"] },
+        { id: "wielkanoc-wariant3", name: "Wariant 3", description: "Komplet wielkanocny: plakaty + szablon gazetki z tradycjami, quizem i galerią ozdób.", price: 48, image: PROD_IMAGES["wielkanoc-wariant3"] },
       ],
     },
     {
@@ -276,8 +308,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Ziemi PDF",
       features: ["Motywy ekologiczne", "Zielone ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-ziemi-plakaty", name: "Plakaty – Dzień Ziemi PDF", description: "8 ekologicznych plakatów z motywem Ziemi i natury – świetna dekoracja szkoły na 22 kwietnia.", price: 38, image: PROD_IMAGES["dzien-ziemi-plakaty"] },
-        { id: "dzien-ziemi-szablony", name: "Szablony – Dzień Ziemi PDF", description: "Zielony układ gazetki z liśćmi i globusem – gotowy szablon na Dzień Ziemi.", price: 42, image: PROD_IMAGES["dzien-ziemi-szablony"] },
+        { id: "dzien-ziemi-plakaty",  name: "Wariant 1", description: "8 ekologicznych plakatów z motywem Ziemi i natury – świetna dekoracja szkoły na 22 kwietnia.", price: 38, image: PROD_IMAGES["dzien-ziemi-plakaty"] },
+        { id: "dzien-ziemi-szablony", name: "Wariant 2", description: "Zielony układ gazetki z liśćmi i globusem – gotowy szablon na Dzień Ziemi.", price: 42, image: PROD_IMAGES["dzien-ziemi-szablony"] },
+        { id: "dzien-ziemi-wariant3", name: "Wariant 3", description: "Komplet ekologiczny: plakaty + szablon gazetki z ekoquizem, radami i galerią rysunków.", price: 48, image: PROD_IMAGES["dzien-ziemi-wariant3"] },
       ],
     },
     {
@@ -289,8 +322,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Wiosna PDF",
       features: ["Wiosenne ilustracje", "Kwiaty i przyroda", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "wiosna-plakaty", name: "Plakaty wiosenne PDF", description: "8 wiosennych plakatów z kwiatami i motylami – kolorowa dekoracja klasy na całą wiosnę.", price: 38, image: PROD_IMAGES["wiosna-plakaty"] },
-        { id: "wiosna-szablony", name: "Szablony wiosenne PDF", description: "Wiosenny układ gazetki z zielonymi i żółtymi akcentami – gotowe ramki i tła.", price: 42, image: PROD_IMAGES["wiosna-szablony"] },
+        { id: "wiosna-plakaty",  name: "Wariant 1", description: "8 wiosennych plakatów z kwiatami i motylami – kolorowa dekoracja klasy na całą wiosnę.", price: 38, image: PROD_IMAGES["wiosna-plakaty"] },
+        { id: "wiosna-szablony", name: "Wariant 2", description: "Wiosenny układ gazetki z zielonymi i żółtymi akcentami – gotowe ramki i tła.", price: 42, image: PROD_IMAGES["wiosna-szablony"] },
+        { id: "wiosna-wariant3", name: "Wariant 3", description: "Komplet wiosenny: plakaty + szablon gazetki z przyrodą, quizem i miejscem na zdjęcia.", price: 48, image: PROD_IMAGES["wiosna-wariant3"] },
       ],
     },
     {
@@ -302,8 +336,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Konstytucja 3 Maja PDF",
       features: ["Patriotyczne motywy", "Flagi i symbole narodowe", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "konstytucja-plakaty", name: "Plakaty – 3 Maja PDF", description: "8 patriotycznych plakatów z flagą, orłem i datą – uroczysta dekoracja szkoły na 3 Maja.", price: 38, image: PROD_IMAGES["konstytucja-plakaty"] },
-        { id: "konstytucja-szablony", name: "Szablony – 3 Maja PDF", description: "Patriotyczny układ gazetki z biało-czerwonymi akcentami i miejscem na tekst historyczny.", price: 42, image: PROD_IMAGES["konstytucja-szablony"] },
+        { id: "konstytucja-plakaty",  name: "Wariant 1", description: "8 patriotycznych plakatów z flagą, orłem i datą – uroczysta dekoracja szkoły na 3 Maja.", price: 38, image: PROD_IMAGES["konstytucja-plakaty"] },
+        { id: "konstytucja-szablony", name: "Wariant 2", description: "Patriotyczny układ gazetki z biało-czerwonymi akcentami i miejscem na tekst historyczny.", price: 42, image: PROD_IMAGES["konstytucja-szablony"] },
+        { id: "konstytucja-wariant3", name: "Wariant 3", description: "Komplet patriotyczny: plakaty + szablon gazetki z historią, quizem i cytatami.", price: 48, image: PROD_IMAGES["konstytucja-wariant3"] },
       ],
     },
     {
@@ -315,8 +350,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Matki PDF",
       features: ["Kwiaty i serca", "Ciepłe kolorowe ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-matki-plakaty", name: "Plakaty – Dzień Matki PDF", description: "8 ciepłych plakatów z bukietami i sercami – wyjątkowa dekoracja klasy na Dzień Matki.", price: 38, image: PROD_IMAGES["dzien-matki-plakaty"] },
-        { id: "dzien-matki-szablony", name: "Szablony – Dzień Matki PDF", description: "Kwiatowy układ gazetki z miejscem na życzenia i wierszyk – gotowy do druku na 26 maja.", price: 42, image: PROD_IMAGES["dzien-matki-szablony"] },
+        { id: "dzien-matki-plakaty",  name: "Wariant 1", description: "8 ciepłych plakatów z bukietami i sercami – wyjątkowa dekoracja klasy na Dzień Matki.", price: 38, image: PROD_IMAGES["dzien-matki-plakaty"] },
+        { id: "dzien-matki-szablony", name: "Wariant 2", description: "Kwiatowy układ gazetki z miejscem na życzenia i wierszyk – gotowy do druku na 26 maja.", price: 42, image: PROD_IMAGES["dzien-matki-szablony"] },
+        { id: "dzien-matki-wariant3", name: "Wariant 3", description: "Komplet: plakaty + szablon gazetki z wierszem, wywiadem i galerią dla Mamy.", price: 48, image: PROD_IMAGES["dzien-matki-wariant3"] },
       ],
     },
     {
@@ -328,8 +364,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Dziecka PDF",
       features: ["Wesołe, kolorowe ilustracje", "Balony i confetti", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-dziecka-plakaty", name: "Plakaty – Dzień Dziecka PDF", description: "8 kolorowych plakatów z balonami i gwiazdkami – idealne do dekoracji szkoły na 1 czerwca.", price: 38, image: PROD_IMAGES["dzien-dziecka-plakaty"] },
-        { id: "dzien-dziecka-szablony", name: "Szablony – Dzień Dziecka PDF", description: "Radosny układ gazetki z confetti i balonami w tle – gotowy szablon na Dzień Dziecka.", price: 42, image: PROD_IMAGES["dzien-dziecka-szablony"] },
+        { id: "dzien-dziecka-plakaty",  name: "Wariant 1", description: "8 kolorowych plakatów z balonami i gwiazdkami – idealne do dekoracji szkoły na 1 czerwca.", price: 38, image: PROD_IMAGES["dzien-dziecka-plakaty"] },
+        { id: "dzien-dziecka-szablony", name: "Wariant 2", description: "Radosny układ gazetki z confetti i balonami w tle – gotowy szablon na Dzień Dziecka.", price: 42, image: PROD_IMAGES["dzien-dziecka-szablony"] },
+        { id: "dzien-dziecka-wariant3", name: "Wariant 3", description: "Komplet: plakaty kolorowe + szablon gazetki z zabawami, quizem i życzeniami.", price: 48, image: PROD_IMAGES["dzien-dziecka-wariant3"] },
       ],
     },
     {
@@ -341,8 +378,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Ojca PDF",
       features: ["Ciepłe ilustracje rodzinne", "Serdeczny styl", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-ojca-plakaty", name: "Plakaty – Dzień Ojca PDF", description: "8 serdecznych plakatów dla taty – dekoracja klasy i korytarza na Dzień Ojca.", price: 38, image: PROD_IMAGES["dzien-ojca-plakaty"] },
-        { id: "dzien-ojca-szablony", name: "Szablony – Dzień Ojca PDF", description: "Elegancki układ gazetki z miejscem na życzenia dla taty – gotowy do druku na 23 czerwca.", price: 42, image: PROD_IMAGES["dzien-ojca-szablony"] },
+        { id: "dzien-ojca-plakaty",  name: "Wariant 1", description: "8 serdecznych plakatów dla taty – dekoracja klasy i korytarza na Dzień Ojca.", price: 38, image: PROD_IMAGES["dzien-ojca-plakaty"] },
+        { id: "dzien-ojca-szablony", name: "Wariant 2", description: "Elegancki układ gazetki z miejscem na życzenia dla taty – gotowy do druku na 23 czerwca.", price: 42, image: PROD_IMAGES["dzien-ojca-szablony"] },
+        { id: "dzien-ojca-wariant3", name: "Wariant 3", description: "Komplet: plakaty + szablon gazetki z wywiadem, wierszem i galerią dla Taty.", price: 48, image: PROD_IMAGES["dzien-ojca-wariant3"] },
       ],
     },
     {
@@ -354,8 +392,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Lato PDF",
       features: ["Słońce, morze, wakacje", "Jasne kolorowe ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "lato-plakaty", name: "Plakaty letnie PDF", description: "8 słonecznych plakatów z plażą i wakacjami – kolorowa dekoracja szkoły na koniec roku.", price: 38, image: PROD_IMAGES["lato-plakaty"] },
-        { id: "lato-szablony", name: "Szablony letnie PDF", description: "Letni układ gazetki z falami i słońcem – idealny na czerwiec i zakończenie roku.", price: 42, image: PROD_IMAGES["lato-szablony"] },
+        { id: "lato-plakaty",  name: "Wariant 1", description: "8 słonecznych plakatów z plażą i wakacjami – kolorowa dekoracja szkoły na koniec roku.", price: 38, image: PROD_IMAGES["lato-plakaty"] },
+        { id: "lato-szablony", name: "Wariant 2", description: "Letni układ gazetki z falami i słońcem – idealny na czerwiec i zakończenie roku.", price: 42, image: PROD_IMAGES["lato-szablony"] },
+        { id: "lato-wariant3", name: "Wariant 3", description: "Komplet letni: plakaty + szablon gazetki z wakacyjnymi planami i galeriami.", price: 48, image: PROD_IMAGES["lato-wariant3"] },
       ],
     },
     {
@@ -367,8 +406,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Zakończenie roku PDF",
       features: ["Dyplomy i podziękowania", "Wspomnienia roku", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "zakonczenie-roku-plakaty", name: "Plakaty – Zakończenie roku PDF", description: "8 uroczystych plakatów z biretami i dyplomami – piękna dekoracja na zakończenie roku szkolnego.", price: 42, image: PROD_IMAGES["zakonczenie-roku-plakaty"] },
-        { id: "zakonczenie-roku-szablony", name: "Szablony – Zakończenie roku PDF", description: "Uroczysty układ gazetki z miejscem na wspomnienia, ranking i życzenia na wakacje.", price: 48, image: PROD_IMAGES["zakonczenie-roku-szablony"] },
+        { id: "zakonczenie-roku-plakaty",  name: "Wariant 1", description: "8 uroczystych plakatów z biretami i dyplomami – piękna dekoracja na zakończenie roku szkolnego.", price: 42, image: PROD_IMAGES["zakonczenie-roku-plakaty"] },
+        { id: "zakonczenie-roku-szablony", name: "Wariant 2", description: "Uroczysty układ gazetki z miejscem na wspomnienia, ranking i życzenia na wakacje.", price: 48, image: PROD_IMAGES["zakonczenie-roku-szablony"] },
+        { id: "zakonczenie-roku-wariant3", name: "Wariant 3", description: "Komplet pożegnalny: plakaty + szablon gazetki z kroną roku, wspomnieniami i planami.", price: 54, image: PROD_IMAGES["zakonczenie-roku-wariant3"] },
       ],
     },
     {
@@ -380,8 +420,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Początek roku PDF",
       features: ["Motywy powrotu do szkoły", "Tornistry i książki", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "poczatek-roku-plakaty", name: "Plakaty – Początek roku PDF", description: "8 plakatów powitalnych z tornistrem i książkami – kolorowa dekoracja szkoły na 1 września.", price: 38, image: PROD_IMAGES["poczatek-roku-plakaty"] },
-        { id: "poczatek-roku-szablony", name: "Szablony – Początek roku PDF", description: "Szkolny układ gazetki na nowy rok – plan lekcji, przedstawienie redakcji i miejsce na newsy.", price: 42, image: PROD_IMAGES["poczatek-roku-szablony"] },
+        { id: "poczatek-roku-plakaty",  name: "Wariant 1", description: "8 plakatów powitalnych z tornistrem i książkami – kolorowa dekoracja szkoły na 1 września.", price: 38, image: PROD_IMAGES["poczatek-roku-plakaty"] },
+        { id: "poczatek-roku-szablony", name: "Wariant 2", description: "Szkolny układ gazetki na nowy rok – plan lekcji, przedstawienie redakcji i miejsce na newsy.", price: 42, image: PROD_IMAGES["poczatek-roku-szablony"] },
+        { id: "poczatek-roku-wariant3", name: "Wariant 3", description: "Komplet powitalny: plakaty + szablon gazetki z regułami klasy, quizem i celami roku.", price: 48, image: PROD_IMAGES["poczatek-roku-wariant3"] },
       ],
     },
     {
@@ -393,8 +434,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Jesień PDF",
       features: ["Jesienne ilustracje", "Ciepłe, złote kolory", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "jesien-plakaty", name: "Plakaty jesienne PDF", description: "8 jesiennych plakatów z liśćmi i grzybami – złota dekoracja klasy na wrzesień i październik.", price: 38, image: PROD_IMAGES["jesien-plakaty"] },
-        { id: "jesien-szablony", name: "Szablony jesienne PDF", description: "Jesienny układ gazetki z ciepłą kolorystyką – gotowe obramowania w odcieniach złota i brązu.", price: 42, image: PROD_IMAGES["jesien-szablony"] },
+        { id: "jesien-plakaty",  name: "Wariant 1", description: "8 jesiennych plakatów z liśćmi i grzybami – złota dekoracja klasy na wrzesień i październik.", price: 38, image: PROD_IMAGES["jesien-plakaty"] },
+        { id: "jesien-szablony", name: "Wariant 2", description: "Jesienny układ gazetki z ciepłą kolorystyką – gotowe obramowania w odcieniach złota i brązu.", price: 42, image: PROD_IMAGES["jesien-szablony"] },
+        { id: "jesien-wariant3", name: "Wariant 3", description: "Komplet jesienny: plakaty + szablon gazetki z przyrodą, przepisem i galerią liści.", price: 48, image: PROD_IMAGES["jesien-wariant3"] },
       ],
     },
     {
@@ -406,8 +448,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Nauczyciela PDF",
       features: ["Motyw szkoły i podziękowania", "Ciepłe ilustracje", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "dzien-nauczyciela-plakaty", name: "Plakaty – Dzień Nauczyciela PDF", description: "8 eleganckich plakatów z jabłkiem i książką – wyjątkowa dekoracja szkoły na 14 października.", price: 38, image: PROD_IMAGES["dzien-nauczyciela-plakaty"] },
-        { id: "dzien-nauczyciela-szablony", name: "Szablony – Dzień Nauczyciela PDF", description: "Układ gazetki z miejscem na podziękowania i sylwetki nauczycielskie – ciepły styl edukacyjny.", price: 42, image: PROD_IMAGES["dzien-nauczyciela-szablony"] },
+        { id: "dzien-nauczyciela-plakaty",  name: "Wariant 1", description: "8 eleganckich plakatów z jabłkiem i książką – wyjątkowa dekoracja szkoły na 14 października.", price: 38, image: PROD_IMAGES["dzien-nauczyciela-plakaty"] },
+        { id: "dzien-nauczyciela-szablony", name: "Wariant 2", description: "Układ gazetki z miejscem na podziękowania i sylwetki nauczycielskie – ciepły styl edukacyjny.", price: 42, image: PROD_IMAGES["dzien-nauczyciela-szablony"] },
+        { id: "dzien-nauczyciela-wariant3", name: "Wariant 3", description: "Komplet: plakaty + szablon gazetki z wywiadem z nauczycielem i galerią wspomnień.", price: 48, image: PROD_IMAGES["dzien-nauczyciela-wariant3"] },
       ],
     },
     {
@@ -419,8 +462,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Halloween PDF",
       features: ["Dynie, duchy i pajęczyny", "Mroczny klimat", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "halloween-plakaty", name: "Plakaty Halloween PDF", description: "8 strasznych plakatów z dynią i duchem – halloweenowa dekoracja szkoły na 31 października.", price: 38, image: PROD_IMAGES["halloween-plakaty"] },
-        { id: "halloween-szablony", name: "Szablony Halloween PDF", description: "Mroczny układ gazetki z pajęczynami i duchem w tle – gotowy do zastraszania czytelników.", price: 42, image: PROD_IMAGES["halloween-szablony"] },
+        { id: "halloween-plakaty",  name: "Wariant 1", description: "8 strasznych plakatów z dynią i duchem – halloweenowa dekoracja szkoły na 31 października.", price: 38, image: PROD_IMAGES["halloween-plakaty"] },
+        { id: "halloween-szablony", name: "Wariant 2", description: "Mroczny układ gazetki z pajęczynami i duchem w tle – gotowy do zastraszania czytelników.", price: 42, image: PROD_IMAGES["halloween-szablony"] },
+        { id: "halloween-wariant3", name: "Wariant 3", description: "Komplet Halloween: plakaty + szablon gazetki z wróżbami, quizem i galerią kostiumów.", price: 48, image: PROD_IMAGES["halloween-wariant3"] },
       ],
     },
     {
@@ -432,8 +476,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Andrzejki PDF",
       features: ["Motywy wróżbiarskie", "Gwiazdy i magiczne symbole", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "andrzejki-plakaty", name: "Plakaty andrzejkowe PDF", description: "8 tajemniczych plakatów z kulą, gwiazdami i wróżbami – klimatyczna dekoracja na 30 listopada.", price: 38, image: PROD_IMAGES["andrzejki-plakaty"] },
-        { id: "andrzejki-szablony", name: "Szablony andrzejkowe PDF", description: "Mistyczny układ gazetki z miejscem na wróżby i zdjęcia z andrzejkowej zabawy szkolnej.", price: 42, image: PROD_IMAGES["andrzejki-szablony"] },
+        { id: "andrzejki-plakaty",  name: "Wariant 1", description: "8 tajemniczych plakatów z kulą, gwiazdami i wróżbami – klimatyczna dekoracja na 30 listopada.", price: 38, image: PROD_IMAGES["andrzejki-plakaty"] },
+        { id: "andrzejki-szablony", name: "Wariant 2", description: "Mistyczny układ gazetki z miejscem na wróżby i zdjęcia z andrzejkowej zabawy szkolnej.", price: 42, image: PROD_IMAGES["andrzejki-szablony"] },
+        { id: "andrzejki-wariant3", name: "Wariant 3", description: "Komplet andrzejkowy: plakaty + szablon gazetki z quizem, relacją i przepisami na noc wróżb.", price: 48, image: PROD_IMAGES["andrzejki-wariant3"] },
       ],
     },
     {
@@ -445,8 +490,9 @@ export const STORE_CONFIG = {
       imageAlt: "Gazetka szkolna Dzień Niepodległości PDF",
       features: ["Flagi i symbole narodowe", "Patriotyczne motywy", "Formaty A3 i A4", "Gotowy plik PDF"],
       products: [
-        { id: "niepodleglosc-plakaty", name: "Plakaty – 11 Listopada PDF", description: "8 patriotycznych plakatów z orłem i flagą – uroczysta dekoracja szkoły na Dzień Niepodległości.", price: 38, image: PROD_IMAGES["niepodleglosc-plakaty"] },
-        { id: "niepodleglosc-szablony", name: "Szablony – 11 Listopada PDF", description: "Patriotyczny układ gazetki z biało-czerwonymi akcentami i miejscem na historyczne treści.", price: 42, image: PROD_IMAGES["niepodleglosc-szablony"] },
+        { id: "niepodleglosc-plakaty",  name: "Wariant 1", description: "8 patriotycznych plakatów z orłem i flagą – uroczysta dekoracja szkoły na Dzień Niepodległości.", price: 38, image: PROD_IMAGES["niepodleglosc-plakaty"] },
+        { id: "niepodleglosc-szablony", name: "Wariant 2", description: "Patriotyczny układ gazetki z biało-czerwonymi akcentami i miejscem na historyczne treści.", price: 42, image: PROD_IMAGES["niepodleglosc-szablony"] },
+        { id: "niepodleglosc-wariant3", name: "Wariant 3", description: "Komplet patriotyczny: plakaty + szablon gazetki z historią, mapą i quizem o niepodległości.", price: 48, image: PROD_IMAGES["niepodleglosc-wariant3"] },
       ],
     },
   ] as StoreCategory[],
