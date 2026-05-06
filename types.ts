@@ -2,6 +2,7 @@
 export type ProductId = "poster" | "poster-a4" | "newsletter" | "newsletter-classic";
 
 export interface CartItem {
+  key: string;
   name: string;
   price: number;
   qty: number;

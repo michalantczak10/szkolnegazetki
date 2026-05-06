@@ -298,11 +298,12 @@ async function renderCategoryProducts(
 
   visibleProducts.forEach((product, variantIdx) => {
     const previews = createProductPreviews(product, categoryId, variantIdx);
+    const variantImage = previews[0]?.svgThumb ?? product.image;
     const li = document.createElement("li");
     li.className = "category-product-item";
 
     const productImg = document.createElement("img");
-    productImg.src = previews[0]?.svgThumb ?? product.image;
+    productImg.src = variantImage;
     productImg.alt = product.name;
     productImg.className = "category-product-image";
     productImg.loading = "lazy";
@@ -362,15 +363,16 @@ async function renderCategoryProducts(
     const btn = document.createElement("button");
     btn.className = "addToCartBtn";
     btn.dataset.productId = product.id;
+    btn.dataset.productKey = product.id;
     btn.dataset.product = product.name;
     btn.dataset.price = String(product.price);
-    btn.dataset.image = product.image;
+    btn.dataset.image = variantImage;
     btn.setAttribute("aria-label", `Dodaj ${product.name} do zamówienia`);
     btn.setAttribute("data-testid", "btn-add-to-cart");
     btn.textContent = "Dodaj do zamówienia";
 
     btn.addEventListener("click", () => {
-      cartManager.add(product.name, product.price, product.image);
+      cartManager.add(product.id, product.name, product.price, variantImage);
       renderCheckoutSummary(cartManager);
 
       const checkoutSummary = document.getElementById("checkoutSummary");
@@ -473,16 +475,16 @@ export function setupCartItemHandlers(cartManager: CartManager): void {
 
   summaryEl.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
-    const productName = target.dataset.productName;
+    const productKey = target.dataset.productKey;
 
-    if (!productName) return;
+    if (!productKey) return;
 
     if (target.classList.contains("cart-btn-decrease")) {
-      cartManager.decreaseQty(productName);
+      cartManager.decreaseQty(productKey);
     } else if (target.classList.contains("cart-btn-increase")) {
-      cartManager.increaseQty(productName);
+      cartManager.increaseQty(productKey);
     } else if (target.classList.contains("cart-btn-remove")) {
-      cartManager.remove(productName);
+      cartManager.remove(productKey);
     } else {
       return;
     }

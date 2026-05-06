@@ -69,10 +69,10 @@ export function renderCheckoutSummary(cartManager: CartManager): void {
           <span class="checkout-summary-product-unit">${item.qty} ${qtyLabel}. × ${item.price} zł</span>
         </div>
         <div class="checkout-summary-product-actions">
-          <button class="cart-btn cart-btn-decrease" data-product-name="${item.name}" title="Zmniejsz ilość">-</button>
+          <button class="cart-btn cart-btn-decrease" data-product-key="${item.key}" title="Zmniejsz ilość">-</button>
           <span class="checkout-summary-product-qty">${item.qty}</span>
-          <button class="cart-btn cart-btn-increase" data-product-name="${item.name}" title="Zwiększ ilość">+</button>
-          <button class="cart-btn cart-btn-remove" data-product-name="${item.name}" data-testid="btn-remove-from-cart" title="Usuń produkt">×</button>
+          <button class="cart-btn cart-btn-increase" data-product-key="${item.key}" title="Zwiększ ilość">+</button>
+          <button class="cart-btn cart-btn-remove" data-product-key="${item.key}" data-testid="btn-remove-from-cart" title="Usuń produkt">×</button>
         </div>
       </div>
       <div class="checkout-summary-product-total">Razem: ${item.qty * item.price} zł</div>

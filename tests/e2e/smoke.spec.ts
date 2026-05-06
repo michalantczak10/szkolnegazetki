@@ -22,7 +22,7 @@ test.describe('Szkolne gazetki smoke', () => {
     const summary = page.getByTestId('checkout-summary-list');
 
     await expect(summary).toBeVisible();
-    await expect(summary).toContainText('Plakaty szkolne PDF');
+    await expect(summary).toContainText('Wariant 1');
     await expect(summary).toContainText('Wyczyść koszyk');
   });
 
@@ -38,10 +38,10 @@ test.describe('Szkolne gazetki smoke', () => {
   test('keeps cart items after page reload', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Plakaty szkolne PDF');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Wariant 1');
 
     await page.reload();
-    await expect(page.getByTestId('checkout-summary-list')).toContainText('Plakaty szkolne PDF');
+    await expect(page.getByTestId('checkout-summary-list')).toContainText('Wariant 1');
   });
 
   test('validates phone field', async ({ page }) => {
@@ -92,29 +92,29 @@ test.describe('Szkolne gazetki smoke', () => {
     await page.getByTestId('btn-add-to-cart').first().click();
 
     const summary = page.getByTestId('checkout-summary-list');
-    await expect(summary).toContainText('Plakaty szkolne PDF');
-    await expect(summary).toContainText('Szablony gazetki PDF');
+    await expect(summary).toContainText('Wariant 1');
+    await expect(summary).toContainText('97 zł');
   });
 
   test('can remove product from cart', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
-    await expect(summary).toContainText('Plakaty szkolne PDF');
+    await expect(summary).toContainText('Wariant 1');
 
     await page.getByTestId('btn-remove-from-cart').first().click();
-    await expect(summary).not.toContainText('Plakaty szkolne PDF');
+    await expect(summary).not.toContainText('Wariant 1');
   });
 
   test('can clear cart', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     const summary = page.getByTestId('checkout-summary-list');
-    await expect(summary).toContainText('Plakaty szkolne PDF');
+    await expect(summary).toContainText('Wariant 1');
 
     await page.getByTestId('btn-clear-cart').click();
     await page.getByRole('button', { name: 'Tak, wyczyść' }).click();
-    await expect(summary).not.toContainText('Plakaty szkolne PDF');
+    await expect(summary).not.toContainText('Wariant 1');
   });
 
   test('validates name field - required', async ({ page }) => {

@@ -7,12 +7,8 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const previewsDir = path.join(rootDir, "previews");
 const outputDir = path.join(rootDir, "exports");
-const outputCsvFile = path.join(outputDir, "section-structure.csv");
 const outputJsonFile = path.join(outputDir, "section-structure.json");
 const args = new Set(process.argv.slice(2));
-
-const shouldWriteJson = !args.has("--csv-only");
-const shouldWriteCsv = args.has("--with-csv") || args.has("--csv-only");
 
 function parseExpectedCount(prefix, fallback) {
   const arg = [...args].find((entry) => entry.startsWith(prefix));
@@ -29,14 +25,6 @@ function parseExpectedCount(prefix, fallback) {
 const validateStructure = !args.has("--no-validate");
 const expectedVariantsPerCategory = parseExpectedCount("--expect-variants=", null);
 const expectedGraphicsPerVariant = parseExpectedCount("--expect-graphics=", null);
-
-function csvEscape(value) {
-  const text = String(value ?? "");
-  if (text.includes(",") || text.includes("\n") || text.includes("\"")) {
-    return `"${text.replaceAll("\"", "\"\"")}"`;
-  }
-  return text;
-}
 
 function extractNumber(name) {
   const match = name.match(/(\d+)/);
@@ -119,38 +107,19 @@ async function main() {
     );
   }
 
-  const header = ["section", "category_id", "variant", "graphic", "file"];
-  const lines = [header.join(",")];
-
-  for (const row of rows) {
-    lines.push(header.map((key) => csvEscape(row[key])).join(","));
-  }
-
   await mkdir(outputDir, { recursive: true });
-  if (shouldWriteCsv) {
-    await writeFile(outputCsvFile, `${lines.join("\n")}\n`, "utf8");
-  }
+  await writeFile(
+    outputJsonFile,
+    `${JSON.stringify({
+      section: "category-products-panel",
+      total_rows: rows.length,
+      generated_at: new Date().toISOString(),
+      rows,
+    }, null, 2)}\n`,
+    "utf8"
+  );
 
-  if (shouldWriteJson) {
-    await writeFile(
-      outputJsonFile,
-      `${JSON.stringify({
-        section: "category-products-panel",
-        total_rows: rows.length,
-        generated_at: new Date().toISOString(),
-        rows,
-      }, null, 2)}\n`,
-      "utf8"
-    );
-  }
-
-  if (shouldWriteCsv) {
-    console.log(`CSV generated: ${outputCsvFile}`);
-  }
-
-  if (shouldWriteJson) {
-    console.log(`JSON generated: ${outputJsonFile}`);
-  }
+  console.log(`JSON generated: ${outputJsonFile}`);
 
   if (validateStructure) {
     if (expectedVariantsPerCategory !== null || expectedGraphicsPerVariant !== null) {
@@ -168,6 +137,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("Failed to export CSV:", error);
+  console.error("Failed to export JSON:", error);
   process.exitCode = 1;
 });

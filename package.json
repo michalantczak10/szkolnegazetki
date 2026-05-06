@@ -36,8 +36,7 @@
     "ops:local:cleanup": "node ./scripts/local-housekeeping.mjs --delete-merged",
     "assets:previews": "node ./scripts/generate-product-previews.mjs",
     "test:coverage": "node ./scripts/check-test-coverage.mjs",
-    "structure:sync": "node ./scripts/export-previews-structure-csv.mjs",
-    "structure:export": "node ./scripts/export-previews-structure-csv.mjs --with-csv"
+    "structure:sync": "node ./scripts/export-previews-structure-csv.mjs"
   },
   "simple-git-hooks": {
     "pre-commit": "npm run secrets:check:staged",

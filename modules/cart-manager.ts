@@ -21,10 +21,14 @@ export class CartManager {
       this.items = parsed.filter(
         (item): item is CartItem =>
           item &&
+          (typeof item.key === "string" || typeof item.name === "string") &&
           typeof item.name === "string" &&
           typeof item.price === "number" &&
           typeof item.qty === "number"
-      );
+      ).map((item) => ({
+        ...item,
+        key: typeof item.key === "string" ? item.key : item.name,
+      }));
     } catch {
       this.items = [];
     }
@@ -34,27 +38,28 @@ export class CartManager {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items));
   }
 
-  public add(name: string, price: number, image: string): void {
-    const existing = this.items.find((item) => item.name === name);
+  public add(key: string, name: string, price: number, image: string): void {
+    const existing = this.items.find((item) => item.key === key);
     if (existing) {
       existing.qty++;
     } else {
-      this.items.push({ name, price, qty: 1, image });
+      this.items.push({ key, name, price, qty: 1, image });
     }
     this.saveToStorage();
   }
 
-  public remove(name: string): void {
+  public remove(key: string): void {
     const before = this.items.length;
-    this.items = this.items.filter((i) => i.name !== name);
-    if (this.items.length < before) {
-      showToast(`Usunięto produkt ${name} z zamówienia.`);
+    const removed = this.items.find((i) => i.key === key);
+    this.items = this.items.filter((i) => i.key !== key);
+    if (this.items.length < before && removed) {
+      showToast(`Usunięto produkt ${removed.name} z zamówienia.`);
     }
     this.saveToStorage();
   }
 
-  public increaseQty(name: string): void {
-    const item = this.items.find((i) => i.name === name);
+  public increaseQty(key: string): void {
+    const item = this.items.find((i) => i.key === key);
     if (item) {
       item.qty++;
       showToast(`Dodano 1 szt. produktu ${name}.`);
@@ -62,8 +67,8 @@ export class CartManager {
     }
   }
 
-  public decreaseQty(name: string): void {
-    const item = this.items.find((i) => i.name === name);
+  public decreaseQty(key: string): void {
+    const item = this.items.find((i) => i.key === key);
     if (item && item.qty > 1) {
       item.qty--;
       showToast(`Usunięto 1 szt. produktu ${name}.`);
