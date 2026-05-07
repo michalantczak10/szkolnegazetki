@@ -77,12 +77,36 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(notesError).toContainText('Uwagi nie mogą zawierać znaków < ani >.');
   });
 
-  test('legal pages are reachable', async ({ page }) => {
-    await page.goto('/terms.html');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Regulamin');
+  test('legal drawer opens and switches documents', async ({ page }) => {
+    await page.getByRole('link', { name: 'Regulamin' }).first().click();
+    const drawer = page.locator('#legalDrawer');
 
-    await page.goto('/privacy.html');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Polityka prywatności');
+    await expect(drawer).toBeVisible();
+    await expect(drawer).toContainText('Informacje ogólne');
+
+    await page.getByRole('tab', { name: 'Polityka prywatności' }).click();
+    await expect(drawer).toContainText('Administrator danych');
+
+    await page.getByRole('button', { name: 'Zamknij panel prawny' }).click();
+    await expect(drawer).not.toBeVisible();
+  });
+
+  test('cookie consent privacy link opens privacy tab in drawer', async ({ page }) => {
+    // Reset consent so the banner is visible
+    await page.evaluate(() => localStorage.removeItem('cookieConsent_v1'));
+    await page.reload();
+
+    const banner = page.locator('.cookie-consent');
+    await expect(banner).toBeVisible({ timeout: 5000 });
+
+    await banner.getByRole('link', { name: 'Polityka prywatności' }).click();
+
+    const drawer = page.locator('#legalDrawer');
+    await expect(drawer).toBeVisible();
+    await expect(drawer).toContainText('Administrator danych');
+
+    const privacyTab = page.getByRole('tab', { name: 'Polityka prywatności' });
+    await expect(privacyTab).toHaveClass(/active/);
   });
 
   test('can add both products to cart', async ({ page }) => {

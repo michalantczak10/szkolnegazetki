@@ -274,22 +274,88 @@
         <article class="legal-home-card">
           <h3>📄 Regulamin</h3>
           <p>Zasady składania zamówień, płatności, dostawy i reklamacji.</p>
-          <a href="terms.html" class="legal-home-link">Regulamin</a>
+          <a href="#legal" class="legal-home-link" data-legal-open="terms">Regulamin</a>
         </article>
 
         <article class="legal-home-card">
           <h3>🔒 Polityka prywatności (RODO)</h3>
           <p>Jakie dane zbieramy, w jakim celu je przetwarzamy i jak długo je przechowujemy.</p>
-          <a href="privacy.html" class="legal-home-link">Polityka prywatności</a>
+          <a href="#legal" class="legal-home-link" data-legal-open="privacy">Polityka prywatności</a>
         </article>
 
         <div class="legal-home-contacts">
           <p><strong>Kontakt ogólny i RODO:</strong> <a href="mailto:kontakt@szkolnegazetki.pl" data-store-general-email>kontakt@szkolnegazetki.pl</a></p>
           <p><strong>Reklamacje:</strong> <a href="mailto:reklamacje@szkolnegazetki.pl" data-store-complaints-email>reklamacje@szkolnegazetki.pl</a></p>
-          <p><strong>Cookies:</strong> szczegóły znajdziesz w <a href="privacy.html">Polityce prywatności</a>.</p>
+          <p><strong>Cookies:</strong> szczegóły znajdziesz w <a href="#legal" data-legal-open="privacy">Polityce prywatności</a>.</p>
         </div>
       </div>
     </section>
+
+    <div class="legal-drawer-overlay" id="legalDrawerOverlay" hidden></div>
+    <aside
+      class="legal-drawer"
+      id="legalDrawer"
+      aria-hidden="true"
+      aria-labelledby="legalDrawerTitle"
+      role="dialog"
+      tabindex="-1"
+    >
+      <div class="legal-drawer-header">
+        <h2 id="legalDrawerTitle">Regulamin i polityka prywatności</h2>
+        <button type="button" class="legal-drawer-close" id="legalDrawerClose" aria-label="Zamknij panel prawny">×</button>
+      </div>
+
+      <div class="legal-drawer-tabs" role="tablist" aria-label="Dokumenty prawne">
+        <button type="button" class="legal-drawer-tab active" id="legalTabTerms" role="tab" aria-selected="true" aria-controls="legalDocTerms" data-legal-switch="terms">Regulamin</button>
+        <button type="button" class="legal-drawer-tab" id="legalTabPrivacy" role="tab" aria-selected="false" aria-controls="legalDocPrivacy" data-legal-switch="privacy">Polityka prywatności</button>
+      </div>
+
+      <div class="legal-drawer-body">
+        <article id="legalDocTerms" class="legal-drawer-doc" data-legal-doc="terms" role="tabpanel" aria-labelledby="legalTabTerms">
+          <h3>1. Informacje ogólne</h3>
+          <p>Sklep prowadzony jest przez Szkolne gazetki. Sprzedajemy cyfrowe produkty w formacie PDF przeznaczone dla nauczycieli do wykorzystania w gazetkach szkolnych i materiałach klasowych.</p>
+
+          <h3>2. Składanie zamówień</h3>
+          <p>Zamówienia można składać poprzez formularz na stronie. Zamówienie jest przyjmowane po otrzymaniu poprawnych danych i potwierdzeniu płatności.</p>
+          <p>Ilość danego produktu w podsumowaniu zamówienia oznacza liczbę licencji nauczyciela.</p>
+
+          <h3>3. Dostęp do produktu</h3>
+          <p>Produkty są dostarczane elektronicznie. Po zaksięgowaniu płatności wysyłamy ręcznie link do pobrania plików PDF na adres e-mail podany w formularzu zamówienia.</p>
+          <p>W przypadku BLIK lub przelewu bankowego realizacja rozpoczyna się po zaksięgowaniu płatności. Czas dostarczenia linku może wynosić do 24 godzin w dni robocze.</p>
+
+          <h3>4. Płatności</h3>
+          <p>Akceptujemy przelew tradycyjny oraz płatność BLIK na telefon. Dane do płatności są przekazywane po złożeniu zamówienia.</p>
+
+          <h3>5. Reklamacje</h3>
+          <p>W przypadku problemów prosimy o kontakt: <a href="mailto:reklamacje@szkolnegazetki.pl" data-store-complaints-email>reklamacje@szkolnegazetki.pl</a>.</p>
+
+          <h3>6. Postanowienia końcowe</h3>
+          <p>Regulamin może być aktualizowany. Korzystanie ze sklepu oznacza akceptację aktualnej wersji regulaminu.</p>
+          <p class="legal-drawer-meta">Ostatnia aktualizacja: 2026-03-11</p>
+        </article>
+
+        <article id="legalDocPrivacy" class="legal-drawer-doc" data-legal-doc="privacy" role="tabpanel" aria-labelledby="legalTabPrivacy" hidden>
+          <h3>Administrator danych</h3>
+          <p>Administratorem danych osobowych jest Szkolne gazetki. W sprawach RODO kontakt: <a href="mailto:kontakt@szkolnegazetki.pl" data-store-general-email>kontakt@szkolnegazetki.pl</a>.</p>
+
+          <h3>Jakie dane zbieramy</h3>
+          <p>Zbieramy dane niezbędne do realizacji zamówienia: imię i nazwisko, adres e-mail, numer telefonu oraz informacje dobrowolnie podane w uwagach.</p>
+
+          <h3>Cel i podstawa prawna przetwarzania</h3>
+          <p>Dane przetwarzamy w celu realizacji umowy sprzedaży, obsługi zamówień i dostarczenia produktu cyfrowego oraz rozliczeń.</p>
+
+          <h3>Okres przechowywania</h3>
+          <p>Dane związane z zamówieniami przechowujemy przez czas niezbędny do realizacji zamówienia, obsługi reklamacji i okres wymagany przepisami księgowymi.</p>
+
+          <h3>Cookies i localStorage</h3>
+          <p>Serwis wykorzystuje techniczne mechanizmy niezbędne do działania strony i zapisu koszyka (localStorage). Nie używamy marketingowych plików cookies ani profilowania użytkowników.</p>
+
+          <h3>Prawa użytkownika</h3>
+          <p>Masz prawo dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia danych oraz wniesienia sprzeciwu.</p>
+          <p class="legal-drawer-meta">Ostatnia aktualizacja: 2026-03-11</p>
+        </article>
+      </div>
+    </aside>
 
     <script type="module" src="./app.ts"></script>
   </body>

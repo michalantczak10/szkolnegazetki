@@ -54,7 +54,7 @@ function buildBanner(): HTMLElement {
         <button type="button" class="cookie-btn cookie-btn-primary" data-cookie-action="accept">Akceptuj wszystkie</button>
       </div>
       <p class="cookie-consent-note">
-        Szczegóły: <a href="/privacy.html#cookies">Polityka prywatności</a>
+        Szczegóły: <a href="#legal" data-legal-open="privacy">Polityka prywatności</a>
       </p>
     </div>
     <div class="cookie-settings" hidden>

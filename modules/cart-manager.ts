@@ -38,12 +38,12 @@ export class CartManager {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items));
   }
 
-  public add(key: string, name: string, price: number, image: string): void {
+  public add(key: string, name: string, price: number, image: string, categoryName?: string): void {
     const existing = this.items.find((item) => item.key === key);
     if (existing) {
       existing.qty++;
     } else {
-      this.items.push({ key, name, price, qty: 1, image });
+      this.items.push({ key, name, categoryName, price, qty: 1, image });
     }
     this.saveToStorage();
   }

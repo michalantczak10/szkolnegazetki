@@ -4,6 +4,7 @@ export type ProductId = "poster" | "poster-a4" | "newsletter" | "newsletter-clas
 export interface CartItem {
   key: string;
   name: string;
+  categoryName?: string;
   price: number;
   qty: number;
   image?: string;

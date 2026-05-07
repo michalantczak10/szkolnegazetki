@@ -9,6 +9,7 @@ import { renderCheckoutSummary } from "./modules/checkout-summary.js";
 import { showOrderConfirmationModal } from "./modules/order-confirmation.js";
 import { setupPaymentMethodHandler } from "./modules/payment.js";
 import { setupLegalPageNavigation } from "./modules/legal-pages.js";
+import { setupLegalDrawer } from "./modules/legal-drawer.js";
 import {
   validateName,
   validateEmail,
@@ -32,6 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
   applyStoreConfiguration();
   applyCategoryConfiguration();
   setupLegalPageNavigation();
+  setupLegalDrawer();
   setupCategoryCardToggles(cartManager);
   setupCartItemHandlers(cartManager);
   renderCheckoutSummary(cartManager);

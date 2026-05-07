@@ -48,13 +48,19 @@ test.describe('Category cards and seasonal groups', () => {
     expect(priceText).toMatch(/\d+ zł/);
   });
 
-  test('only one category panel open at a time', async ({ page }) => {
+  test('other category cards are blocked while one panel is open', async ({ page }) => {
     const btns = page.getByTestId('btn-expand-category');
     await btns.nth(0).click();
-    await btns.nth(1).click();
+
+    // While first panel is open, other category expand buttons should be disabled.
+    await expect(btns.nth(1)).toBeDisabled();
 
     const openPanels = page.locator('.category-products-panel.open');
     await expect(openPanels).toHaveCount(1);
+
+    // Close first panel and verify other categories are unlocked again.
+    await btns.nth(0).click();
+    await expect(btns.nth(1)).toBeEnabled();
   });
 
   test('category panel collapses when same button clicked again', async ({ page }) => {

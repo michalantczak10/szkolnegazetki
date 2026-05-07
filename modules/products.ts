@@ -254,7 +254,8 @@ async function renderCategoryProducts(
   container: Element,
   categoryId: string,
   products: readonly StoreProduct[],
-  cartManager: CartManager
+  cartManager: CartManager,
+  onAddToCart?: () => void
 ): Promise<void> {
   container.innerHTML = "";
   const list = document.createElement("ul");
@@ -343,8 +344,11 @@ async function renderCategoryProducts(
     btn.textContent = "Dodaj do zamówienia";
 
     btn.addEventListener("click", () => {
-      cartManager.add(product.id, product.name, product.price, variantImage);
+      const categoryName = getCategoryConfig(categoryId as CategoryId)?.name;
+      cartManager.add(product.id, product.name, product.price, variantImage, categoryName);
       renderCheckoutSummary(cartManager);
+
+      onAddToCart?.();
 
       const checkoutSummary = document.getElementById("checkoutSummary");
       if (checkoutSummary) {
@@ -389,6 +393,20 @@ function closePanel(panel: HTMLElement, card: HTMLElement, btn: HTMLButtonElemen
     const inner = panel.querySelector(".category-products-panel-inner");
     if (inner) inner.innerHTML = "";
   }
+
+  const hasOpenPanels = document.querySelector(".category-products-panel.open") !== null;
+  document.body.classList.toggle("category-focus-open", hasOpenPanels);
+
+  if (!hasOpenPanels) {
+    document
+      .querySelectorAll(".product-card[data-category-id]")
+      .forEach((cardNode) => {
+        if (!(cardNode instanceof HTMLElement)) return;
+        cardNode.classList.remove("is-blocked-by-focus");
+        const otherBtn = cardNode.querySelector(".category-expand-btn") as HTMLButtonElement | null;
+        if (otherBtn) otherBtn.disabled = false;
+      });
+  }
 }
 
 /**
@@ -428,8 +446,19 @@ export function setupCategoryCardToggles(cartManager: CartManager): void {
         panel.setAttribute("aria-hidden", "false");
         panel.classList.add("open");
         cardNode.classList.add("expanded");
+        document.body.classList.add("category-focus-open");
+        allCards.forEach((otherCard) => {
+          if (!(otherCard instanceof HTMLElement)) return;
+          const otherBtn = otherCard.querySelector(".category-expand-btn") as HTMLButtonElement | null;
+          if (!otherBtn) return;
+          const shouldBlock = otherCard !== cardNode;
+          otherCard.classList.toggle("is-blocked-by-focus", shouldBlock);
+          otherBtn.disabled = shouldBlock;
+        });
         const inner = panel.querySelector(".category-products-panel-inner");
-        if (inner) await renderCategoryProducts(inner, categoryId, category.products, cartManager);
+        if (inner) await renderCategoryProducts(inner, categoryId, category.products, cartManager, () => {
+          closePanel(panel, cardNode, expandBtn, true);
+        });
       }
       })();
     });

@@ -190,8 +190,6 @@ szkolnegazetki.pl/
 ├── index.html
 ├── app.ts
 ├── style.css
-├── terms.html
-├── privacy.html
 ├── favicon/
 ├── img/
 ├── modules/

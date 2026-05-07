@@ -64,7 +64,7 @@ export function renderCheckoutSummary(cartManager: CartManager): void {
       <div class="checkout-summary-product-main">
         ${imgHtml}
         <div class="checkout-summary-product-meta">
-          <span class="checkout-summary-product-name">${item.name}</span>
+          <span class="checkout-summary-product-name">${item.categoryName ? `${item.categoryName} – ${item.name}` : item.name}</span>
           <span class="checkout-summary-product-unit">${item.qty} ${qtyLabel} × ${item.price} zł</span>
         </div>
         <div class="checkout-summary-product-actions">
