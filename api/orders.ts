@@ -3,6 +3,7 @@ import { MongoClient } from 'mongodb';
 import { Resend } from 'resend';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 declare global {
@@ -16,7 +17,7 @@ const ORDERS_COLLECTION = process.env['ORDERS_COLLECTION'] ?? 'orders';
 const ORDER_EMAIL = process.env['ORDER_EMAIL'];
 const RESEND_API_KEY = process.env['RESEND_API_KEY'];
 const RESEND_FROM_EMAIL =
-  process.env['RESEND_FROM_EMAIL'] ?? 'noreply@szkolnegazetki.onresend.com';
+  process.env['RESEND_FROM_EMAIL'] ?? 'noreply@szkolnegazetki.pl';
 
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
@@ -123,6 +124,7 @@ interface OrderRecord {
 
 async function sendOrderNotification(order: OrderRecord): Promise<void> {
   if (!resend || !ORDER_EMAIL) {
+    console.warn('Order notification skipped: missing RESEND_API_KEY or ORDER_EMAIL');
     return;
   }
 
@@ -149,15 +151,40 @@ async function sendOrderNotification(order: OrderRecord): Promise<void> {
     </div>
   `;
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     to: ORDER_EMAIL,
     from: RESEND_FROM_EMAIL,
     subject: `Nowe zamówienie ${order.orderRef ?? ''}`,
     html,
   });
+
+  if (result.error) {
+    throw new Error(`Resend rejected email: ${result.error.message}`);
+  }
+
+  console.info(`Order notification accepted by Resend for ${order.orderRef ?? 'unknown-order'}`);
+}
+
+const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
+
+function setCorsHeaders(req: VercelRequest, res: VercelResponse): void {
+  const origin = typeof req.headers['origin'] === 'string' ? req.headers['origin'] : '';
+  if (DEV_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse): Promise<void> {
+  setCorsHeaders(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).end();
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     res.status(405).json({ error: 'Method not allowed' });

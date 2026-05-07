@@ -218,7 +218,7 @@ szkolnegazetki.pl/
 ```json
 {
   "customerName": "Anna Nowak",
-  "customerEmail": "kontakt@szkolnegazetki.pl",
+  "customerEmail": "zamowienia@szkolnegazetki.pl",
   "customerPhone": "512345678",
   "paymentMethod": "bank_transfer",
   "notes": "Licencje do 2 projektów klasowych",

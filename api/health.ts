@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 declare global {

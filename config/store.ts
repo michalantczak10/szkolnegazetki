@@ -499,7 +499,7 @@ export const STORE_CONFIG = {
   contact: {
     phoneDisplay: "794 535 366",
     phoneHref: "tel:+48794535366",
-    generalEmail: "kontakt@szkolnegazetki.pl",
+    generalEmail: "zamowienia@szkolnegazetki.pl",
     complaintsEmail: "reklamacje@szkolnegazetki.pl",
     fulfillmentHours:
       "Obsługa zamówień od poniedziałku do piątku: 09:00-18:00.",

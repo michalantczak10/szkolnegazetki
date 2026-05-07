@@ -28,7 +28,7 @@ Przykład:
 ```env
 RESEND_API_KEY=re_twoj_klucz_api
 RESEND_FROM_EMAIL=noreply@szkolnegazetki.onresend.com
-ORDER_EMAIL=kontakt@szkolnegazetki.pl
+ORDER_EMAIL=zamowienia@szkolnegazetki.pl
 ```
 
 Uwagi:
