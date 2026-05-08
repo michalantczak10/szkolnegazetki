@@ -48,7 +48,7 @@ test.describe('Szkolne gazetki smoke', () => {
     await page.waitForTimeout(5000);
     await expect(toast).toHaveClass(/toast-show/);
 
-    await page.waitForTimeout(4500);
+    await page.waitForTimeout(5500);
     await expect(toast).not.toHaveClass(/toast-show/);
   });
 

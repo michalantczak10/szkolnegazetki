@@ -1,16 +1,24 @@
 import type { ToastVariant } from "../types.js";
 
-const TOAST_BASE_DURATION_MS = 5500;
+const TOAST_BASE_DURATION_MS = 7000;
 const TOAST_ANIMATION_MS = 180;
-const TOAST_SUCCESS_DURATION_MS = 4500;
-const TOAST_WARNING_DURATION_MS = 7500;
+const TOAST_SUCCESS_DURATION_MS = 6000;
+const TOAST_WARNING_DURATION_MS = 10000;
 const TOAST_LONG_MESSAGE_CHARS = 90;
 const TOAST_LONG_MESSAGE_BONUS_MS = 1500;
 
 interface ToastOptions {
   durationMs?: number;
   sticky?: boolean;
+  replaceCurrent?: boolean;
 }
+
+interface ToastRequest {
+  message: string;
+  options: ToastOptions;
+}
+
+const toastQueue: ToastRequest[] = [];
 
 function getToastVariant(text: string): ToastVariant {
   if (/dodano|zapisano|wysłano|gotowe|udane/i.test(text)) return "success";
@@ -64,10 +72,23 @@ function hideToast(toast: HTMLElement): void {
   const finalizeTimer = window.setTimeout(() => {
     toast.classList.remove("toast-hide");
     toast.dataset.finalizeTimer = "0";
+    showNextToastFromQueue();
   }, TOAST_ANIMATION_MS);
 
   toast.dataset.finalizeTimer = String(finalizeTimer);
   toast.dataset.hideTimer = "0";
+}
+
+function showNextToastFromQueue(): void {
+  if (toastQueue.length === 0) return;
+
+  const next = toastQueue.shift();
+  if (!next) return;
+
+  showToast(next.message, {
+    ...next.options,
+    replaceCurrent: true,
+  });
 }
 
 function scheduleToastHide(toast: HTMLElement, durationMs: number): void {
@@ -133,6 +154,11 @@ export function showToast(message: string, options: ToastOptions = {}): void {
       <span class="toast-text"></span>
     `;
     document.body.appendChild(toast);
+  }
+
+  if (toast.classList.contains("toast-show") && options.replaceCurrent !== true) {
+    toastQueue.push({ message, options });
+    return;
   }
 
   ensureToastHoverPause(toast);
