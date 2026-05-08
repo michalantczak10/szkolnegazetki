@@ -55,6 +55,8 @@ test.describe('Szkolne gazetki smoke', () => {
   });
 
   test('non-sticky toast stays visible for several seconds and then auto-hides', async ({ page }) => {
+    test.setTimeout(70000);
+
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     await page.getByTestId('btn-remove-from-cart').first().click();
@@ -64,11 +66,10 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(toast).toContainText('Usunięto produkt');
     await expect(toast).toHaveClass(/toast-show/);
 
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(15000);
     await expect(toast).toHaveClass(/toast-show/);
 
-    await page.waitForTimeout(5500);
-    await expect(toast).not.toHaveClass(/toast-show/);
+    await expect(toast).not.toHaveClass(/toast-show/, { timeout: 23000 });
   });
 
   test('sticky submit toast remains visible until dismissed', async ({ page }) => {

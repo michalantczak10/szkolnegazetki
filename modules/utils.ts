@@ -1,11 +1,11 @@
 import type { ToastVariant } from "../types.js";
 
-const TOAST_BASE_DURATION_MS = 7000;
+const TOAST_BASE_DURATION_MS = 21000;
 const TOAST_ANIMATION_MS = 180;
-const TOAST_SUCCESS_DURATION_MS = 6000;
-const TOAST_WARNING_DURATION_MS = 10000;
+const TOAST_SUCCESS_DURATION_MS = 18000;
+const TOAST_WARNING_DURATION_MS = 30000;
 const TOAST_LONG_MESSAGE_CHARS = 90;
-const TOAST_LONG_MESSAGE_BONUS_MS = 1500;
+const TOAST_LONG_MESSAGE_BONUS_MS = 4500;
 
 interface ToastOptions {
   durationMs?: number;
