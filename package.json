@@ -18,11 +18,12 @@
     "stylelint": "^17.4.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.0.0",
+    "tsx": "^4.20.6",
     "vite": "^7.3.2"
   },
   "scripts": {
     "dev": "vite",
-    "dev:api": "npx vercel dev --listen 3000",
+    "dev:api": "tsx watch scripts/dev-api.ts",
     "dev:full": "concurrently -n FE,API -c blue,green \"npm:dev\" \"npm:dev:api\"",
     "dev:test": "vite",
     "build": "vite build",
@@ -31,6 +32,8 @@
     "prepare": "simple-git-hooks",
     "secrets:check:staged": "node ./scripts/secretlint-staged.mjs",
     "test:e2e": "npm run test:e2e:smoke",
+    "test:api": "tsx --test tests/api/orders.test.ts",
+    "test:verify": "npm run build && npm run test:api && npm run test:coverage && npm run test:e2e:smoke",
     "test:e2e:all": "playwright test",
     "test:e2e:smoke": "playwright test tests/e2e/smoke.spec.ts",
     "test:e2e:live": "playwright test -c playwright.live.config.ts",

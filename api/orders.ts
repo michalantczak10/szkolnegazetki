@@ -117,15 +117,30 @@ interface OrderRecord {
   createdAt: Date;
   updatedAt: Date;
   environment: string;
+  notificationStatus: 'pending' | 'accepted' | 'skipped' | 'failed';
+  notificationMessageId?: string;
+  notificationError?: string;
+  notificationSentAt?: Date;
+  notificationUpdatedAt?: Date;
   orderId?: string;
   orderRef?: string;
   paymentTarget?: string;
 }
 
-async function sendOrderNotification(order: OrderRecord): Promise<void> {
+interface OrderNotificationResult {
+  status: 'accepted' | 'skipped' | 'failed';
+  messageId?: string;
+  error?: string;
+  sentAt?: Date;
+}
+
+async function sendOrderNotification(order: OrderRecord): Promise<OrderNotificationResult> {
   if (!resend || !ORDER_EMAIL) {
     console.warn('Order notification skipped: missing RESEND_API_KEY or ORDER_EMAIL');
-    return;
+    return {
+      status: 'skipped',
+      error: 'missing RESEND_API_KEY or ORDER_EMAIL',
+    };
   }
 
   const itemsHtml = order.items
@@ -159,10 +174,19 @@ async function sendOrderNotification(order: OrderRecord): Promise<void> {
   });
 
   if (result.error) {
-    throw new Error(`Resend rejected email: ${result.error.message}`);
+    return {
+      status: 'failed',
+      error: `Resend rejected email: ${result.error.message}`,
+    };
   }
 
   console.info(`Order notification accepted by Resend for ${order.orderRef ?? 'unknown-order'}`);
+
+  return {
+    status: 'accepted',
+    messageId: result.data?.id,
+    sentAt: new Date(),
+  };
 }
 
 const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
@@ -280,6 +304,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     createdAt: new Date(),
     updatedAt: new Date(),
     environment: process.env['NODE_ENV'] ?? 'development',
+    notificationStatus: 'pending',
   };
 
   try {
@@ -305,11 +330,29 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
       paymentTarget,
     };
 
+    let notificationResult: OrderNotificationResult;
     try {
-      await sendOrderNotification(orderRecord);
+      notificationResult = await sendOrderNotification(orderRecord);
     } catch (error) {
-      console.error('Order notification failed:', (error as Error)?.message ?? error);
+      notificationResult = {
+        status: 'failed',
+        error: (error as Error)?.message ?? String(error),
+      };
+      console.error('Order notification failed:', notificationResult.error);
     }
+
+    await collection.updateOne(
+      { _id: result.insertedId },
+      {
+        $set: {
+          notificationStatus: notificationResult.status,
+          notificationMessageId: notificationResult.messageId ?? null,
+          notificationError: notificationResult.error ?? null,
+          notificationSentAt: notificationResult.sentAt ?? null,
+          notificationUpdatedAt: new Date(),
+        },
+      },
+    );
 
     res.status(201).json({
       success: true,

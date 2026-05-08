@@ -78,7 +78,7 @@ Otwórz `http://localhost:5173`.
 ```bash
 npm run dev:full
 ```
-Uruchamia równolegle frontend (`vite`) i lokalne API Vercel na `http://localhost:3000`.
+Uruchamia równolegle frontend (`vite`) i lokalny serwer API zamówień na `http://localhost:3000`.
 
 ### Produkcyjny build frontendu
 ```bash
@@ -87,7 +87,10 @@ npm run build
 Wynikowe pliki zostaną zbudowane do `dist`.
 
 ### Lokalny backend (opcjonalny)
-Jeżeli chcesz emulować funkcje Vercel lokalnie, użyj `vercel dev` z poziomu katalogu głównego.
+```bash
+npm run dev:api
+```
+Uruchamia lokalny serwer API dla `orders` i `health` bez pośrednictwa `vercel dev`, co eliminuje niestabilność procesu na Windows.
 
 ## ⚙️ Konfiguracja
 
@@ -135,6 +138,8 @@ Backend wysyła powiadomienia o nowych zamówieniach na adres ustawiony w `ORDER
 - `npm run dev:test` - uruchamia frontend pod testy Playwright
 - `npm run build` - buduje frontend do `dist`
 - `npm run test:e2e:smoke` - szybkie testy E2E
+- `npm run test:api` - szybki test backendu `api/orders`
+- `npm run test:verify` - pełny lokalny pakiet walidacji: build + API + coverage + smoke E2E
 - `npm run test:e2e:all` - pełny zestaw testów E2E
 - `npm run test:e2e:live` - checkout live testy E2E (wymagane `ENABLE_LIVE_E2E=true`)
 - `npm run test:prod:smoke` - smoke test produkcji
