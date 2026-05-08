@@ -14,10 +14,8 @@ export function validateName(
   const value = input.value.trim();
   let msg = "";
 
-  if (value.length === 0) {
-    msg = "Podaj imię i nazwisko nauczyciela.";
-  } else if (value.length > 80) {
-    msg = "Imię i nazwisko nauczyciela może mieć maksymalnie 80 znaków.";
+  if (value.length > 80) {
+    msg = "Imię i nazwisko może mieć maksymalnie 80 znaków.";
   }
 
   if (showError) {

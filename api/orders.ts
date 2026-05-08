@@ -241,11 +241,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
   const trimmedNotes = typeof notes === 'string' ? notes.trim() : '';
   const selectedPaymentMethod = paymentMethod === 'blik' ? 'blik' : 'bank_transfer';
 
-  if (!trimmedName) {
-    res.status(400).json({ error: 'Podaj imię i nazwisko nauczyciela.' });
-    return;
-  }
-
   if (!isEmailValid(normalizedEmail)) {
     res.status(400).json({ error: 'Podaj poprawny adres e-mail.' });
     return;
@@ -290,7 +285,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
   const total = productsTotal;
 
   const order: OrderRecord = {
-    customerName: trimmedName,
+    customerName: trimmedName || 'Klient (bez imienia i nazwiska)',
     customerEmail: normalizedEmail,
     customerPhone: typeof customerPhone === 'string' ? customerPhone.replace(/\D/g, '') : '',
     paymentMethod: selectedPaymentMethod,

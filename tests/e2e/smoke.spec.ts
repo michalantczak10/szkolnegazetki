@@ -147,12 +147,17 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(summary).not.toContainText('Wariant 1');
   });
 
-  test('validates name field - required', async ({ page }) => {
+  test('validates name field length when provided', async ({ page }) => {
     const nameInput = page.getByTestId('input-customer-name');
     const nameError = page.locator('#nameError');
 
-    // Empty name should trigger error
+    // Empty name is allowed
     await nameInput.focus();
+    await nameInput.blur();
+    await expect(nameError).toHaveText('');
+
+    // Overlong name should show validation error
+    await nameInput.fill('A'.repeat(81));
     await nameInput.blur();
     await expect(nameError).not.toHaveText('');
 
@@ -175,14 +180,14 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(emailError).toHaveText('');
   });
 
-  test('submit with empty fields shows validation errors', async ({ page }) => {
+  test('submit with empty email shows validation errors', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
     await page.getByTestId('btn-submit-order').click();
 
-    // Name error should appear
-    const nameError = page.locator('#nameError');
-    await expect(nameError).not.toHaveText('');
+    // Email error should appear
+    const emailError = page.locator('#emailError');
+    await expect(emailError).not.toHaveText('');
   });
 
   test('empty cart shows browse offer button', async ({ page }) => {

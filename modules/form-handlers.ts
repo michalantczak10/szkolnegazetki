@@ -91,20 +91,22 @@ export async function submitOrder(
       isLocalhostUi
     ) {
       showToast(
-        "Lokalne API zamówień nie jest uruchomione. Uruchom backend przez npm run dev:api lub npm run dev:full."
+        "Lokalne API zamówień nie jest uruchomione. Uruchom backend przez npm run dev:api lub npm run dev:full.",
+        { durationMs: 10000 }
       );
       return null;
     }
 
     if (error instanceof TypeError && isLocalhostUi && pointsToLocalApi) {
       showToast(
-        "Brak połączenia z lokalnym API zamówień na porcie 3000. Uruchom npm run dev:api lub npm run dev:full."
+        "Brak połączenia z lokalnym API zamówień na porcie 3000. Uruchom npm run dev:api lub npm run dev:full.",
+        { durationMs: 10000 }
       );
       return null;
     }
 
     const message = error instanceof Error ? error.message : String(error);
-    showToast(`Błąd podczas wysyłania zamówienia: ${message}`);
+    showToast(`Błąd podczas wysyłania zamówienia: ${message}`, { durationMs: 10000 });
     return null;
   }
 }

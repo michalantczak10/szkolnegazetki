@@ -7,6 +7,10 @@ const TOAST_WARNING_DURATION_MS = 7500;
 const TOAST_LONG_MESSAGE_CHARS = 90;
 const TOAST_LONG_MESSAGE_BONUS_MS = 1500;
 
+interface ToastOptions {
+  durationMs?: number;
+}
+
 function getToastVariant(text: string): ToastVariant {
   if (/dodano|zapisano|wysłano|gotowe|udane/i.test(text)) return "success";
   if (/usun|wyczyść|wyczyszcz|brak|popraw|błąd|nie udało|nieprawidł/i.test(text))
@@ -111,7 +115,7 @@ function ensureToastHoverPause(toast: HTMLElement): void {
 /**
  * Show a toast notification
  */
-export function showToast(message: string): void {
+export function showToast(message: string, options: ToastOptions = {}): void {
   let toast = document.getElementById("toastMessage");
   if (!toast) {
     toast = document.createElement("div");
@@ -130,7 +134,9 @@ export function showToast(message: string): void {
 
   const variant = getToastVariant(message);
   const icon = getToastIcon(message, variant);
-  const durationMs = getToastDuration(message, variant);
+  const durationMs = options.durationMs && options.durationMs > 0
+    ? options.durationMs
+    : getToastDuration(message, variant);
   const iconEl = toast.querySelector(".toast-icon") as HTMLElement | null;
   const textEl = toast.querySelector(".toast-text") as HTMLElement | null;
 

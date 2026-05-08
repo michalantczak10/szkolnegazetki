@@ -85,7 +85,9 @@ window.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
 
     if (cartManager.isEmpty()) {
-      showToast("Podsumowanie nie zawiera wybranego produktu. Dodaj licencje przed złożeniem zamówienia.");
+      showToast("Podsumowanie nie zawiera wybranego produktu. Dodaj licencje przed złożeniem zamówienia.", {
+        durationMs: 9000,
+      });
       document.getElementById("checkoutSummary")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
@@ -97,7 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (!nameValid || !emailValid || !phoneValid || !notesValid) {
       setCheckoutMessage(checkoutMessage, "Popraw zaznaczone pola formularza.");
-      showToast("Popraw zaznaczone pola formularza.");
+      showToast("Popraw zaznaczone pola formularza.", { durationMs: 9000 });
       if (!nameValid) customerName.focus();
       else if (!emailValid) customerEmail.focus();
       else if (!phoneValid) customerPhone.focus();
