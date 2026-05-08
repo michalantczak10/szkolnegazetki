@@ -1,7 +1,11 @@
 import type { ToastVariant } from "../types.js";
 
-const TOAST_DURATION_MS = 3000;
+const TOAST_BASE_DURATION_MS = 5500;
 const TOAST_ANIMATION_MS = 180;
+const TOAST_SUCCESS_DURATION_MS = 4500;
+const TOAST_WARNING_DURATION_MS = 7500;
+const TOAST_LONG_MESSAGE_CHARS = 90;
+const TOAST_LONG_MESSAGE_BONUS_MS = 1500;
 
 function getToastVariant(text: string): ToastVariant {
   if (/dodano|zapisano|wysłano|gotowe|udane/i.test(text)) return "success";
@@ -15,6 +19,93 @@ function getToastIcon(text: string, variant: ToastVariant): string {
   if (variant === "success") return "✅";
   if (variant === "warning") return "⚠️";
   return "ℹ️";
+}
+
+function getToastDuration(message: string, variant: ToastVariant): number {
+  let duration = TOAST_BASE_DURATION_MS;
+
+  if (variant === "success") {
+    duration = TOAST_SUCCESS_DURATION_MS;
+  } else if (variant === "warning") {
+    duration = TOAST_WARNING_DURATION_MS;
+  }
+
+  if (message.length >= TOAST_LONG_MESSAGE_CHARS) {
+    duration += TOAST_LONG_MESSAGE_BONUS_MS;
+  }
+
+  return duration;
+}
+
+function clearToastTimers(toast: HTMLElement): void {
+  const previousHideTimer = Number(toast.dataset.hideTimer || "0");
+  if (previousHideTimer) {
+    window.clearTimeout(previousHideTimer);
+    toast.dataset.hideTimer = "0";
+  }
+
+  const previousFinalizeTimer = Number(toast.dataset.finalizeTimer || "0");
+  if (previousFinalizeTimer) {
+    window.clearTimeout(previousFinalizeTimer);
+    toast.dataset.finalizeTimer = "0";
+  }
+}
+
+function hideToast(toast: HTMLElement): void {
+  toast.classList.remove("toast-show");
+  toast.classList.add("toast-hide");
+
+  const finalizeTimer = window.setTimeout(() => {
+    toast.classList.remove("toast-hide");
+    toast.dataset.finalizeTimer = "0";
+  }, TOAST_ANIMATION_MS);
+
+  toast.dataset.finalizeTimer = String(finalizeTimer);
+  toast.dataset.hideTimer = "0";
+}
+
+function scheduleToastHide(toast: HTMLElement, durationMs: number): void {
+  toast.dataset.remainingMs = String(durationMs);
+  toast.dataset.startedAt = String(Date.now());
+
+  const hideTimer = window.setTimeout(() => {
+    hideToast(toast);
+  }, durationMs);
+
+  toast.dataset.hideTimer = String(hideTimer);
+}
+
+function ensureToastHoverPause(toast: HTMLElement): void {
+  if (toast.dataset.pauseBound === "1") return;
+  toast.dataset.pauseBound = "1";
+
+  toast.addEventListener("mouseenter", () => {
+    const startedAt = Number(toast.dataset.startedAt || "0");
+    const remainingMs = Number(toast.dataset.remainingMs || "0");
+    if (!startedAt || !remainingMs) return;
+
+    const elapsedMs = Date.now() - startedAt;
+    const nextRemainingMs = Math.max(0, remainingMs - elapsedMs);
+    toast.dataset.remainingMs = String(nextRemainingMs);
+
+    const hideTimer = Number(toast.dataset.hideTimer || "0");
+    if (hideTimer) {
+      window.clearTimeout(hideTimer);
+      toast.dataset.hideTimer = "0";
+    }
+  });
+
+  toast.addEventListener("mouseleave", () => {
+    if (!toast.classList.contains("toast-show")) return;
+
+    const remainingMs = Number(toast.dataset.remainingMs || "0");
+    if (remainingMs <= 0) {
+      hideToast(toast);
+      return;
+    }
+
+    scheduleToastHide(toast, remainingMs);
+  });
 }
 
 /**
@@ -35,8 +126,11 @@ export function showToast(message: string): void {
     document.body.appendChild(toast);
   }
 
+  ensureToastHoverPause(toast);
+
   const variant = getToastVariant(message);
   const icon = getToastIcon(message, variant);
+  const durationMs = getToastDuration(message, variant);
   const iconEl = toast.querySelector(".toast-icon") as HTMLElement | null;
   const textEl = toast.querySelector(".toast-text") as HTMLElement | null;
 
@@ -55,23 +149,8 @@ export function showToast(message: string): void {
     });
   });
 
-  const previousTimer = Number(toast.dataset.hideTimer || "0");
-  if (previousTimer) window.clearTimeout(previousTimer);
-  const previousFinalizeTimer = Number(toast.dataset.finalizeTimer || "0");
-  if (previousFinalizeTimer) window.clearTimeout(previousFinalizeTimer);
-
-  const hideTimer = window.setTimeout(() => {
-    toast?.classList.remove("toast-show");
-    toast?.classList.add("toast-hide");
-
-    const finalizeTimer = window.setTimeout(() => {
-      toast?.classList.remove("toast-hide");
-      if (toast) toast.dataset.finalizeTimer = "0";
-    }, TOAST_ANIMATION_MS);
-
-    if (toast) toast.dataset.finalizeTimer = String(finalizeTimer);
-  }, TOAST_DURATION_MS);
-  toast.dataset.hideTimer = String(hideTimer);
+  clearToastTimers(toast);
+  scheduleToastHide(toast, durationMs);
 }
 
 /**
