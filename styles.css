@@ -2378,6 +2378,13 @@ body.preview-modal-open {
   margin-top: 5px;
 }
 
+.field-help {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #4b5563;
+}
+
 .checkout-form input,
 .checkout-form textarea,
 .checkout-form select {
@@ -3273,6 +3280,10 @@ body.legal-drawer-open {
 .toast-hide {
   transform: translateX(-50%) translateY(12px);
   opacity: 0;
+}
+
+.toast-show {
+  pointer-events: auto;
 }
 
 .toast-success {

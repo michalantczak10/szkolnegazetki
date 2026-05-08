@@ -226,19 +226,23 @@
           <p class="checkout-note">Podaj tylko dane niezbędne do realizacji zamówienia. Wymagany jest wyłącznie e-mail do dostarczenia materiałów.</p>
 
           <label for="customerName">Imię i nazwisko (opcjonalnie)</label>
-          <input id="customerName" name="customerName" type="text" autocomplete="name" placeholder="Np. Anna Nowak" data-testid="input-customer-name" />
+          <input id="customerName" name="customerName" type="text" autocomplete="name" placeholder="Np. Anna Nowak" aria-describedby="customerNameHelp" data-testid="input-customer-name" />
+          <p class="field-help" id="customerNameHelp">To pole jest opcjonalne. Pomaga nam zwrócić się do Ciebie po imieniu w wiadomości.</p>
           <div class="input-error" id="nameError" aria-live="polite"></div>
 
           <label for="customerEmail">E-mail</label>
-          <input id="customerEmail" name="customerEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" data-testid="input-customer-email" />
+          <input id="customerEmail" name="customerEmail" type="email" autocomplete="email" required placeholder="twoj@email.pl" aria-describedby="customerEmailHelp" data-testid="input-customer-email" />
+          <p class="field-help" id="customerEmailHelp">To jedyne wymagane pole. Na ten adres wyślemy informacje o zamówieniu i link do materiałów.</p>
           <div class="input-error" id="emailError" aria-live="polite"></div>
 
           <label for="customerPhone">Numer telefonu (opcjonalnie)</label>
-          <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" placeholder="Np. 500 600 700" data-testid="input-customer-phone" />
+          <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" placeholder="Np. 500 600 700" aria-describedby="customerPhoneHelp" data-testid="input-customer-phone" />
+          <p class="field-help" id="customerPhoneHelp">Pole opcjonalne. Użyjemy go tylko, gdy e-mail nie dotrze i będziemy musieli pilnie skontaktować się w sprawie zamówienia.</p>
           <div class="input-error" id="phoneError" aria-live="polite"></div>
 
           <label for="customerNotes">Uwagi do zamówienia (opcjonalnie)</label>
-          <textarea id="customerNotes" name="customerNotes" rows="4" maxlength="300" autocomplete="off" placeholder="Np. klasa, temat gazetki lub dodatkowe informacje do zamówienia" data-testid="input-customer-notes"></textarea>
+          <textarea id="customerNotes" name="customerNotes" rows="4" maxlength="300" autocomplete="off" aria-describedby="customerNotesHelp" placeholder="Np. proszę wysłać materiały na inny adres: klasa5b@szkola.pl" data-testid="input-customer-notes"></textarea>
+          <p class="field-help" id="customerNotesHelp">Pole opcjonalne na dodatkowe informacje, np. inny adres do wysyłki materiałów lub krótki kontekst zamówienia.</p>
           <div class="notes-counter" id="notesCounter" aria-live="polite" data-testid="msg-notes-counter">0 / 300</div>
           <div class="input-error" id="notesError" aria-live="polite"></div>
 

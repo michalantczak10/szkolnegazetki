@@ -9,6 +9,7 @@ const TOAST_LONG_MESSAGE_BONUS_MS = 1500;
 
 interface ToastOptions {
   durationMs?: number;
+  sticky?: boolean;
 }
 
 function getToastVariant(text: string): ToastVariant {
@@ -56,6 +57,7 @@ function clearToastTimers(toast: HTMLElement): void {
 }
 
 function hideToast(toast: HTMLElement): void {
+  toast.dataset.sticky = "0";
   toast.classList.remove("toast-show");
   toast.classList.add("toast-hide");
 
@@ -84,6 +86,8 @@ function ensureToastHoverPause(toast: HTMLElement): void {
   toast.dataset.pauseBound = "1";
 
   toast.addEventListener("mouseenter", () => {
+    if (toast.dataset.sticky === "1") return;
+
     const startedAt = Number(toast.dataset.startedAt || "0");
     const remainingMs = Number(toast.dataset.remainingMs || "0");
     if (!startedAt || !remainingMs) return;
@@ -100,6 +104,7 @@ function ensureToastHoverPause(toast: HTMLElement): void {
   });
 
   toast.addEventListener("mouseleave", () => {
+    if (toast.dataset.sticky === "1") return;
     if (!toast.classList.contains("toast-show")) return;
 
     const remainingMs = Number(toast.dataset.remainingMs || "0");
@@ -156,7 +161,20 @@ export function showToast(message: string, options: ToastOptions = {}): void {
   });
 
   clearToastTimers(toast);
-  scheduleToastHide(toast, durationMs);
+
+  if (options.sticky) {
+    toast.dataset.sticky = "1";
+    toast.dataset.hideTimer = "0";
+    toast.dataset.remainingMs = "0";
+    toast.dataset.startedAt = "0";
+  } else {
+    toast.dataset.sticky = "0";
+    scheduleToastHide(toast, durationMs);
+  }
+
+  toast.onclick = () => {
+    hideToast(toast as HTMLElement);
+  };
 }
 
 /**

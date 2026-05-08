@@ -35,6 +35,38 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(page.getByTestId('order-confirm-modal')).toHaveCount(0);
   });
 
+  test('non-sticky toast stays visible for several seconds and then auto-hides', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
+    await page.getByTestId('btn-add-to-cart').first().click();
+    await page.getByTestId('btn-remove-from-cart').first().click();
+
+    const toast = page.locator('#toastMessage');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('Usunięto produkt');
+    await expect(toast).toHaveClass(/toast-show/);
+
+    await page.waitForTimeout(5000);
+    await expect(toast).toHaveClass(/toast-show/);
+
+    await page.waitForTimeout(4500);
+    await expect(toast).not.toHaveClass(/toast-show/);
+  });
+
+  test('sticky submit toast remains visible until dismissed', async ({ page }) => {
+    await page.getByTestId('btn-submit-order').click();
+
+    const toast = page.locator('#toastMessage');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('Podsumowanie nie zawiera wybranego produktu.');
+    await expect(toast).toHaveClass(/toast-show/);
+
+    await page.waitForTimeout(11000);
+    await expect(toast).toHaveClass(/toast-show/);
+
+    await toast.click();
+    await expect(toast).not.toHaveClass(/toast-show/);
+  });
+
   test('keeps cart items after page reload', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
