@@ -35,6 +35,25 @@ test.describe('Szkolne gazetki smoke', () => {
     await expect(page.getByTestId('order-confirm-modal')).toHaveCount(0);
   });
 
+  test('toast appears immediately after add to cart action', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
+    await page.getByTestId('btn-add-to-cart').first().click();
+
+    const toast = page.locator('#toastMessage');
+    await expect(toast).toContainText('Dodano 1 szt. produktu', { timeout: 300 });
+    await expect(toast).toHaveClass(/toast-show/, { timeout: 300 });
+  });
+
+  test('toast message updates immediately for rapid cart actions', async ({ page }) => {
+    await page.getByTestId('btn-expand-category').first().click();
+    await page.getByTestId('btn-add-to-cart').first().click();
+    await page.getByTestId('btn-remove-from-cart').first().click();
+
+    const toast = page.locator('#toastMessage');
+    await expect(toast).toContainText('Usunięto produkt', { timeout: 400 });
+    await expect(toast).toHaveClass(/toast-show/, { timeout: 400 });
+  });
+
   test('non-sticky toast stays visible for several seconds and then auto-hides', async ({ page }) => {
     await page.getByTestId('btn-expand-category').first().click();
     await page.getByTestId('btn-add-to-cart').first().click();
