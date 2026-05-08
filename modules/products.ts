@@ -205,7 +205,7 @@ function createCategoryCard(category: StoreCategory): HTMLElement {
         </button>
       </div>
     </div>
-    <div class="category-products-panel" id="${panelId}" aria-hidden="true">
+    <div class="category-products-panel" id="${panelId}" aria-hidden="true" inert>
       <div class="category-products-panel-inner"></div>
     </div>
   `;
@@ -376,8 +376,15 @@ async function renderCategoryProducts(
 }
 
 function closePanel(panel: HTMLElement, card: HTMLElement, btn: HTMLButtonElement, animated = false): void {
+  const activeElement = document.activeElement;
+  if (activeElement instanceof HTMLElement && panel.contains(activeElement)) {
+    activeElement.blur();
+    btn.focus({ preventScroll: true });
+  }
+
   btn.setAttribute("aria-expanded", "false");
   panel.setAttribute("aria-hidden", "true");
+  panel.setAttribute("inert", "");
   panel.classList.remove("open");
   card.classList.remove("expanded");
   if (animated) {
@@ -443,6 +450,7 @@ export function setupCategoryCardToggles(cartManager: CartManager): void {
         closePanel(panel, cardNode, expandBtn, true);
       } else {
         expandBtn.setAttribute("aria-expanded", "true");
+        panel.removeAttribute("inert");
         panel.setAttribute("aria-hidden", "false");
         panel.classList.add("open");
         cardNode.classList.add("expanded");
