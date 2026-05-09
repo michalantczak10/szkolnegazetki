@@ -214,7 +214,7 @@ function createCategoryCard(category: StoreCategory): HTMLElement {
 }
 
 /**
- * Generate and insert all category cards grouped by season into #product-grid
+ * Generate and insert all category cards as a single flat grid into #product-grid
  */
 export function applyCategoryConfiguration(): void {
   const container = document.getElementById("product-grid");
@@ -222,29 +222,17 @@ export function applyCategoryConfiguration(): void {
 
   container.innerHTML = "";
 
+  const grid = document.createElement("div");
+  grid.className = "product-grid";
+
   for (const group of CATEGORY_GROUPS) {
-    const section = document.createElement("section");
-    section.className = "category-group";
-    section.dataset.groupId = group.id;
-
-    const heading = document.createElement("h3");
-    heading.className = "category-group-heading";
-    heading.textContent = group.label;
-    heading.dataset.testid = "category-group-heading";
-    heading.dataset.groupId = group.id;
-
-    const grid = document.createElement("div");
-    grid.className = "product-grid";
-
     for (const categoryId of group.categoryIds) {
       const category = getCategoryConfig(categoryId);
       if (category) grid.appendChild(createCategoryCard(category));
     }
-
-    section.appendChild(heading);
-    section.appendChild(grid);
-    container.appendChild(section);
   }
+
+  container.appendChild(grid);
 }
 
 /**

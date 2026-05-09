@@ -1,20 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Category cards and seasonal groups', () => {
+test.describe('Category cards', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     const rejectBtn = page.getByRole('button', { name: 'Odrzuć opcjonalne' });
     if (await rejectBtn.isVisible()) await rejectBtn.click();
-  });
-
-  test('renders all 5 seasonal group headings', async ({ page }) => {
-    const headings = page.locator('[data-testid="category-group-heading"]');
-    await expect(headings).toHaveCount(5);
-
-    const labels = ['Całoroczne', 'Jesień', 'Zima', 'Wiosna', 'Lato'];
-    for (const [i, label] of labels.entries()) {
-      await expect(headings.nth(i)).toContainText(label);
-    }
   });
 
   test('renders at least 24 category cards', async ({ page }) => {

@@ -1165,25 +1165,7 @@ button:active {
   padding: 0;
 }
 
-.category-group {
-  max-width: 1240px;
-  margin: 0 auto 52px;
-  padding: 0;
-}
 
-.category-group:last-child {
-  margin-bottom: 0;
-}
-
-.category-group-heading {
-  font-size: clamp(1.1rem, 3.5vw, 1.55rem);
-  font-weight: 800;
-  color: var(--color-primary);
-  margin: 0 0 20px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid var(--color-accent);
-  letter-spacing: 0.01em;
-}
 
 .product-card {
   background: var(--color-white);
@@ -3427,9 +3409,6 @@ body.legal-drawer-open {
     gap: 20px;
   }
 
-  .category-group {
-    margin-bottom: 44px;
-  }
 }
 
 /* Tablet portrait (768px - 991px) */
@@ -3442,14 +3421,6 @@ body.legal-drawer-open {
     top: 0;
   }
 
-  .category-group {
-    margin-bottom: 36px;
-  }
-
-  .category-group-heading {
-    margin-left: 25px;
-  }
-  
   .hero {
     padding: 74px 25px;
   }
@@ -3572,15 +3543,6 @@ body.legal-drawer-open {
 
   .category-preview-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .category-group {
-    margin-bottom: 28px;
-  }
-
-  .category-group-heading {
-    margin-left: 20px;
-    margin-bottom: 14px;
   }
 
   .product-card-body {
